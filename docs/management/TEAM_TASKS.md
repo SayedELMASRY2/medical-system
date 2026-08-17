@@ -21,10 +21,10 @@ This document breaks down the high-level phases into specific, actionable tasks 
 
 - [x] **Task 2.1:** Setup `pgvector` inside PostgreSQL *(Completed)*.
 - [x] **Task 2.2:** Build offline ingestion script to embed documents using Cohere *(Completed)*.
-- [ ] **Task 2.3:** Add BM25 indexing for keyword search alongside Vector search.
-- [ ] **Task 2.4:** Write a Python function `retrieve_evidence(query)` that performs Hybrid Search (Vector + BM25).
-- [ ] **Task 2.5:** Add Cohere Reranker to filter the top 5 most relevant results from the hybrid search.
-- [ ] **Task 2.6:** Format the final retrieved chunks with `source_id` citations so the AI can reference them.
+- [x] **Task 2.3:** Add BM25 indexing for keyword search alongside Vector search *(Completed)*.
+- [x] **Task 2.4:** Write a Python function `retrieve_evidence(query)` that performs Hybrid Search *(Completed)*.
+- [x] **Task 2.5:** Add Cohere Reranker to filter the top 5 most relevant results *(Completed)*.
+- [x] **Task 2.6:** Format the final retrieved chunks with `source_id` citations *(Completed)*.
 
 ---
 
