@@ -30,9 +30,16 @@ class Settings(BaseSettings):
     def SQLALCHEMY_DATABASE_URI(self) -> str:
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
-    # AI & LLMs
-    OPENAI_API_KEY: str = ""
+    # AI & LLMs (OpenRouter)
+    OPENROUTER_API_KEY: str = ""
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     COHERE_API_KEY: str = ""
+    
+    # Model IDs on OpenRouter
+    MODEL_SUPERVISOR: str = "openai/gpt-4o-mini"
+    MODEL_TIMELINE: str = "openai/gpt-4o-mini"
+    MODEL_RAG: str = "openai/gpt-4o-mini"
+    MODEL_TRIAGE: str = "openai/gpt-4o"
     
     # CDSS Rules
     CDSS_SAFETY_DISCLAIMER: str = "AI-generated explanation. Clinical Decision Support only. Review with attending clinician."
