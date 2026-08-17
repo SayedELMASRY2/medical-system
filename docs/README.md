@@ -87,9 +87,12 @@ flowchart TD
 
 ## Documentation Map
 *   [Architecture Overview](./ARCHITECTURE.md)
-*   [Product Requirements Document (PRD)](./PRD.md)
-*   [System Requirements](./REQUIREMENTS.md)
-*   [Phases & Roadmap](./PHASES_ROADMAP.md)
+*   [Product Requirements Document (PRD)](./product/PRD.md)
+*   [System Requirements](./product/REQUIREMENTS.md)
+*   [Patient Onboarding Baseline](./product/ONBOARDING_REQUIREMENTS.md)
+*   [Daily Patient Check-in](./product/DAILY_CHECKIN.md)
+*   [Phases & Roadmap](./management/PHASES_ROADMAP.md)
+*   [Team Task Assignments](./management/TEAM_TASKS.md)
 
 ## Team Ownership
 
