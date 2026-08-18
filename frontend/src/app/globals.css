@@ -298,4 +298,7 @@
   .animation-delay-500 { animation-delay: 500ms; }
   .animation-delay-700 { animation-delay: 700ms; }
   .animation-delay-1000 { animation-delay: 1000ms; }
+
+  /* Animation fill mode */
+  .fill-mode-forwards { animation-fill-mode: forwards; }
 }
