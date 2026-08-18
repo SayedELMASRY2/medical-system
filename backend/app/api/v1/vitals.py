@@ -19,10 +19,13 @@ from app.crud.daily_checkin import (
 )
 from app.crud.patient import get_patient_by_id
 from app.models.user import User
+from app.ai.state import VitalSigns
+from app.risk_engine.engine import DeterministicRiskEngine
 from app.schemas.daily_checkin import (
     DailyCheckInCreate,
     DailyCheckInList,
     DailyCheckInResponse,
+    VitalsLogResponse,
 )
 
 router = APIRouter(prefix="/patients", tags=["Vitals"])
@@ -30,7 +33,7 @@ router = APIRouter(prefix="/patients", tags=["Vitals"])
 
 @router.post(
     "/{patient_id}/vitals",
-    response_model=DailyCheckInResponse,
+    response_model=VitalsLogResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Log a daily check-in (vital signs, symptoms, lifestyle)",
 )
@@ -93,7 +96,57 @@ async def log_vitals(
     checkin_in.checkin_date = checkin_date
     checkin = await create_checkin(db, patient_id, checkin_in)
 
-    return checkin
+    # 6. RiskEngine Integration
+    risk_assessment = None
+    if all(
+        v is not None for v in [
+            checkin_in.systolic_bp,
+            checkin_in.diastolic_bp,
+            checkin_in.heart_rate,
+            checkin_in.weight_kg,
+        ]
+    ):
+        vitals_obj = VitalSigns(
+            systolic_bp=checkin_in.systolic_bp,
+            diastolic_bp=checkin_in.diastolic_bp,
+            heart_rate=checkin_in.heart_rate,
+            weight_kg=checkin_in.weight_kg,
+            fetal_heart_rate=checkin_in.fetal_heart_rate,
+            blood_glucose=checkin_in.blood_glucose,
+            proteinuria=checkin_in.proteinuria,
+        )
+
+        symptoms = []
+        if checkin_in.headache_severity and checkin_in.headache_severity.value == "SEVERE":
+            symptoms.append("severe headache")
+        if checkin_in.vision_changes:
+            symptoms.append("visual disturbances")
+        if checkin_in.abdominal_pain:
+            symptoms.append("epigastric pain")
+        if checkin_in.edema_location:
+            symptoms.append("swelling")
+
+        severity, rules = DeterministicRiskEngine.evaluate(
+            gestational_age_weeks=patient.gestational_age_weeks,
+            vitals=vitals_obj,
+            symptoms=symptoms,
+            trends=None,
+        )
+
+        # Persist the new risk level
+        patient.risk_status = severity
+        await db.commit()
+        await db.refresh(patient)
+
+        risk_assessment = {
+            "highest_severity": severity,
+            "triggered_rules": [r.model_dump() for r in rules],
+        }
+
+    return VitalsLogResponse(
+        checkin=DailyCheckInResponse.model_validate(checkin),
+        risk_assessment=risk_assessment,
+    )
 
 
 @router.get(

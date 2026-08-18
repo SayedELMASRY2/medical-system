@@ -11,4 +11,5 @@ from app.schemas.daily_checkin import (  # noqa: F401
     DailyCheckInCreate,
     DailyCheckInResponse,
     DailyCheckInList,
+    VitalsLogResponse,
 )

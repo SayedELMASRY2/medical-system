@@ -125,3 +125,29 @@ class DailyCheckInList(BaseModel):
     """Schema for listing a patient's check-in history."""
     checkins: List[DailyCheckInResponse]
     total: int
+
+
+class RuleResultResponse(BaseModel):
+    """Schema for a single triggered risk rule."""
+    rule_id: str
+    rule_name: str
+    severity: str
+    matched_conditions: List[str]
+
+    model_config = {"from_attributes": True}
+
+
+class RiskAssessmentResult(BaseModel):
+    """Schema for the result of the DeterministicRiskEngine."""
+    highest_severity: str
+    triggered_rules: List[RuleResultResponse]
+
+
+class VitalsLogResponse(BaseModel):
+    """
+    Response schema for POST /vitals.
+    Contains the created check-in and optionally the risk assessment
+    if the engine was triggered by sufficient data.
+    """
+    checkin: DailyCheckInResponse
+    risk_assessment: Optional[RiskAssessmentResult] = None
