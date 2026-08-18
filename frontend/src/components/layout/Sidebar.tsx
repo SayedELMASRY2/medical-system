@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Heart,
   Shield,
+  UserPlus,
 } from "lucide-react";
 
 interface NavItem {
@@ -35,6 +36,11 @@ const navItems: NavItem[] = [
     icon: <Users size={20} />,
   },
   {
+    label: "Patient Onboarding",
+    href: "/onboarding",
+    icon: <UserPlus size={20} />,
+  },
+  {
     label: "Daily Check-in",
     href: "/checkin",
     icon: <ClipboardPlus size={20} />,
@@ -46,7 +52,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "Vitals Monitor",
-    href: "/vitals",
+    href: "#",
     icon: <Activity size={20} />,
   },
 ];
@@ -54,7 +60,7 @@ const navItems: NavItem[] = [
 const bottomNavItems: NavItem[] = [
   {
     label: "Settings",
-    href: "/settings",
+    href: "#",
     icon: <Settings size={20} />,
   },
 ];
@@ -107,15 +113,16 @@ export default function Sidebar() {
               pathname === item.href || pathname?.startsWith(item.href + "/");
             return (
               <Link
-                key={item.href}
+                key={item.label}
                 href={item.href}
+                onClick={(e) => item.href === "#" && e.preventDefault()}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl",
                   "text-sm font-medium transition-all duration-200",
                   "group relative",
                   isActive
                     ? "bg-brand-500/15 text-brand-400 border border-brand-500/20"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-glass border border-transparent"
+                    : "text-slate-300 hover:text-slate-100 hover:bg-white/5 border border-transparent"
                 )}
               >
                 {/* Active indicator bar */}
@@ -128,7 +135,7 @@ export default function Sidebar() {
                     "flex-shrink-0 transition-colors duration-200",
                     isActive
                       ? "text-brand-400"
-                      : "text-slate-500 group-hover:text-slate-300"
+                      : "text-slate-400 group-hover:text-slate-300"
                   )}
                 >
                   {item.icon}
@@ -154,17 +161,21 @@ export default function Sidebar() {
             const isActive = pathname === item.href;
             return (
               <Link
-                key={item.href}
+                key={item.label}
                 href={item.href}
+                onClick={(e) => item.href === "#" && e.preventDefault()}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl",
+                  "flex items-center gap-3 px-4 py-3 rounded-xl",
                   "text-sm font-medium transition-all duration-200",
+                  "group",
                   isActive
                     ? "bg-brand-500/15 text-brand-400"
-                    : "text-slate-500 hover:text-slate-300 hover:bg-glass"
+                    : "text-slate-300 hover:text-slate-100 hover:bg-white/5"
                 )}
               >
-                {item.icon}
+                <span className={cn("transition-colors duration-200", isActive ? "text-brand-400" : "text-slate-400 group-hover:text-slate-300")}>
+                  {item.icon}
+                </span>
                 {!collapsed && <span>{item.label}</span>}
               </Link>
             );
@@ -173,17 +184,19 @@ export default function Sidebar() {
           {/* Collapse toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl w-full
-                       text-sm font-medium text-slate-500 hover:text-slate-300 hover:bg-glass
-                       transition-all duration-200"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl w-full
+                       text-sm font-medium text-slate-300 hover:text-slate-100 hover:bg-white/5
+                       transition-all duration-200 group"
           >
-            <ChevronLeft
-              size={20}
-              className={cn(
-                "transition-transform duration-300",
-                collapsed && "rotate-180"
-              )}
-            />
+            <span className="text-slate-400 group-hover:text-slate-300 transition-colors duration-200">
+              <ChevronLeft
+                size={20}
+                className={cn(
+                  "transition-transform duration-300",
+                  collapsed && "rotate-180"
+                )}
+              />
+            </span>
             {!collapsed && <span>Collapse</span>}
           </button>
         </div>
