@@ -7,3 +7,8 @@ from app.schemas.patient import (  # noqa: F401
     PatientProfileResponse,
     PatientProfileList,
 )
+from app.schemas.daily_checkin import (  # noqa: F401
+    DailyCheckInCreate,
+    DailyCheckInResponse,
+    DailyCheckInList,
+)
