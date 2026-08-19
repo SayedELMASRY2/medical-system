@@ -1,0 +1,1511 @@
+{
+  "status": "DRAFT — requires clinical review before use in evaluation",
+  "instructions": "For each case: write the `question` a clinician would actually ask, verify `expected_chunk_ids` is correct and complete (add IDs if more than one chunk should be retrieved), set `reviewed_by`, and set `approved` to true. Cases with `approved: false` must be excluded from retrieval metrics.",
+  "total_cases": 75,
+  "target_range": [
+    50,
+    100
+  ],
+  "cases": [
+    {
+      "case_id": "case_0001",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0041"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "10\nnn Feasibility: Feasibility is influenced by factors\nsuch as the resources available, infrastructure and\ntraining. Qualitative evidence from the systematic\nreviews and country case studies informed\njudgements for this domain. Where barriers\nexisted, it was less likely that a j",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0002",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0059"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Chapter 3. Evidence and recommendations\n21\nSummary of evidence and considerations\nEffects of balanced energy and protein\nsupplements compared with no supplements or\nplacebo (EB T able A.1.3)\nEvidence on the effects of balanced energy and protein\nsupplements compared with no suppl",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0003",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0060"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "22\nA.1.4: High-protein supplements\nRECOMMENDATION A.1.4: In undernourished populations, high-protein supplementation\nis not recommended for pregnant women to improve maternal and perinatal outcomes. (Not\nrecommended)\nRemarks\n• The GDG noted that there is insufficient evidence on ",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0004",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0083"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Chapter 3. Evidence and recommendations\n31\nA.5: Zinc supplements\nRECOMMENDATION A.5: Zinc supplementation for pregnant women is only recommended in\nthe context of rigorous research. (Context-specific recommendation – research)\nRemarks\n• Many of the included studies were at risk o",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0005",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0091"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Chapter 3. Evidence and recommendations\n35\nA.8: Vitamin E and C supplements\nRECOMMENDATION A.8: Vitamin E and C supplementation is not recommended for pregnant\nwomen to improve maternal and perinatal outcomes. (Not recommended)\nRemarks\n• The GDG noted that vitamin E and C combine",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0006",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0106"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "42\nAdditional considerations\nnn In absolute numbers, the data mean that in\nsettings with an anaemia prevalence of 38%, the\nhaemoglobinometer test will probably miss about\n57 anaemic women (95% CI: 38–80) out of every\n1000 women tested, whereas the HCS method\nwill probably miss ab",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0007",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0107"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Chapter 3. Evidence and recommendations\n43\nB.1.2: Asymptomatic bacteriuria (ASB)\nRECOMMENDATION B.1.2: Midstream urine culture is the recommended method for diagnosing\nasymptomatic bacteriuria (ASB) in pregnancy. In settings where urine culture is not available,\non-site midstream",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0008",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0272"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "118\nBox 7: Priority research questions, by type of intervention\nA. Nutritional interventions\n• What are the effects, feasibility, acceptability and equity implications of healthy eating and exercise interventions\nin LMICs?\n• Can an intervention package with standardized guidance ",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0009",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0281"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "122\nrespectively. Any concern about the validity of any\nrecommendation will be promptly communicated via\nthe interactive website for the guideline,\n9 and plans\nwill be made to update the recommendation, as\nneeded.\nT wo years after publication and dissemination of\nthe guideline, a",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0010",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0313"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "143Annex 3: Summary of declarations of interest\nAnnex 3: Summary of declarations of int erest from\nthe Guideline Development Group (GDG)\nmembers and how they were managed\nName Expertise Disclosure of interest Conflict of interest and\nmanagement\nDr Ariful Alam Nutrition, health sy",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0011",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0013"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Nutritional interventions\nRecommendation Type of\nrecommendation\nDietary\ninterventions\nA.1.1: Counselling about healthy eating and keeping physically active\nduring pregnancy is recommended for pregnant women to stay healthy\nand to prevent excessive weight gain during pregnancy.\na\n",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0012",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0014"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "The equivalent of 60 mg of elemental iron is 300 mg of ferrous sulfate hepahydrate, 180 mg of ferrous fumarate or 500 mg of ferrous\ngluconate.\nc. Folic acid should be commenced as early as possible (ideally before conception) to prevent neural tube defects.\nd. This recommendation",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0013",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0015"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Determination of vitamin A deficiency as a public health problem involves estimating the prevalence of deficiency in a\npopulation by using specific biochemical and clinical indicators of vitamin A status.\ni. This recommendation supersedes the previous recommendation found in the ",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0014",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0018"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "In high-prevalence settings,\nr provider-initiated testing and\ncounselling (PITC) for HIV should be considered a routine component\nof the package of care for pregnant women in all antenatal care settings. In low-prevalence settings, PITC can be considered for pregnant women\nin ant",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0015",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_antenatal_care_2016_0019"
+      ],
+      "expected_document_id": "who_antenatal_care_2016",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Not recommended\no. This is not a recommendation on routine screening for hyperglycaemia in pregnancy. It has been adapted and integrated from the WHO\npublication Diagnostic criteria and classification of hyperglycaemia first detected in pregnancy (2013), which states that GDM sho",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0016",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0042"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "23\nUser scenarios\nTable 5. Interpretation of scenario for identification and preparation for SMBP\nData elements to be collected Decision logic to be embedded Functional and non-functional requirements\nUnique identifier\nGestational age/expected date of delivery\nSystolic blood pres",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0017",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0064"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "End\nNo\nYes\n5. Quick\ncheck First contact\nNot first contact\n10.1 Behaviour\ncounselling\n10.2\nPhysiological\nsymptoms\ncounselling\n10.3 Diet\ncounselling\n10.4 Diagnosis\n& treatment\n10.5 Nutrition\nsupplementation\n10.8 Intimate\npartner violence\nfirst line support\nand care\n10.6 Risk\nreduct",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0018",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0065"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Although this section provides a high-level overview of the data elements, a more complete data dictionary in spreadsheet form detailing the\ninput options, validation checks and concept dictionary codes is available here (https://smart.who.int/dak-smbp/dictionary.html). Inclusion",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0019",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0087"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "48 Requirement ID Category Non-functional requirement SMBP.NFXNREQ.63 System requirements – interoperability Provide access to data through application programming interfaces (APIs) SMBP.NFXNREQ.64 System requirements – interoperability Be interoperable with external systems thro",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0020",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0008"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "However, guidelines are often only available in a narrative format that requires a resource-intensive process to be elaborated into the specifications that are\nneeded for operationalizing into digital systems. This translation of guidelines for digital systems often results in su",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0021",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0009"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "To ensure\ncountries can effectively benefit from digital health investments, digital adaptation kits (DAKs), which are the second, operational guidelines layer of the SMART\nguidelines approach, are designed to facilitate the accurate reflection of WHO clinical, public health and ",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0022",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0012"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "This DAK focuses on providing the\ncontent requirements for self-monitoring of blood\npressure (SMBP) in pregnancy through use and\ntracking of digital personal health records. Personal\nhealth record is defined as a “record of an individual’s\nhealth information in a structured digit",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0023",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0016"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "operational requirements for implementing WHO recommendations in digital systems (ANC DAK) (20), in which self-care interventions such as\nSMBP may be integrated.\nThe key objectives of this DAK are » to foster a common understanding of the particular content needs of the digital s",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0024",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0020"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "These data elements are mapped to\nstandards-based classifications and\nterminologies to ensure the data dictionary is\ncompatible with other digital systems.\nSystem design and\ninteroperability to know\nwhich data elements\nneed to be logged and\nhow they map to other\nstandard terminol",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0025",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0021"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Indicators\nand\nperformance\nmetrics\nCore set of indicators that need to be\naggregated for decision-making, performance\nmetrics, and subnational and national\nreporting. These indicators and metrics are based on\ndata that can feasibly be captured from a\nroutine digital system, rathe",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0026",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0022"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Functional\nand non-\nfunctional\nrequirements\nList of core functions and capabilities that\nthe system must have in order to meet the\nend users’ needs and achieve tasks within the\nbusiness process. System design to know what\nthe system should be able\nto do\n» Link to the tables of fu",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0027",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0023"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "“abbreviated health domain” and “corresponding letter for the process”\n(e.g. if the abbreviated health domain is SMBP and the corresponding letter\nis B SMBP.B).\n» Each activity in the workflow should be numbered with an “activity ID”\nthat should be structured as “process ID” and ",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0028",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0024"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "FXNREQ.1; if the sequential number is 2: [SMBP].FXNREQ.2)\n» Each non-functional requirement should have a “non-functional\nrequirement (NFNREQ) ID” that should be structured as “abbreviated\nhealth domain”, “NFXNREQ” and “sequential number of non-functional\nrequirement” (e.g. if th",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0029",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0029"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Scenario 1\nIncorporating WHO guideline\ncontent into existing personal\nhealth tracking systems\nImplementers that may already have developed personal health tracking systems may use the information in the DAK to cross-\ncheck whether the underlying content and data for specific heal",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0030",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_bp_self_monitoring_dak_2025_0033"
+      ],
+      "expected_document_id": "who_bp_self_monitoring_dak_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "OVERVIEW\n15\nOverview\nPart 2. Digital\nadaptation kit\ncontent for\nself-monitoring\nof blood\npressure during\npregnancy\n2 16\nDigital systems should be deployed in the context of an overall health intervention, or multiple interventions. The World Health Organization (WHO) guidelines a",
+      "chunk_type": "narrative",
+      "needs_clinical_review": false,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0031",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0221"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "WHO recommendations on maternal health: guidelines approved by the WHO Guidelines Review Committee\n1.5.5 WHO recommendation: calcium supplementation during pregnancy for\nprevention of pre-eclampsia and its complications\n[103]\nContext-specific recommendation, moderate-certainty ev",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0032",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0311"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "WHO recommendations on maternal health: guidelines approved by the WHO Guidelines Review Committee\n2.2 Hypertensive Disorders\n2.2.1 WHO recommendations for prevention and treatment of pre-eclampsia\nand eclampsia\n[278]\nStrong recommendation, moderate-quality evidence\nLow-dose acet",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0033",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0001"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "WHO recommendations on maternal health\nguidelines approved by the WHO Guidelines\nReview Committee\nsecond edition WHO recommendations on maternal health\nguidelines approved by the WHO Guidelines\nReview Committee\nsecond edition Consolidated guidelines on the use of antiretroviral d",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0034",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0007"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "guidelines approved by the WHO Guidelines Review Committee\nPart A Maternal Health promotion and protection, and prevention of complications 1.1 Antenatal Care 1.1.1 WHO recommendations on antenatal care for a positive pregnancy experience [1] Recommended Counselling about healthy",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0035",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0010"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "For adults, a 20–39%\nprevalence of underweight women is considered a high prevalence of underweight and 40% or higher\nis considered a very high prevalence [5]. Mid-upper arm circumference (MUAC) may also be useful to\nidentify protein–energy malnutrition in individual pregnant wom",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0036",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0013"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "high-protein supplementation is not recommended for pregnant women to improve maternal and perinatal outcomes. ● The GDG noted that there is insufficient evidence on the benefits, if any, of high-protein supplementation. ● Further research on the effects of high-protein supplemen",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0037",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0014"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Therefore, this recommendation may require\na strong health system to facilitate accurate Hb measurement and to monitor anaemia status throughout\npregnancy.\n● If a woman is diagnosed with anaemia (Hb < 110 g/L) during ANC, she should be given 120 mg of\nelemental iron and 400 μg (0",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0038",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0017"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "6 WHO recommendations on maternal health: guidelines approved by the WHO Guidelines Review Committee\nNot Recommended\nVitamin E and C supplementation is not recommended for pregnant women to improve maternal and\nperinatal outcomes.\n● The GDG noted that vitamin E and C combined sup",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0039",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0018"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "A cup of instant coffee can\ncontain about 60 mg of caffeine; however, some commercially brewed coffee brands contain more than\n150 mg of caffeine per serving.\n● Caffeine-containing teas (black tea and green tea) and soft drinks (colas and iced tea) usually contain less\nthan 50 mg",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0040",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0021"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "rather than a lack of effectiveness, particularly in LMIC settings. ● Apart from false reassurance, which might occur with both SFH measurement and clinical palpation, there is no evidence of harm with SFH measurement. ● Research is needed to determine the role of SFH measurement",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0041",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0025"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Context-specific recommendation\n- Research\nAntibiotic prophylaxis is only recommended to prevent recurrent urinary tract infections in pregnant\nwomen in the context of rigorous research.\n● Further research is needed to determine the best strategies for preventing RUTI in pregnanc",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0042",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0026"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "“Preventive chemotherapy (deworming), using single-dose albendazole (400 mg) or mebendazole (500\nmg) is recommended as a public health intervention for pregnant women, after the first trimester, living\nin areas where both [21] the baseline prevalence of hookworm and/or T. trichiu",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0043",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0028"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "however, the limited evidence on IPTp-SP from women in their third and subsequent pregnancies was\nconsistent with benefit [25].\n● To ensure that pregnant women in endemic areas start IPTp-SP as early as possible in the second trimester,\npolicy-makers should ensure health system c",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0044",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0040"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "https:/ /iris.who.int/\nhandle/10665/44369\n18 WHO recommendations on maternal health guidelines approved by the WHO Guidelines Review Committee\nRecommended\nAntenatal care models with a minimum of eight contacts are recommended to reduce perinatal\nmortality and improve women’s expe",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0045",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_maternal_health_2025_0061"
+      ],
+      "expected_document_id": "who_maternal_health_2025",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "http:/ /apps.who.int/iris/bitstream/10665/186171/1/9789241549363_eng.pdf\n27 WHO recommendations on maternal health: guidelines approved by the WHO Guidelines Review Committee\nNot Recommended\nContinuous cardiotocography is not recommended for assessment of fetal well-being in heal",
+      "chunk_type": "narrative",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0046",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0005"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "v\nANC antenatal care\nBMGF Bill & Melinda Gates Foundation\nCI confidence interval\nCS Caesarean section\nDOI Declaration of Interest\nFHR fetal heart rate\nFIGO International Federation of Gynaecology and Obstetrics\nFWC Family, Women’s and Children’s Health (a WHO cluster)\nGDG Guideli",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0047",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0008"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "4\n1. Background\nAn estimated 295 000 women and adolescent\ngirls died because of pregnancy and childbirth-\nrelated complications in 2015, around 99% of\nwhich occurred in low-resource settings (4).\nHaemorrhage, hypertensive disorders and sepsis\nare responsible for more than half of",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0048",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0013"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "7\nfor implementation. They ensured that the\ndecision-making processes had considered\nand incorporated contextual values, as well\nas the preferences of potential users of the\nrecommendations, healthcare professionals\nand policy-makers. They did not change the\nrecommendation that w",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0049",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0014"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "8\nany antihypertensive medication for non-severe\n(mild or moderate) hypertension during pregnancy\n(whether compared to placebo, no treatment\nor another antihypertensive medication) were\nscreened by the review authors, and data on\nrelevant outcomes and comparisons were\nentered int",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0050",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0015"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "9\nstudies. The certainty of evidence was not\ndowngraded when the direction of the findings\nwere similar and confidence limits overlapped,\nwhereas it was downgraded when the results\nwere in different directions and confidence limits\nshowed minimal or no overlap.\nIndirectness: The ",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0051",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0020"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "12\ncircumstances that could give rise to actual or\nostensible conflicts of interest. The disclosure and\nappropriate management of relevant financial and\nnon-financial conflicts of interest of GDG members\nand other external experts and contributors is a\ncritical part of guideline ",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0052",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0021"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "13\n1. Women with non-severe hypertension during pregnancy should be offered\nantihypertensive drug treatment in the context of good quality antenatal care follow-up.\n(Context specific recommendation)\n2. Oral alpha-agonist (methyldopa) and beta-blockers should be considered as effe",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0053",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0038"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "26\nthe remaining 16 trials, either gestation at trial entry was not specified, or the data were not\ndisaggregated by gestation.\nWomen also differed in the degree or severity of hypertension at trial entry, due to varying inclusion\ncriteria between trials. Mild to moderate hyperte",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0054",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0002"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "iii\nContents\nAcknowledgements iv\nAcronyms and abbreviations v\nExecutive Summary 1\n1. Background 4\n2. Methods 5\n3. Recommendations and supporting evidence 13\n4. Dissemination and implementation of the recommendations 14\n5. Research implications 15\n6. Applicability issues 16\n7. Upd",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0055",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0051"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "36\nBalance of effects\nDoes the balance between desirable and undesirable effects favour the intervention or the comparison?\nJudgement\nDon't know Varies Favours\nplacebo/no\ntreatment\nProbably\nfavours\nplacebo/no\ntreatment\nDoes not\nfavour either\nProbably\nfavours\nintervention\nFavours\n",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0056",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0060"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "43\n20. Abalos E, Duley L, Steyn DW, Gialdini C.\nAntihypertensive drug therapy for\nmild to moderate hypertension during\npregnancy. Cochrane Database Syst Rev.\n2018;10:Cd002252\n21. McMaster University, Evidence Prime Inc.\nGRADEpro GDT: GRADE your evidence and\nimprove your guideline",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0057",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0061"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "45\nconsiderations\nAny\nantihypertensive\ndrug\nNo\nantihypertensive\ndrugs/placebo\nRelative\nSevere maternal morbidity: severe hypertension\n20 randomized\ntrials\nseriousa not serious not serious not serious none 125/1336 (9.4%) 242/1222 (19.8%) RR 0.49\n(0.40 to\n0.60)\n101 fewer per 1000\n",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0058",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0062"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "49\nconsiderations Beta-blockers\nNo\nantihypertensive\ndrugs/placebo\nRelative\nSevere maternal morbidity: severe hypertension\n8 randomized\ntrials\nseriousa not serious not serious not serious none 28/378 (7.4%) 76/384 (19.8%) RR 0.38\n(0.26 to\n0.57)\n123 fewer per 1000\n(from 146 fewer t",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0059",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0063"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "53\nconsiderations Methyldopa\nNo\nantihypertensive\ndrugs/placebo\nRelative\nSevere maternal morbidity: severe hypertension\n2 randomized\ntrials\nseriousa not serious not serious not serious none 12/151 (7.9%) 40/159 (25.2%) RR 0.32\n(0.17 to\n0.58)\n171 fewer per 1000\n(from 209 fewer to\n1",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0060",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_non_severe_hypertension_2020_0064"
+      ],
+      "expected_document_id": "who_non_severe_hypertension_2020",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "57\nconsiderations\nCalcium channel\nblockers\nNo\nantihypertensive\ndrugs/placebo\nRelative\nPerinatal death\n3 randomized\ntrials\nseriousd not serious not serious very\nseriousb,f\nnone 5/281 (1.8%) 4/281 (1.4%) RR 1.22\n(0.34 to\n4.45)\n3 more per 1000\n(from 9 fewer to\n49 more)\n⨁◯◯◯\nVERY LOW",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0061",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0012"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "8\nsuch conflicts were serious enough to affect the\nexpert’s objective judgement on the guideline\ndevelopment process. To ensure consistency,\nthe Steering Group applied the criteria for\nassessing the severity of conflict of interests in\nthe WHO Handbook for Guideline Development\nt",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0062",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0013"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "10\n4. Dissemination and\nimplementation of the\nrecommendations\nDissemination and implementation of the\nrecommendations is to be considered by all\nstakeholders and organizations involved in the\nprovision of care for pregnant women at the\ninternational, national and local levels. Th",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0063",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0003"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "iv WHO recommendations: drug treatment for severe hypertension in pregnancy\nBMGF Bill & Melinda Gates Foundation\nCI Confidence interval\nCS Caesarean section\nDOI Declaration of Interest\nFHR Fetal heart rate\nFIGO International Federation of Gynaecology and Obstetrics\nFWC Family, Wo",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0064",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0005"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "3\n1. Background\nAn estimated 303 000 women and adolescent\ngirls died as a result of pregnancy and childbirth-\nrelated complications in 2015, around 99% of\nwhich occurred in low-resource settings (1).\nHaemorrhage, hypertensive disorders and sepsis\nare responsible for more than hal",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0065",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0010"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "6\nRecommendations Assessment, Development\nand Evaluation (GRADE) methodology.\nRepresentatives of the Cochrane Pregnancy and\nChildbirth Group attended the GDG meeting to\nprovide an overview of the available evidence\nand GRADE tables and to respond to technical\nqueries from the GDG",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0066",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0011"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "7\nwere in different directions and confidence limits\nshowed minimal or no overlap.\nIndirectness: The certainty of evidence was\ndowngraded when there were serious or very\nserious concerns regarding the directness of the\nevidence, that is, whether there were important\ndifferences b",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0067",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0016"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "12\nReferences\n1. Trends in maternal mortality: 1990 to 2015.\nEstimates by WHO, UNICEF, UNFPA, World\nBank Group and the United Nations Population\nDivision. Geneva: World Health Organization;\n2015.\n2. Office of the United Nations High Commissioner\nfor Human Rights. Technical guidan",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0068",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0047"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "38\nAnnex 5. GRADE Tables\nQuestion: Labetalol compared to hydralazine for treatment of very high blood pressure during pregnancy\nSetting: hospitals in Northern Ireland, Panama (2), South Africa, United States (2)\nconsiderations Labetalol Hydralazine Relative\nMaternal deaths\nseriou",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0069",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0048"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "Apgar < 7 at 5 minutes\n2 randomized\nserious c serious g not serious very serious e none 4/116\n(3.4%)\n4/108 (3.7%) RR 0.57\n(0.03 to\n10.36)\n16 fewer\n(from 36\n347 more)\n⨁◯◯◯\nFetal heart rate decelerations\n4 randomized\nserious c not serious not serious very serious e none 9/141\n(6.4%",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0070",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0049"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "46\nconsiderations\nCalcium\nchannel\nblockers\nHydralazine Relative\nApgar < 7 at 5 minutes\n2 randomized\nnot\nserious\nnot serious not serious very serious f none 2/55\n(3.6%)\n1/55 (1.8%) RR 2.00\n(0.19 to\n20.90)\n18 more\n(from 15\n362 more)\n⨁⨁◯◯\nLOW\nFetal heart rate decelerations\n4 randomi",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0071",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0050"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "50\nconsiderations Ketanserin Hydralazine Relative\nSide-effects in women\n3 randomized\nserious a not serious not serious serious c none 13/64\n(20.3%)\n36/56\n(64.3%)\nRR 0.32\n(0.19 to\n0.53)\n437 fewer\n(from 302\n521 fewer)\n⨁⨁◯◯\nLOW\nSide-effects in women (headache)\nnot\nserious\nnot seriou",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0072",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0051"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "55\nQuestion: Labetalol compared to calcium channel blockers for treatment of very high blood pressure during pregnancy\nSetting: hospitals in China (2), India (2), Malaysia, and Tunisia\nconsiderations Labetalol\nCalcium\nchannel\nblockers\nRelative\nMaternal death\nnot\nserious\nnot serio",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0073",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0052"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "methyldopa for treatment of very high blood pressure during pregnancy\nSetting: hospital in the United Kingdom.\nconsiderations Labetalol Methyldopa Relative\nPersistent high blood pressure\nserious a not serious not serious very serious b none 20/38\n(52.6%)\n15/34\n(44.1%)\nRR 1.19\n(0.",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0074",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0053"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "66\nconsiderations Nimodipine Magnesium\nsulfate\nRelative\nSide-effects in women (all side-effects)\nserious c not serious not serious not serious none 109/819\n(13.3%)\n162/831\n(19.5%)\nRR 0.68\n(0.55 to\n0.85)\n62 fewer\n(from 29\nfewer to 88\nfewer)\n⨁⨁⨁◯\nMODERATE\nSide-effects in women (hea",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    },
+    {
+      "case_id": "case_0075",
+      "question": "",
+      "clinical_signal": {
+        "gestational_age": null,
+        "symptoms": [],
+        "vitals": {}
+      },
+      "expected_chunk_ids": [
+        "who_severe_hypertension_2018_0054"
+      ],
+      "expected_document_id": "who_severe_hypertension_2018",
+      "expected_source": "WHO",
+      "expected_retrieval_status": "success",
+      "candidate_evidence_preview": "71\nQuestion: Hydralazine compared to diazoxide for treatment of very high blood pressure during pregnancy\nSetting: hospital in Australia\nCertainty assessment № of patients Effect\nconsiderations Hydralazine Diazoxide Relative\nPerinatal death\nserious a not serious not serious very ",
+      "chunk_type": "table",
+      "needs_clinical_review": true,
+      "reviewed_by": null,
+      "approved": false
+    }
+  ]
+}
