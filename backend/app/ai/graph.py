@@ -2,6 +2,8 @@ from langgraph.graph import StateGraph, END
 from typing import List, Dict, Any
 from app.ai.state import AgentState
 from app.risk_engine.engine import DeterministicRiskEngine
+from app.ai.llm import get_generic_llm
+from langchain_core.messages import SystemMessage, HumanMessage
 
 # Node 1: Supervisor
 async def supervisor_node(state: AgentState) -> Dict[str, Any]:
@@ -39,7 +41,21 @@ async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
 
 # Node 5: Synthesizer
 async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
-    return {"status": "SUCCESS"}
+    try:
+        llm = get_generic_llm(model="gpt-4o-mini", max_tokens=1000)
+        messages = [
+            SystemMessage(content="You are a helpful AI assistant for the Materna Pregnancy CDSS. Provide a concise, clear response to the user's query."),
+            HumanMessage(content=state.user_message)
+        ]
+        response = await llm.ainvoke(messages)
+        final_text = response.content
+    except Exception as e:
+        final_text = f"Sorry, I encountered an error generating a response: {str(e)}"
+        
+    return {
+        "final_chat_response": final_text,
+        "status": "SUCCESS"
+    }
 
 # Conditional routing function
 def route_after_risk_engine(state: AgentState) -> List[str]:
