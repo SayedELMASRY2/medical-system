@@ -72,9 +72,9 @@ export default function Header({ className }: HeaderProps) {
           </div>
           <div className="hidden md:block text-left">
             <p className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
-              Dr. Ahmed
+              My Profile
             </p>
-            <p className="text-[10px] text-slate-500 -mt-0.5">OB-GYN</p>
+            <p className="text-[10px] text-slate-500 -mt-0.5">Patient</p>
           </div>
         </button>
       </div>

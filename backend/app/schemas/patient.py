@@ -4,7 +4,8 @@ from datetime import date, datetime
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+from pydantic.alias_generators import to_camel
 
 from app.models.patient import BloodType
 
@@ -28,7 +29,6 @@ class PatientProfileCreate(BaseModel):
     baseline_systolic_bp: Optional[int] = Field(default=None, ge=60, le=250)
     baseline_diastolic_bp: Optional[int] = Field(default=None, ge=30, le=180)
     blood_type: Optional[BloodType] = None
-    assigned_doctor_id: Optional[UUID] = None
 
 
 class PatientProfileUpdate(BaseModel):
@@ -46,7 +46,6 @@ class PatientProfileUpdate(BaseModel):
     baseline_systolic_bp: Optional[int] = Field(default=None, ge=60, le=250)
     baseline_diastolic_bp: Optional[int] = Field(default=None, ge=30, le=180)
     blood_type: Optional[BloodType] = None
-    assigned_doctor_id: Optional[UUID] = None
     is_active: Optional[bool] = None
 
 
@@ -56,9 +55,10 @@ class PatientProfileUpdate(BaseModel):
 
 class PatientProfileResponse(BaseModel):
     """Schema returned by GET /patients/{id}."""
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True, alias_generator=to_camel)
+
     id: UUID
     user_id: Optional[UUID] = None
-    assigned_doctor_id: Optional[UUID] = None
     full_name: str
     age: int
     gestational_age_weeks: int
@@ -72,12 +72,11 @@ class PatientProfileResponse(BaseModel):
     baseline_systolic_bp: Optional[int] = None
     baseline_diastolic_bp: Optional[int] = None
     blood_type: Optional[BloodType] = None
-    risk_status: str
+    risk_level: str = Field(alias="riskLevel", validation_alias="risk_status")
+    clinical_trend_summary: Optional[str] = None
     is_active: bool
     created_at: datetime
     updated_at: datetime
-
-    model_config = {"from_attributes": True}
 
 
 class PatientProfileList(BaseModel):

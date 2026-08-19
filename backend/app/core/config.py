@@ -1,5 +1,5 @@
 from typing import List, Union
-from pydantic import AnyHttpUrl, validator
+from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -30,17 +30,17 @@ class Settings(BaseSettings):
     def SQLALCHEMY_DATABASE_URI(self) -> str:
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
-    # AI & LLMs (OpenRouter)
-    OPENROUTER_API_KEY: str = ""
-    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    # AI & LLMs Configuration
+    LLM_API_KEY: str = ""
+    LLM_BASE_URL: str = "https://api.openai.com/v1"
     COHERE_API_KEY: str = ""
     
-    # Model IDs on OpenRouter
-    MODEL_SUPERVISOR: str = "openai/gpt-4o-mini"
-    MODEL_TIMELINE: str = "openai/gpt-4o-mini"
-    MODEL_RAG: str = "openai/gpt-4o-mini"
-    MODEL_TRIAGE: str = "openai/gpt-4o"
-    
+    # Model IDs
+    MODEL_SUPERVISOR: str = "gpt-4o-mini"
+    MODEL_TIMELINE: str = "gpt-4o-mini"
+    MODEL_RAG: str = "gpt-4o-mini"
+    MODEL_TRIAGE: str = "gpt-4o"
+    MODEL_VISION: str = "google/gemma-4-26b-a4b-it:free"
     # CDSS Rules
     CDSS_SAFETY_DISCLAIMER: str = "AI-generated explanation. Clinical Decision Support only. Review with attending clinician."
 

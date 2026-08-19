@@ -26,11 +26,13 @@ services:
       POSTGRES_USER: materna_user
       POSTGRES_PASSWORD: materna_password
       POSTGRES_DB: materna_db
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
-      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      LLM_API_KEY: ${LLM_API_KEY}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.openai.com/v1}
       COHERE_API_KEY: ${COHERE_API_KEY}
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app
     depends_on:
       - db
 

@@ -41,12 +41,9 @@ async def create_patient_profile(
     Create a new pregnancy profile for a patient.
 
     - If the authenticated user is a **PATIENT**, the profile is linked to their account.
-    - If the authenticated user is a **DOCTOR** or **MIDWIFE**, they can create
-      a profile for a patient (pre-registration) and optionally assign themselves.
+
     """
-    user_id = None
-    if current_user.role.value == "PATIENT":
-        user_id = current_user.id
+    user_id = current_user.id
 
     patient = await create_patient(db, patient_in, user_id=user_id)
     return patient
@@ -58,8 +55,7 @@ async def create_patient_profile(
     summary="List patient profiles",
 )
 async def list_patients(
-    assigned_doctor_id: Optional[UUID] = Query(default=None, description="Filter by assigned doctor UUID"),
-    is_active: Optional[bool] = Query(default=True, description="Filter by active status"),
+        is_active: Optional[bool] = Query(default=True, description="Filter by active status"),
     skip: int = Query(default=0, ge=0, description="Number of records to skip"),
     limit: int = Query(default=50, ge=1, le=100, description="Max records to return"),
     db: AsyncSession = Depends(get_db),
@@ -71,10 +67,10 @@ async def list_patients(
     Results are ordered by risk severity (HIGH_PRIORITY first)
     to support the Doctor Dashboard.
 
-    - **DOCTOR/MIDWIFE**: Can list all patients or filter by assigned_doctor_id.
+
     - **PATIENT**: Only sees their own profile (if it exists).
     """
-    if current_user.role.value == "PATIENT":
+    if True:
         # Patients can only see their own profile
         if current_user.patient_profile:
             return PatientProfileList(
@@ -85,7 +81,6 @@ async def list_patients(
 
     patients, total = await get_patients(
         db,
-        assigned_doctor_id=assigned_doctor_id,
         is_active=is_active,
         skip=skip,
         limit=limit,
@@ -109,7 +104,7 @@ async def get_patient_profile(
     """
     Retrieve a single patient profile by its UUID.
 
-    - **DOCTOR/MIDWIFE**: Can access any patient.
+
     - **PATIENT**: Can only access their own profile.
     """
     patient = await get_patient_by_id(db, patient_id)
@@ -120,7 +115,7 @@ async def get_patient_profile(
         )
 
     # Patients can only view their own profile
-    if current_user.role.value == "PATIENT" and patient.user_id != current_user.id:
+    if patient.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You can only access your own profile.",
@@ -143,7 +138,7 @@ async def update_patient_profile(
     """
     Update an existing patient profile. Only provided fields are modified.
 
-    - **DOCTOR/MIDWIFE**: Can update any patient's profile.
+
     - **PATIENT**: Can update their own profile (limited fields enforced at frontend).
     """
     patient = await get_patient_by_id(db, patient_id)
@@ -153,7 +148,7 @@ async def update_patient_profile(
             detail=f"Patient profile '{patient_id}' not found.",
         )
 
-    if current_user.role.value == "PATIENT" and patient.user_id != current_user.id:
+    if patient.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You can only update your own profile.",

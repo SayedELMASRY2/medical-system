@@ -51,13 +51,6 @@ class PatientProfile(Base):
         nullable=True,
         index=True,
     )
-    # The OB-GYN managing this pregnancy
-    assigned_doctor_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("users.id"),
-        nullable=True,
-        index=True,
-    )
 
     # Demographics
     full_name = Column(String(255), nullable=False)
@@ -81,9 +74,12 @@ class PatientProfile(Base):
 
     blood_type = Column(Enum(BloodType), nullable=True)
 
-    # Current risk level — matches state.py severity levels exactly:
-    # "LOW", "MONITOR", "CLINICAL_REVIEW", "HIGH_PRIORITY"
-    risk_status = Column(String(20), default="LOW", nullable=False)
+    # Current risk level — matches frontend exact values:
+    # "low", "monitor", "clinical_review", "high"
+    risk_status = Column(String(20), default="low", nullable=False)
+
+    # AI-generated clinical summary for the doctor dashboard
+    clinical_trend_summary = Column(String, nullable=True)
 
     is_active = Column(Boolean, default=True, nullable=False)
 
@@ -104,11 +100,6 @@ class PatientProfile(Base):
         "User",
         back_populates="patient_profile",
         foreign_keys=[user_id],
-    )
-    doctor = relationship(
-        "User",
-        back_populates="assigned_patients",
-        foreign_keys=[assigned_doctor_id],
     )
     daily_checkins = relationship(
         "DailyCheckIn",

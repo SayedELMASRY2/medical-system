@@ -1,4 +1,4 @@
-from typing import Annotated, List, Optional, Dict, Any
+from typing import Annotated, List, Optional, Dict, Any, Literal
 from pydantic import BaseModel, Field
 import operator
 
@@ -18,17 +18,37 @@ class TrendFeature(BaseModel):
     is_accelerating: bool
     baseline_value: float
 
+class TimelineContext(BaseModel):
+    """Output of the Timeline Agent."""
+    patient_context_summary: str
+    trends: List[TrendFeature] = Field(default_factory=list)
+    active_conditions: List[str] = Field(default_factory=list)
+    recent_symptoms: List[str] = Field(default_factory=list)
+    missing_critical_data: List[str] = Field(default_factory=list)
+
+class SupervisorDecision(BaseModel):
+    """Output of the Supervisor Router."""
+    route: Literal["medical_rag", "general_chat", "clarify_intent"]
+    reasoning: str
+    urgency_level: str
+
 class RuleResult(BaseModel):
     rule_id: str
     rule_name: str
-    severity: str  # "LOW", "MONITOR", "CLINICAL_REVIEW", "HIGH_PRIORITY"
+    severity: Literal["low", "monitor", "clinical_review", "high"]
     matched_conditions: List[str]
+
+class TriageDisposition(BaseModel):
+    """Output of the Triage/Safety Agent (Deterministic Risk Engine rules applied)."""
+    highest_severity: Literal["low", "monitor", "clinical_review", "high"]
+    hard_rules_triggered: List[RuleResult] = Field(default_factory=list)
+    requires_fast_track: bool = False
 
 class Citation(BaseModel):
     chunk_id: str
     text_snippet: str
     source_title: str
-    organization: str  # "WHO", "ACOG", "NICE", "SMFM"
+    organization: str
 
 class AgentOutput(BaseModel):
     agent_name: str
@@ -36,25 +56,31 @@ class AgentOutput(BaseModel):
     payload: Dict[str, Any]
 
 class AgentState(BaseModel):
-    # 1. Core Patient Context
-    patient_id: str
-    gestational_age_weeks: int
-    current_vitals: VitalSigns
-    reported_symptoms: List[str] = Field(default_factory=list)
-    longitudinal_history: List[Dict[str, Any]] = Field(default_factory=list)
-
-    # 2. Pipeline Results
-    timeline_trends: Optional[List[TrendFeature]] = None
-    deterministic_risk_level: Optional[str] = None  # "LOW", "MONITOR", "CLINICAL_REVIEW", "HIGH_PRIORITY"
-    evaluated_rules: Optional[List[RuleResult]] = None
-    retrieved_citations: Optional[List[Citation]] = None
-    triage_explanation: Optional[str] = None
-    recommended_clinical_actions: Optional[List[str]] = None
-
-    # 3. Parallel Accumulators
-    agent_outputs: Annotated[List[AgentOutput], operator.add] = Field(default_factory=list)
-    agent_errors: Annotated[List[str], operator.add] = Field(default_factory=list)
-
-    # 4. Metadata & Status
+    # 1. Inputs
     execution_id: str
-    status: str = "IN_PROGRESS"  # "IN_PROGRESS", "SUCCESS", "DEGRADED", "FAILED"
+    patient_id: str
+    user_message: str
+    chat_history: List[Dict[str, str]] = Field(default_factory=list)
+    lab_results: Optional[Dict[str, Any]] = None
+    search_query: Optional[str] = None
+    current_vitals: Optional[VitalSigns] = None
+    gestational_age_weeks: Optional[int] = None
+    reported_symptoms: List[str] = Field(default_factory=list)
+    timeline_trends: List[TrendFeature] = Field(default_factory=list)
+    deterministic_risk_level: Optional[str] = None
+    
+    # 2. Sequential Agent Outputs
+    timeline: Optional[TimelineContext] = None
+    supervisor: Optional[SupervisorDecision] = None
+    triage: Optional[TriageDisposition] = None
+    
+    # 3. RAG Context
+    retrieved_citations: List[Citation] = Field(default_factory=list)
+    
+    # 4. Final Outputs
+    final_chat_response: Optional[str] = None
+    doctor_dashboard_alert: Optional[str] = None
+    
+    # 5. Graph System Accumulators
+    agent_errors: Annotated[List[str], operator.add] = Field(default_factory=list)
+    status: str = "IN_PROGRESS"
