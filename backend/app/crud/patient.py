@@ -45,10 +45,10 @@ async def get_patients(
 
     # Order by risk severity (highest first) for dashboard relevance
     risk_order = {
-        "HIGH_PRIORITY": 0,
-        "CLINICAL_REVIEW": 1,
-        "MONITOR": 2,
-        "LOW": 3,
+        "high": 0,
+        "clinical_review": 1,
+        "monitor": 2,
+        "low": 3,
     }
     # Use CASE expression for risk-based ordering
     from sqlalchemy import case

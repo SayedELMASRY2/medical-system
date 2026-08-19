@@ -81,9 +81,12 @@ class PatientProfile(Base):
 
     blood_type = Column(Enum(BloodType), nullable=True)
 
-    # Current risk level — matches state.py severity levels exactly:
-    # "LOW", "MONITOR", "CLINICAL_REVIEW", "HIGH_PRIORITY"
-    risk_status = Column(String(20), default="LOW", nullable=False)
+    # Current risk level — matches frontend exact values:
+    # "low", "monitor", "clinical_review", "high"
+    risk_status = Column(String(20), default="low", nullable=False)
+
+    # AI-generated clinical summary for the doctor dashboard
+    clinical_trend_summary = Column(String, nullable=True)
 
     is_active = Column(Boolean, default=True, nullable=False)
 

@@ -4,7 +4,8 @@ from datetime import date, datetime
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict, computed_field
+from pydantic.alias_generators import to_camel
 
 from app.models.daily_checkin import (
     ActivityLevel,
@@ -77,6 +78,8 @@ class DailyCheckInCreate(BaseModel):
 
 class DailyCheckInResponse(BaseModel):
     """Schema returned after creating or retrieving a check-in."""
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True, alias_generator=to_camel)
+
     id: UUID
     patient_id: UUID
     checkin_date: date
@@ -118,7 +121,12 @@ class DailyCheckInResponse(BaseModel):
     notes: Optional[str] = None
     created_at: datetime
 
-    model_config = {"from_attributes": True}
+    @computed_field
+    @property
+    def blood_pressure(self) -> Optional[str]:
+        if self.systolic_bp and self.diastolic_bp:
+            return f"{self.systolic_bp}/{self.diastolic_bp}"
+        return None
 
 
 class DailyCheckInList(BaseModel):
