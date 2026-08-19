@@ -24,7 +24,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from app.core.config import settings
 from app.models.base import Base
-from app.models.document import DocumentChunk  # Ensure models are loaded
+# Import all models so Alembic autogenerate can discover them
+from app.models import User, PatientProfile, DailyCheckIn, DocumentChunk  # noqa: F401
 
 target_metadata = Base.metadata
 
