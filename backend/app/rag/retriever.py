@@ -6,6 +6,7 @@ from rank_bm25 import BM25Okapi
 import cohere
 from langchain_cohere import CohereEmbeddings
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.models.document import DocumentChunk
 from app.ai.state import Citation
@@ -20,9 +21,9 @@ class HybridRetriever:
         self.bm25_top_k = bm25_top_k
         self.final_top_k = final_top_k
         
-        self.cohere_api_key = os.getenv("COHERE_API_KEY")
+        self.cohere_api_key = settings.COHERE_API_KEY
         if not self.cohere_api_key:
-            raise ValueError("COHERE_API_KEY environment variable is missing.")
+            raise ValueError("COHERE_API_KEY is missing from configuration.")
             
         # Initialize Cohere Langchain Embeddings for Vector Search
         self.embeddings = CohereEmbeddings(

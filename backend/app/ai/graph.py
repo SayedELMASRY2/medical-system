@@ -4,6 +4,7 @@ from app.ai.state import AgentState
 from app.risk_engine.engine import DeterministicRiskEngine
 from app.ai.llm import get_generic_llm
 from langchain_core.messages import SystemMessage, HumanMessage
+from app.rag.retriever import HybridRetriever
 
 # Node 1: Supervisor
 async def supervisor_node(state: AgentState) -> Dict[str, Any]:
@@ -37,14 +38,27 @@ async def triage_agent_node(state: AgentState) -> Dict[str, Any]:
 # Node 4b: Medical RAG Agent
 async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
     # Fetches evidence from guideline index
-    return {"retrieved_citations": []}
+    try:
+        retriever = HybridRetriever()
+        citations = await retriever.retrieve(query=state.user_message)
+        return {"retrieved_citations": citations}
+    except Exception as e:
+        print(f"RAG Error: {e}")
+        return {"retrieved_citations": []}
 
 # Node 5: Synthesizer
 async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
     try:
         llm = get_generic_llm(model="gpt-4o-mini", max_tokens=1000)
+        
+        system_prompt = "You are a helpful AI assistant for the Materna Pregnancy CDSS. Provide a concise, clear response to the user's query."
+        
+        if state.retrieved_citations:
+            context = "\n\n".join([f"Source: {c.source_title}\n{c.text_snippet}" for c in state.retrieved_citations])
+            system_prompt += f"\n\nUse the following retrieved clinical guidelines to inform your answer:\n{context}"
+            
         messages = [
-            SystemMessage(content="You are a helpful AI assistant for the Materna Pregnancy CDSS. Provide a concise, clear response to the user's query."),
+            SystemMessage(content=system_prompt),
             HumanMessage(content=state.user_message)
         ]
         response = await llm.ainvoke(messages)
