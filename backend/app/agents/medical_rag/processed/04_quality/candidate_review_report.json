@@ -1,0 +1,17 @@
+{
+  "chunk_files_scanned": 5,
+  "total_chunks_scanned": 75,
+  "candidates_per_document": {
+    "who_antenatal_care_2016": 15,
+    "who_bp_self_monitoring_dak_2025": 15,
+    "who_maternal_health_2025": 15,
+    "who_non_severe_hypertension_2020": 15,
+    "who_severe_hypertension_2018": 15
+  },
+  "total_candidates_selected": 75,
+  "gold_set_target_range": [
+    50,
+    100
+  ],
+  "within_target_range": true
+}
