@@ -1,0 +1,116 @@
+{
+  "cleaner_version": "2026-08-19-v1-table-aware-cleaning",
+  "input_directory": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed",
+  "output_directory": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned",
+  "configuration": {
+    "table_line_max_words": 8,
+    "table_line_ratio_threshold": 0.35,
+    "table_keyword_hit_threshold": 2,
+    "boilerplate_max_page_index": 3,
+    "boilerplate_min_marker_hits": 2,
+    "repeated_line_min_page_fraction": 0.4,
+    "header_similarity_threshold": 0.6
+  },
+  "summary": {
+    "documents_found": 5,
+    "documents_successful": 5,
+    "documents_failed": 0
+  },
+  "documents": [
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed\\who_antenatal_care_2016.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_antenatal_care_2016_cleaned.json",
+      "document_id": "who_antenatal_care_2016",
+      "status": "success",
+      "statistics": {
+        "document_id": "who_antenatal_care_2016",
+        "input_pages": 168,
+        "narrative_pages": 139,
+        "table_pages": 28,
+        "boilerplate_pages": 1,
+        "table_blocks_after_merge": 20,
+        "table_pages_merged": 8,
+        "duplicate_headers_stripped": 0,
+        "repeated_lines_removed": 83,
+        "repeated_line_types": 1,
+        "output_blocks": 159
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed\\who_bp_self_monitoring_dak_2025.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_bp_self_monitoring_dak_2025_cleaned.json",
+      "document_id": "who_bp_self_monitoring_dak_2025",
+      "status": "success",
+      "statistics": {
+        "document_id": "who_bp_self_monitoring_dak_2025",
+        "input_pages": 60,
+        "narrative_pages": 58,
+        "table_pages": 1,
+        "boilerplate_pages": 1,
+        "table_blocks_after_merge": 1,
+        "table_pages_merged": 0,
+        "duplicate_headers_stripped": 0,
+        "repeated_lines_removed": 57,
+        "repeated_line_types": 2,
+        "output_blocks": 59
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed\\who_maternal_health_2025.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_maternal_health_2025_cleaned.json",
+      "document_id": "who_maternal_health_2025",
+      "status": "success",
+      "statistics": {
+        "document_id": "who_maternal_health_2025",
+        "input_pages": 206,
+        "narrative_pages": 202,
+        "table_pages": 2,
+        "boilerplate_pages": 2,
+        "table_blocks_after_merge": 2,
+        "table_pages_merged": 0,
+        "duplicate_headers_stripped": 0,
+        "repeated_lines_removed": 0,
+        "repeated_line_types": 0,
+        "output_blocks": 204
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed\\who_non_severe_hypertension_2020.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_non_severe_hypertension_2020_cleaned.json",
+      "document_id": "who_non_severe_hypertension_2020",
+      "status": "success",
+      "statistics": {
+        "document_id": "who_non_severe_hypertension_2020",
+        "input_pages": 92,
+        "narrative_pages": 37,
+        "table_pages": 54,
+        "boilerplate_pages": 1,
+        "table_blocks_after_merge": 9,
+        "table_pages_merged": 45,
+        "duplicate_headers_stripped": 1,
+        "repeated_lines_removed": 431,
+        "repeated_line_types": 8,
+        "output_blocks": 46
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\01_parsed\\who_severe_hypertension_2018.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_severe_hypertension_2018_cleaned.json",
+      "document_id": "who_severe_hypertension_2018",
+      "status": "success",
+      "statistics": {
+        "document_id": "who_severe_hypertension_2018",
+        "input_pages": 82,
+        "narrative_pages": 33,
+        "table_pages": 48,
+        "boilerplate_pages": 1,
+        "table_blocks_after_merge": 5,
+        "table_pages_merged": 43,
+        "duplicate_headers_stripped": 5,
+        "repeated_lines_removed": 887,
+        "repeated_line_types": 12,
+        "output_blocks": 38
+      }
+    }
+  ]
+}
