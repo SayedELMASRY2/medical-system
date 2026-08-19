@@ -1,0 +1,74 @@
+{
+  "documents": {
+    "who_maternal_health_2025": {
+      "document_id": "who_maternal_health_2025",
+      "organization": "WHO",
+      "version": "2025",
+      "filename": "who_maternal_health_2025.pdf",
+      "checksum": "f154bcc6206489dcab08f07114dc0ca2c45b0b26f136b898ace684379cd4e552",
+      "page_count": 208,
+      "size_mb": 3.29,
+      "license_status": "unconfirmed",
+      "source_url": "unconfirmed",
+      "status": "ingested",
+      "superseded": false,
+      "registered_at": "2026-08-19T00:58:28.912145+00:00"
+    },
+    "who_antenatal_care_2016": {
+      "document_id": "who_antenatal_care_2016",
+      "organization": "WHO",
+      "version": "2016",
+      "filename": "who_antenatal_care_2016.pdf",
+      "checksum": "338300b76172d410b91048209305fac53e1166c3be295a18b3f2c0c7c6b54182",
+      "page_count": 172,
+      "size_mb": 3.72,
+      "license_status": "unconfirmed",
+      "source_url": "unconfirmed",
+      "status": "ingested",
+      "superseded": false,
+      "registered_at": "2026-08-19T00:58:28.995974+00:00"
+    },
+    "who_severe_hypertension_2018": {
+      "document_id": "who_severe_hypertension_2018",
+      "organization": "WHO",
+      "version": "2018",
+      "filename": "who_severe_hypertension_2018.pdf",
+      "checksum": "dad82839ba537a8bfce61c30cc2792d065738377c10e274ac5139d17e9d2613f",
+      "page_count": 82,
+      "size_mb": 0.64,
+      "license_status": "unconfirmed",
+      "source_url": "unconfirmed",
+      "status": "ingested",
+      "superseded": false,
+      "registered_at": "2026-08-19T00:58:29.044687+00:00"
+    },
+    "who_non_severe_hypertension_2020": {
+      "document_id": "who_non_severe_hypertension_2020",
+      "organization": "WHO",
+      "version": "2020",
+      "filename": "who_non_severe_hypertension_2020.pdf",
+      "checksum": "d21df49f3ed9eb5ad34f211d0f7921332c514c652923730bd92167610d9d7358",
+      "page_count": 94,
+      "size_mb": 0.79,
+      "license_status": "unconfirmed",
+      "source_url": "unconfirmed",
+      "status": "ingested",
+      "superseded": false,
+      "registered_at": "2026-08-19T00:58:29.059899+00:00"
+    },
+    "who_bp_self_monitoring_dak_2025": {
+      "document_id": "who_bp_self_monitoring_dak_2025",
+      "organization": "WHO",
+      "version": "2025",
+      "filename": "who_bp_self_monitoring_dak_2025.pdf",
+      "checksum": "05a5f09be799d888e36d23e29bba3eb11811f67edc3f9838958b0918848347dc",
+      "page_count": 62,
+      "size_mb": 1.98,
+      "license_status": "unconfirmed",
+      "source_url": "unconfirmed",
+      "status": "ingested",
+      "superseded": false,
+      "registered_at": "2026-08-19T00:58:29.129633+00:00"
+    }
+  }
+}

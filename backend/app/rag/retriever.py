@@ -6,7 +6,7 @@ from rank_bm25 import BM25Okapi
 import cohere
 from langchain_cohere import CohereEmbeddings
 
-from app.core.database import get_db_session
+from app.core.database import get_db
 from app.models.document import DocumentChunk
 from app.ai.state import Citation
 
@@ -39,7 +39,7 @@ class HybridRetriever:
         
     async def load_bm25_corpus(self):
         """Loads all documents from the DB into memory to build the BM25 index."""
-        async for session in get_db_session():
+        async for session in get_db():
             result = await session.execute(select(DocumentChunk))
             self.corpus_chunks = result.scalars().all()
             
@@ -63,7 +63,7 @@ class HybridRetriever:
         
         # Query Postgres
         chunks = []
-        async for session in get_db_session():
+        async for session in get_db():
             stmt = select(DocumentChunk).order_by(
                 DocumentChunk.embedding.cosine_distance(query_vector)
             ).limit(self.vector_top_k)

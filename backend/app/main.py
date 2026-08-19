@@ -26,5 +26,7 @@ async def health_check():
         "version": "1.0.0"
     }
 
-# Include routers here as modules are built
-# app.include_router(api_router, prefix=settings.API_V1_STR)
+# Include API routers
+from app.api.v1.router import api_v1_router  # noqa: E402
+
+app.include_router(api_v1_router, prefix=settings.API_V1_STR)
