@@ -1,5 +1,5 @@
 """
-Password hashing (bcrypt via passlib) and JWT token creation/verification.
+Password hashing (bcrypt) and JWT token creation/verification.
 """
 
 import bcrypt

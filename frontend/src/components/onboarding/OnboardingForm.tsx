@@ -140,9 +140,9 @@ export default function OnboardingForm() {
         </p>
         <button 
           className="btn-primary"
-          onClick={() => window.location.href = '/dashboard'}
+          onClick={() => window.location.href = '/chat'}
         >
-          Go to Dashboard
+          Go to Materna Chat
         </button>
       </GlassCard>
     );

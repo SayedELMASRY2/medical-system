@@ -43,7 +43,7 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
 
 # Conditional routing function
 def route_after_risk_engine(state: AgentState) -> List[str]:
-    if state.deterministic_risk_level in ["MONITOR", "CLINICAL_REVIEW", "HIGH_PRIORITY"]:
+    if state.deterministic_risk_level in ["monitor", "clinical_review", "high"]:
         return ["triage_agent", "rag_agent"]
     return ["synthesizer"]
 

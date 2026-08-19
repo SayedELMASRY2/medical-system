@@ -52,8 +52,20 @@ export default function LoginPage() {
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
 
-      // Redirect to home / dashboard
-      router.push("/");
+      // Decode JWT to determine role and redirect
+      try {
+        const payload = JSON.parse(atob(data.access_token.split(".")[1]));
+        if (payload.role === "DOCTOR") {
+          // Dashboard is not implemented yet, so we redirect to / (or patients list)
+          router.push("/");
+        } else {
+          // Patient defaults to onboarding
+          router.push("/onboarding");
+        }
+      } catch (e) {
+        // Fallback
+        router.push("/onboarding");
+      }
     } catch (err: any) {
       setError(err.message || "Login failed. Please try again.");
     } finally {

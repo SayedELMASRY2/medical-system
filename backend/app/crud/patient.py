@@ -44,17 +44,13 @@ async def get_patients(
         count_query = count_query.where(PatientProfile.is_active == is_active)
 
     # Order by risk severity (highest first) for dashboard relevance
-    risk_order = {
-        "high": 0,
-        "clinical_review": 1,
-        "monitor": 2,
-        "low": 3,
-    }
     # Use CASE expression for risk-based ordering
     from sqlalchemy import case
     risk_sort = case(
-        risk_order,
-        value=PatientProfile.risk_status,
+        (PatientProfile.risk_status == "high", 0),
+        (PatientProfile.risk_status == "clinical_review", 1),
+        (PatientProfile.risk_status == "monitor", 2),
+        (PatientProfile.risk_status == "low", 3),
         else_=4,
     )
     query = query.order_by(risk_sort, PatientProfile.updated_at.desc())

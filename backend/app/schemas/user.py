@@ -22,10 +22,10 @@ class Token(BaseModel):
 # ---------------------------------------------------------------------------
 
 class UserCreate(BaseModel):
-    email: str = Field(..., max_length=255, examples=["dr.amira@hospital.eg"])
+    email: str = Field(..., max_length=255, examples=["patient@example.com"])
     password: str = Field(..., min_length=8, max_length=128)
-    full_name: str = Field(..., max_length=255, examples=["Dr. Amira Hassan"])
-    role: UserRole
+    full_name: str = Field(..., max_length=255, examples=["Amina Ali"])
+    role: UserRole = UserRole.PATIENT
 
 
 # ---------------------------------------------------------------------------

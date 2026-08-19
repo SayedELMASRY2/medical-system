@@ -61,6 +61,10 @@ class AgentState(BaseModel):
     patient_id: str
     user_message: str
     current_vitals: Optional[VitalSigns] = None
+    gestational_age_weeks: Optional[int] = None
+    reported_symptoms: List[str] = Field(default_factory=list)
+    timeline_trends: List[TrendFeature] = Field(default_factory=list)
+    deterministic_risk_level: Optional[str] = None
     
     # 2. Sequential Agent Outputs
     timeline: Optional[TimelineContext] = None

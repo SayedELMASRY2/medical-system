@@ -207,13 +207,13 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up animation-delay-200">
-            <Link href="/dashboard" className="btn-primary text-base px-8 py-4">
-              <Stethoscope size={18} />
-              Doctor Dashboard
+            <Link href="/login" className="btn-primary text-base px-8 py-4">
+              <Users size={18} />
+              Login to Account
             </Link>
-            <Link href="/checkin" className="btn-secondary text-base px-8 py-4">
+            <Link href="/register" className="btn-secondary text-base px-8 py-4">
               <ClipboardPlus size={18} />
-              Patient Check-in
+              Create Patient Account
             </Link>
           </div>
 
@@ -363,18 +363,18 @@ export default function HomePage() {
             delay="animation-delay-200"
           />
           <FeatureCard
-            icon={<Users size={24} />}
-            title="Doctor Dashboard"
-            description="Real-time prioritized patient list sorted by risk level. Red → Yellow → Green with SSE streaming."
-            href="/dashboard"
+            icon={<Heart size={24} />}
+            title="My Health Profile"
+            description="View your active vital trends, upcoming check-ins, and personal medical baseline."
+            href="/chat"
             color="yellow"
             delay="animation-delay-300"
           />
           <FeatureCard
             icon={<Brain size={24} />}
-            title="AI Explanation"
-            description="LangGraph-powered triage agent explains WHY a patient is flagged, with RAG-cited medical evidence."
-            href="/dashboard"
+            title="AI Medical Assistant"
+            description="Ask questions about your pregnancy symptoms and receive safe, evidence-based guidance."
+            href="/chat"
             color="violet"
             delay="animation-delay-400"
           />
@@ -390,7 +390,7 @@ export default function HomePage() {
             icon={<Shield size={24} />}
             title="Safety Guardrails"
             description="Deterministic clinical rules that AI cannot override. CDSS disclaimers on every interface."
-            href="/dashboard"
+            href="/chat"
             color="red"
             delay="animation-delay-700"
           />

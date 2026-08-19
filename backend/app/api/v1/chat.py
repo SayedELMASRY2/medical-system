@@ -42,60 +42,60 @@ async def chat_stream(
     """
     async def event_generator():
         # 1. Timeline Agent
-        yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Timeline'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Timeline'})}\n\n"
         await asyncio.sleep(0.5)
-        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Timeline', 'content': 'Fetching longitudinal trends...'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Timeline', 'content': 'Fetching longitudinal trends...'})}\n\n"
         await asyncio.sleep(0.5)
-        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Timeline', 'content': 'Found baseline BP 110/70. Synthesizing context.'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Timeline', 'content': 'Found baseline BP 110/70. Synthesizing context.'})}\n\n"
         await asyncio.sleep(0.5)
 
         # 2. Supervisor Agent
-        yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Supervisor'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Supervisor'})}\n\n"
         await asyncio.sleep(0.5)
-        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'Analyzing intent...'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'Analyzing intent...'})}\n\n"
         await asyncio.sleep(0.5)
         
         if escalate:
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'Medical query detected. Routing to RAG and Triage.'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'Medical query detected. Routing to RAG and Triage.'})}\n\n"
             await asyncio.sleep(0.5)
             
             # 3. RAG Agent
-            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Medical RAG'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Medical RAG'})}\n\n"
             await asyncio.sleep(0.5)
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Medical RAG', 'content': 'Querying pgvector for guidelines...'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Medical RAG', 'content': 'Querying pgvector for guidelines...'})}\n\n"
             await asyncio.sleep(0.8)
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Medical RAG', 'content': 'Found ACOG guidelines on Severe Hypertension.'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Medical RAG', 'content': 'Found ACOG guidelines on Severe Hypertension.'})}\n\n"
             await asyncio.sleep(0.5)
             
             # 4. Triage Agent
-            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Triage'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Triage'})}\n\n"
             await asyncio.sleep(0.5)
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Triage', 'content': 'Evaluating deterministic risk engine...'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Triage', 'content': 'Evaluating deterministic risk engine...'})}\n\n"
             await asyncio.sleep(0.5)
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Triage', 'content': '⚠️ HIGH RISK detected based on symptoms!'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Triage', 'content': '⚠️ HIGH RISK detected based on symptoms!'})}\n\n"
             await asyncio.sleep(0.5)
             
             # 5. Chat Agent (Final Response)
-            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Chat Response'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Chat Response'})}\n\n"
             await asyncio.sleep(0.5)
             final_message = "I notice you mentioned some concerning symptoms. Based on ACOG guidelines, severe headaches or blurry vision require immediate clinical review. Please contact your doctor or visit the emergency room immediately."
             
         else:
-            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'General chat detected. Routing to Chat Agent.'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'Supervisor', 'content': 'General chat detected. Routing to Chat Agent.'})}\n\n"
             await asyncio.sleep(0.5)
             
             # 5. Chat Agent (Final Response)
-            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Chat Response'})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'agent_start', 'agent': 'Chat Response'})}\n\n"
             await asyncio.sleep(0.5)
             final_message = f"I'm here to help! You asked: '{message}'. How else can I assist you with your pregnancy journey today?"
         
         # Stream the final response word by word
         words = final_message.split(" ")
         for word in words:
-            yield f"data: {json.dumps({'event': 'chat_chunk', 'content': word + ' '})}\\n\\n"
+            yield f"data: {json.dumps({'event': 'chat_chunk', 'content': word + ' '})}\n\n"
             await asyncio.sleep(0.05)
             
         # Done
-        yield f"data: {json.dumps({'event': 'done'})}\\n\\n"
+        yield f"data: {json.dumps({'event': 'done'})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")

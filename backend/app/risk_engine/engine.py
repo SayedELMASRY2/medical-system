@@ -16,17 +16,17 @@ class DeterministicRiskEngine:
         trends: List[TrendFeature] = None
     ) -> Tuple[str, List[RuleResult]]:
         triggered_rules: List[RuleResult] = []
-        highest_severity = "LOW"
+        highest_severity = "low"
 
         # Severity Rank: LOW (0) < MONITOR (1) < CLINICAL_REVIEW (2) < HIGH_PRIORITY (3)
-        severity_ranks = {"LOW": 0, "MONITOR": 1, "CLINICAL_REVIEW": 2, "HIGH_PRIORITY": 3}
+        severity_ranks = {"low": 0, "monitor": 1, "clinical_review": 2, "high": 3}
 
         # Rule 1: Severe Hypertension Threshold (>160/110) - High Priority
         if vitals.systolic_bp >= 160 or vitals.diastolic_bp >= 110:
             rule = RuleResult(
                 rule_id="R-HTN-01",
                 rule_name="Severe Obstetric Hypertension",
-                severity="HIGH_PRIORITY",
+                severity="high",
                 matched_conditions=[
                     f"BP {vitals.systolic_bp}/{vitals.diastolic_bp} exceeds 160/110 mmHg threshold"
                 ]
@@ -36,18 +36,18 @@ class DeterministicRiskEngine:
         # Rule 2: Gestational Hypertension (>140/90 after 20 weeks)
         elif (vitals.systolic_bp >= 140 or vitals.diastolic_bp >= 90) and gestational_age_weeks >= 20:
             matched = [f"BP {vitals.systolic_bp}/{vitals.diastolic_bp} >= 140/90 mmHg at week {gestational_age_weeks}"]
-            severity = "CLINICAL_REVIEW"
+            severity = "clinical_review"
 
             # Check for co-occurring pre-eclampsia red flag symptoms
             preeclampsia_symptoms = {"severe headache", "visual disturbances", "epigastric pain", "blurred vision", "swelling"}
             detected_symptoms = [s for s in symptoms if s.lower() in preeclampsia_symptoms]
             
             if detected_symptoms:
-                severity = "HIGH_PRIORITY"
+                severity = "high"
                 matched.append(f"Red flag symptoms present: {', '.join(detected_symptoms)}")
 
             if vitals.proteinuria in ["+1", "+2", "+3"]:
-                severity = "HIGH_PRIORITY"
+                severity = "high"
                 matched.append(f"Significant proteinuria detected: {vitals.proteinuria}")
 
             rule = RuleResult(
@@ -65,7 +65,7 @@ class DeterministicRiskEngine:
                     rule = RuleResult(
                         rule_id="R-TREND-01",
                         rule_name="Accelerating Systolic Blood Pressure Trend",
-                        severity="MONITOR",
+                        severity="monitor",
                         matched_conditions=[
                             f"Systolic BP increased by +{trend.delta_previous} mmHg over baseline"
                         ]
