@@ -17,9 +17,7 @@ from app.models.base import Base
 
 class UserRole(str, enum.Enum):
     """Roles aligned with PRD target users: OB-GYN, Midwife, Patient."""
-    DOCTOR = "DOCTOR"
     PATIENT = "PATIENT"
-    MIDWIFE = "MIDWIFE"
 
 
 class User(Base):
@@ -51,11 +49,5 @@ class User(Base):
         foreign_keys="PatientProfile.user_id",
         uselist=False,
     )
-    assigned_patients = relationship(
-        "PatientProfile",
-        back_populates="doctor",
-        foreign_keys="PatientProfile.assigned_doctor_id",
-    )
-
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role}')>"

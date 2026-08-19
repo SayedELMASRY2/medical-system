@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import "./globals.css";
 
 const inter = Inter({
@@ -41,7 +42,9 @@ export default function RootLayout({
 
         {/* ── Main Content ─────────────────────────────── */}
         <div className="relative z-10 min-h-screen flex flex-col">
-          <main className="flex-1">{children}</main>
+          <main className="flex-1">
+            <ProtectedRoute>{children}</ProtectedRoute>
+          </main>
 
           {/* ── CDSS Disclaimer Footer ─────────────────── */}
           <footer className="cdss-disclaimer">

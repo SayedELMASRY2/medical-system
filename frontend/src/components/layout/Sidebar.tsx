@@ -26,16 +26,6 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: <LayoutDashboard size={20} />,
-  },
-  {
-    label: "Patients",
-    href: "/patients",
-    icon: <Users size={20} />,
-  },
-  {
     label: "Patient Onboarding",
     href: "/onboarding",
     icon: <UserPlus size={20} />,

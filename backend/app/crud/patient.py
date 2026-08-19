@@ -21,7 +21,6 @@ async def get_patient_by_id(db: AsyncSession, patient_id: UUID) -> PatientProfil
 async def get_patients(
     db: AsyncSession,
     *,
-    assigned_doctor_id: Optional[UUID] = None,
     is_active: Optional[bool] = True,
     skip: int = 0,
     limit: int = 50,
@@ -34,11 +33,6 @@ async def get_patients(
     """
     query = select(PatientProfile)
     count_query = select(func.count()).select_from(PatientProfile)
-
-    if assigned_doctor_id is not None:
-        query = query.where(PatientProfile.assigned_doctor_id == assigned_doctor_id)
-        count_query = count_query.where(PatientProfile.assigned_doctor_id == assigned_doctor_id)
-
     if is_active is not None:
         query = query.where(PatientProfile.is_active == is_active)
         count_query = count_query.where(PatientProfile.is_active == is_active)
@@ -80,7 +74,6 @@ async def create_patient(
     """
     patient = PatientProfile(
         user_id=user_id,
-        assigned_doctor_id=patient_in.assigned_doctor_id,
         full_name=patient_in.full_name,
         age=patient_in.age,
         gestational_age_weeks=patient_in.gestational_age_weeks,

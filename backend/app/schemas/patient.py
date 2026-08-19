@@ -29,7 +29,6 @@ class PatientProfileCreate(BaseModel):
     baseline_systolic_bp: Optional[int] = Field(default=None, ge=60, le=250)
     baseline_diastolic_bp: Optional[int] = Field(default=None, ge=30, le=180)
     blood_type: Optional[BloodType] = None
-    assigned_doctor_id: Optional[UUID] = None
 
 
 class PatientProfileUpdate(BaseModel):
@@ -47,7 +46,6 @@ class PatientProfileUpdate(BaseModel):
     baseline_systolic_bp: Optional[int] = Field(default=None, ge=60, le=250)
     baseline_diastolic_bp: Optional[int] = Field(default=None, ge=30, le=180)
     blood_type: Optional[BloodType] = None
-    assigned_doctor_id: Optional[UUID] = None
     is_active: Optional[bool] = None
 
 
@@ -61,7 +59,6 @@ class PatientProfileResponse(BaseModel):
 
     id: UUID
     user_id: Optional[UUID] = None
-    assigned_doctor_id: Optional[UUID] = None
     full_name: str
     age: int
     gestational_age_weeks: int
