@@ -4,7 +4,7 @@ import React from "react";
 import { FlaskConical } from "lucide-react";
 
 interface OCRResultCardProps {
-  result: Record<string, number | string>;
+  result: Record<string, any>;
 }
 
 export default function OCRResultCard({ result }: OCRResultCardProps) {
@@ -20,19 +20,28 @@ export default function OCRResultCard({ result }: OCRResultCardProps) {
         </p>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {entries.map(([key, value]) => (
-          <div
-            key={key}
-            className="p-2 rounded-md bg-surface-400/50 border border-glass-border/30"
-          >
-            <p className="text-[10px] text-slate-500 capitalize">
-              {key.replace(/_/g, " ")}
-            </p>
-            <p className="text-sm font-mono font-semibold text-slate-100">
-              {typeof value === "number" ? value.toLocaleString() : value}
-            </p>
-          </div>
-        ))}
+        {entries.map(([key, value]) => {
+          let displayValue = String(value);
+          if (typeof value === "object" && value !== null) {
+            displayValue = `${value.result || ""} ${value.unit || ""}`.trim();
+          } else if (typeof value === "number") {
+            displayValue = value.toLocaleString();
+          }
+
+          return (
+            <div
+              key={key}
+              className="p-2 rounded-md bg-surface-400/50 border border-glass-border/30"
+            >
+              <p className="text-[10px] text-slate-500 capitalize">
+                {key.replace(/_/g, " ")}
+              </p>
+              <p className="text-sm font-mono font-semibold text-slate-100">
+                {displayValue}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

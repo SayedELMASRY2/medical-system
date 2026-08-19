@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     MODEL_TIMELINE: str = "gpt-4o-mini"
     MODEL_RAG: str = "gpt-4o-mini"
     MODEL_TRIAGE: str = "gpt-4o"
-    
+    MODEL_VISION: str = "google/gemma-4-26b-a4b-it:free"
     # CDSS Rules
     CDSS_SAFETY_DISCLAIMER: str = "AI-generated explanation. Clinical Decision Support only. Review with attending clinician."
 

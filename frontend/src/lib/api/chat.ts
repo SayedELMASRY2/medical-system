@@ -34,20 +34,30 @@ export async function uploadFileForOCR(file: File): Promise<{ ocrResult: any }> 
 }
 
 // Internal helper to read the SSE stream and return the final message
-async function fetchChatStream(content: string, escalate: boolean): Promise<ChatMessage> {
-  const url = new URL(`${API_BASE}/stream`);
-  url.searchParams.append("message", content);
-  url.searchParams.append("patient_id", "mock-patient-id");
-  if (escalate) {
-    url.searchParams.append("escalate", "true");
-  }
+async function fetchChatStream(
+  content: string, 
+  escalate: boolean, 
+  chatHistory: {role: string, content: string}[] = [],
+  labResults: any = null
+): Promise<ChatMessage> {
+  const url = `${API_BASE}/stream`;
+  
+  const body = {
+    message: content,
+    patient_id: "mock-patient-id",
+    escalate,
+    chat_history: chatHistory,
+    lab_results: labResults
+  };
 
-  const res = await fetch(url.toString(), {
-    method: "GET",
+  const res = await fetch(url, {
+    method: "POST",
     headers: {
       "Authorization": "Bearer MOCK_TOKEN",
-      "Accept": "text/event-stream"
-    }
+      "Accept": "text/event-stream",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
   });
 
   if (!res.body) {
@@ -58,22 +68,27 @@ async function fetchChatStream(content: string, escalate: boolean): Promise<Chat
   const decoder = new TextDecoder();
   let finalContent = "";
   let done = false;
+  let buffer = "";
 
   while (!done) {
     const { value, done: readerDone } = await reader.read();
     done = readerDone;
     if (value) {
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n");
-      for (const line of lines) {
-        if (line.startsWith("data: ")) {
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split("\n\n");
+      buffer = parts.pop() || ""; // Keep the last incomplete chunk in the buffer
+
+      for (const part of parts) {
+        if (part.startsWith("data: ")) {
           try {
-            const data = JSON.parse(line.slice(6));
+            const data = JSON.parse(part.slice(6));
             if (data.event === "chat_chunk") {
               finalContent += data.content;
+            } else if (data.event === "agent_thought" && data.agent === "System") {
+              finalContent += "\n\n**System Notice:** " + data.content + "\n\n";
             }
           } catch (e) {
-            // ignore JSON parse errors on partial chunks
+            console.error("Failed to parse SSE chunk:", part, e);
           }
         }
       }
@@ -88,10 +103,18 @@ async function fetchChatStream(content: string, escalate: boolean): Promise<Chat
   };
 }
 
-export async function sendChatMessage(content: string): Promise<ChatMessage> {
-  return fetchChatStream(content, false);
+export async function sendChatMessage(
+  content: string, 
+  chatHistory: {role: string, content: string}[] = [],
+  labResults: any = null
+): Promise<ChatMessage> {
+  return fetchChatStream(content, false, chatHistory, labResults);
 }
 
-export async function sendChatMessageWithEscalation(content: string): Promise<ChatMessage> {
-  return fetchChatStream(content, true);
+export async function sendChatMessageWithEscalation(
+  content: string,
+  chatHistory: {role: string, content: string}[] = [],
+  labResults: any = null
+): Promise<ChatMessage> {
+  return fetchChatStream(content, true, chatHistory, labResults);
 }

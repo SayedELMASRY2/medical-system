@@ -29,3 +29,6 @@ def get_rag_llm() -> ChatOpenAI:
 
 def get_triage_llm() -> ChatOpenAI:
     return get_generic_llm(model=settings.MODEL_TRIAGE, temperature=0.2, max_tokens=2000)
+
+def get_vision_llm() -> ChatOpenAI:
+    return get_generic_llm(model=settings.MODEL_VISION, temperature=0.1, max_tokens=1500)

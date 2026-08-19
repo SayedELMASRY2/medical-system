@@ -60,6 +60,9 @@ class AgentState(BaseModel):
     execution_id: str
     patient_id: str
     user_message: str
+    chat_history: List[Dict[str, str]] = Field(default_factory=list)
+    lab_results: Optional[Dict[str, Any]] = None
+    search_query: Optional[str] = None
     current_vitals: Optional[VitalSigns] = None
     gestational_age_weeks: Optional[int] = None
     reported_symptoms: List[str] = Field(default_factory=list)

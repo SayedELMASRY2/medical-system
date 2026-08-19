@@ -65,6 +65,9 @@ export default function ChatPage() {
       setMessages((prev) => [...prev, userMessage]);
       setIsTyping(true);
 
+      let finalContentToBackend = content;
+      let finalLabResults: any = null;
+
       // ── Process file uploads (mock) ─────────────────
       if (attachments.length > 0) {
         // Simulate upload → processing → result for each file
@@ -102,6 +105,16 @@ export default function ChatPage() {
 
           try {
             const result = await uploadFileForOCR(att.file);
+            
+            // Pass OCR data properly as an object to the backend instead of string
+            if (result.ocrResult) {
+              if (result.ocrResult.structured_data && Object.keys(result.ocrResult.structured_data).length > 0) {
+                finalLabResults = result.ocrResult.structured_data;
+              } else {
+                finalLabResults = result.ocrResult;
+              }
+            }
+
             // Mark as success with OCR result
             setMessages((prev) =>
               prev.map((m) =>
@@ -145,17 +158,27 @@ export default function ChatPage() {
         }
       }
 
+      // ── Build chat history ──────────────────────────
+      // Skip welcome message and only take the last 6 messages to keep payload small
+      const chatHistory = messages
+        .filter(m => m.id !== "welcome-1")
+        .slice(-6)
+        .map(m => ({
+          role: m.role,
+          content: m.content
+        }));
+
       // ── Generate assistant response ─────────────────
       try {
         // Check for severe symptom keywords to demo risk escalation
-        const lower = content.toLowerCase();
+        const lower = finalContentToBackend.toLowerCase();
         const isSevere = lower.match(
           /\b(blurry vision|severe headache|seizure|convulsion|bleeding|unconscious)\b/
         );
 
         const response = isSevere
-          ? await sendChatMessageWithEscalation(content)
-          : await sendChatMessage(content);
+          ? await sendChatMessageWithEscalation(finalContentToBackend, chatHistory, finalLabResults)
+          : await sendChatMessage(finalContentToBackend, chatHistory, finalLabResults);
 
         setMessages((prev) => [...prev, response]);
       } catch {
@@ -173,7 +196,7 @@ export default function ChatPage() {
         setIsTyping(false);
       }
     },
-    []
+    [messages]
   );
 
   /* ── Suggestion Click ──────────────────────────────── */
