@@ -1,0 +1,66 @@
+[
+  {
+    "id": "eval-01",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 32 weeks with BP 165/108, severe frontal headache, proteinuria +2, and facial edema. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": ["doc_preeclampsia_guidelines", "doc_acog_hypertension_2023"],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-02",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 104 mg/dL at 28 weeks. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": ["doc_gdm_screening_ada", "doc_maternal_nutrition_guide"],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-03",
+    "category": "Routine Check-in",
+    "query": "BP 118/76 mmHg, weight gain 0.4kg this week, fetal movement normal at 24 weeks.",
+    "ground_truth_doc_ids": ["doc_routine_prenatal_care"],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-04",
+    "category": "Out-of-Scope Query",
+    "query": "How do I fix a flat tire on a 2018 Toyota Corolla?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-05",
+    "category": "HELLP Syndrome Emergency",
+    "query": "Right upper quadrant abdominal pain, AST 180 U/L, platelets 82,000 /uL at 34 weeks.",
+    "ground_truth_doc_ids": ["doc_preeclampsia_guidelines", "doc_hellp_syndrome_protocol"],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-06",
+    "category": "Out-of-Scope Query",
+    "query": "What stock options should I buy for tech companies this quarter?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-07",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 142/92 mmHg at 30 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": ["doc_acog_hypertension_2023"],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-08",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 12 hours at 36 weeks.",
+    "ground_truth_doc_ids": ["doc_fetal_wellbeing_monitoring"],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  }
+]

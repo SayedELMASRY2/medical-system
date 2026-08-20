@@ -16,6 +16,10 @@ import {
   Brain,
   TrendingUp,
   Zap,
+  Home as HomeIcon,
+  LogIn,
+  UserPlus,
+  ScanLine,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +36,6 @@ function useMockVital(base: number, variance: number, interval: number) {
   return value;
 }
 
-/* ─── Stat Card ─────────────────────────────────────────────── */
 function StatCard({
   icon,
   label,
@@ -61,11 +64,11 @@ function StatCard({
       <div className="flex items-start justify-between mb-3">
         <div
           className={cn(
-            "w-10 h-10 rounded-xl flex items-center justify-center",
-            color === "brand" && "bg-brand-500/15 text-brand-400",
-            color === "green" && "bg-alert-green-bg text-alert-green",
-            color === "yellow" && "bg-alert-yellow-bg text-alert-yellow",
-            color === "red" && "bg-alert-red-bg text-alert-red"
+            "w-10 h-10 rounded-xl flex items-center justify-center font-bold",
+            color === "brand" && "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30",
+            color === "green" && "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            color === "yellow" && "bg-amber-500/20 text-amber-400 border border-amber-500/30",
+            color === "red" && "bg-rose-500/20 text-rose-400 border border-rose-500/30"
           )}
         >
           {icon}
@@ -74,9 +77,9 @@ function StatCard({
           <div
             className={cn(
               "flex items-center gap-1 text-xs font-medium",
-              trend === "up" && "text-alert-red",
-              trend === "down" && "text-alert-green",
-              trend === "stable" && "text-slate-500"
+              trend === "up" && "text-rose-400",
+              trend === "down" && "text-emerald-400",
+              trend === "stable" && "text-slate-400"
             )}
           >
             <TrendingUp
@@ -92,14 +95,13 @@ function StatCard({
       </div>
       <p className="text-2xl font-bold text-slate-100 tracking-tight">
         {value}
-        <span className="text-sm font-normal text-slate-500 ml-1">{unit}</span>
+        <span className="text-sm font-normal text-slate-400 ml-1">{unit}</span>
       </p>
-      <p className="text-sm text-slate-500 mt-1">{label}</p>
+      <p className="text-sm text-slate-400 mt-1">{label}</p>
     </GlassCard>
   );
 }
 
-/* ─── Feature Card ──────────────────────────────────────────── */
 function FeatureCard({
   icon,
   title,
@@ -126,25 +128,23 @@ function FeatureCard({
       >
         <div
           className={cn(
-            "w-12 h-12 rounded-xl flex items-center justify-center mb-4",
-            "transition-transform duration-300 group-hover:scale-110",
-            color === "brand" && "bg-brand-500/15 text-brand-400",
-            color === "green" && "bg-alert-green-bg text-alert-green",
-            color === "yellow" && "bg-alert-yellow-bg text-alert-yellow",
-            color === "red" && "bg-alert-red-bg text-alert-red",
-            color === "violet" &&
-              "bg-purple-500/15 text-purple-400"
+            "w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110",
+            color === "brand" && "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30",
+            color === "green" && "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            color === "yellow" && "bg-amber-500/20 text-amber-400 border border-amber-500/30",
+            color === "red" && "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            color === "violet" && "bg-purple-500/20 text-purple-400 border border-purple-500/30"
           )}
         >
           {icon}
         </div>
-        <h3 className="text-lg font-semibold text-slate-100 mb-2 group-hover:text-brand-400 transition-colors">
+        <h3 className="text-lg font-semibold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors">
           {title}
         </h3>
         <p className="text-sm text-slate-400 leading-relaxed mb-4">
           {description}
         </p>
-        <div className="flex items-center gap-2 text-sm font-medium text-brand-400 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
+        <div className="flex items-center gap-2 text-sm font-medium text-cyan-400 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
           <span>Open</span>
           <ArrowRight size={14} />
         </div>
@@ -153,7 +153,6 @@ function FeatureCard({
   );
 }
 
-/* ─── Main Page ─────────────────────────────────────────────── */
 export default function HomePage() {
   const heartRate = useMockVital(78, 8, 2000);
   const systolic = useMockVital(118, 12, 3000);
@@ -161,59 +160,102 @@ export default function HomePage() {
   const weight = useMockVital(72.5, 0.3, 5000);
 
   return (
-    <div className="min-h-screen">
-      {/* ══════════════════════════════════════════════════
-          HERO SECTION
-          ══════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        {/* Extra glow orbs for hero */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-brand-500/20 via-transparent to-transparent blur-3xl pointer-events-none" />
+    <div className="min-h-screen flex flex-col">
+      {/* ── Top Header Bar ────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 glass-heavy border-b border-glass-border/60 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+              <Heart size={20} className="text-white" fill="currentColor" />
+            </div>
+            <div>
+              <span className="text-xl font-bold text-gradient-brand">Materna</span>
+              <span className="text-[10px] text-cyan-400 ml-1.5 font-mono px-2 py-0.5 rounded bg-cyan-500/20 border border-cyan-500/30">
+                CDSS AI
+              </span>
+            </div>
+          </Link>
+
+          <nav className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="btn-ghost flex items-center gap-1.5 text-xs text-slate-200"
+            >
+              <HomeIcon size={15} className="text-cyan-400" /> Home
+            </Link>
+            <Link
+              href="/ocr"
+              className="btn-ghost hidden sm:flex items-center gap-1.5 text-xs text-slate-200"
+            >
+              <ScanLine size={15} className="text-cyan-400" /> Lab OCR
+            </Link>
+            <Link
+              href="/login"
+              className="btn-secondary py-2 px-4 text-xs flex items-center gap-1.5"
+            >
+              <LogIn size={15} /> Sign In
+            </Link>
+            <Link
+              href="/register"
+              className="btn-primary py-2 px-4 text-xs flex items-center gap-1.5"
+            >
+              <UserPlus size={15} /> Register
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* ── Hero Section ─────────────────────────────────────────── */}
+      <section className="relative overflow-hidden flex-1">
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-radial from-cyan-500/25 via-violet-500/15 to-transparent blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 pt-16 pb-12">
           {/* Badge */}
           <div className="flex justify-center mb-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm">
-              <Shield size={14} className="text-brand-400" />
-              <span className="text-slate-400">
-                Clinical Decision Support System
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-cyan-500/30 text-sm">
+              <Shield size={16} className="text-cyan-400" />
+              <span className="text-slate-200 font-medium">
+                Clinical Decision Support & OCR Memory System
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-alert-green animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             </div>
           </div>
 
           {/* Title */}
-          <div className="text-center max-w-3xl mx-auto animate-fade-in-up">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-              <span className="text-gradient-brand">Materna</span>
+          <div className="text-center max-w-4xl mx-auto animate-fade-in-up">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+              <span className="text-gradient-brand">Materna AI</span>
               <br />
-              <span className="text-slate-200">
-                Protecting Every{" "}
+              <span className="text-slate-100">
+                Precision Pregnancy{" "}
                 <span className="relative">
-                  Heartbeat
+                  Monitoring
                   <Heart
-                    size={28}
-                    className="inline-block ml-2 text-alert-red animate-heartbeat"
+                    size={32}
+                    className="inline-block ml-3 text-rose-500 animate-heartbeat"
                     fill="currentColor"
                   />
                 </span>
               </span>
             </h1>
-            <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto mb-10">
-              AI-powered longitudinal pregnancy monitoring that eliminates the
-              blind spots between prenatal visits. Continuously track, detect
-              risks early, and deliver evidence-based alerts to save lives.
+            <p className="text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto mb-10">
+              Longitudinal maternal care, real-time lab OCR scanning, and dual-memory AI assistant for continuous safety monitoring.
             </p>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up animation-delay-200">
-            <Link href="/login" className="btn-primary text-base px-8 py-4">
-              <Users size={18} />
-              Login to Account
+          {/* CTA Buttons on Hero */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-16 animate-fade-in-up animation-delay-200">
+            <Link href="/" className="btn-secondary text-base px-6 py-3.5 flex items-center gap-2">
+              <HomeIcon size={18} className="text-cyan-400" /> Home Page
             </Link>
-            <Link href="/register" className="btn-secondary text-base px-8 py-4">
-              <ClipboardPlus size={18} />
-              Create Patient Account
+            <Link href="/login" className="btn-primary text-base px-7 py-3.5 flex items-center gap-2">
+              <LogIn size={18} /> Sign In to Dashboard
+            </Link>
+            <Link href="/register" className="btn-secondary text-base px-7 py-3.5 flex items-center gap-2">
+              <UserPlus size={18} /> Create Account
+            </Link>
+            <Link href="/ocr" className="btn-secondary text-base px-7 py-3.5 flex items-center gap-2 text-cyan-300">
+              <ScanLine size={18} /> Scan Lab OCR
             </Link>
           </div>
 
@@ -249,8 +291,8 @@ export default function HomePage() {
             <StatCard
               icon={<Users size={20} />}
               label="Active Patients"
-              value={24}
-              unit="today"
+              value={28}
+              unit="monitored"
               trend="up"
               color="brand"
               delay="animation-delay-400"
@@ -260,145 +302,70 @@ export default function HomePage() {
       </section>
 
       {/* ── Divider ─────────────────────────────────────── */}
-      <div className="divider-gradient max-w-4xl mx-auto" />
+      <div className="divider-gradient max-w-4xl mx-auto my-6" />
 
-      {/* ══════════════════════════════════════════════════
-          ALERT LEVELS SHOWCASE
-          ══════════════════════════════════════════════════ */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      {/* ── Feature Grid ────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-100 mb-3">
-            4-Level Risk Assessment
+            Core Clinical Capabilities
           </h2>
           <p className="text-slate-400 max-w-xl mx-auto">
-            Intelligent, deterministic clinical rules that the AI cannot
-            override. Every vital sign is evaluated against evidence-based
-            thresholds.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          {/* GREEN */}
-          <GlassCard
-            variant="low"
-            className="text-center animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-100"
-          >
-            <div className="text-3xl mb-3">🟢</div>
-            <AlertBadge level="low" size="sm" showIcon={false} />
-            <p className="text-xs text-slate-500 mt-3">
-              Normal vitals. Continue routine monitoring.
-            </p>
-          </GlassCard>
-
-          {/* YELLOW */}
-          <GlassCard
-            variant="monitor"
-            className="text-center animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-200"
-          >
-            <div className="text-3xl mb-3">🟡</div>
-            <AlertBadge level="monitor" size="sm" showIcon={false} />
-            <p className="text-xs text-slate-500 mt-3">
-              Subtle trend detected. Increased observation recommended.
-            </p>
-          </GlassCard>
-
-          {/* ORANGE */}
-          <GlassCard
-            variant="clinical_review"
-            className="text-center animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-300"
-          >
-            <div className="text-3xl mb-3">🟠</div>
-            <AlertBadge level="clinical_review" size="sm" showIcon={false} />
-            <p className="text-xs text-slate-500 mt-3">
-              Multi-factor risk pattern. Physician review required.
-            </p>
-          </GlassCard>
-
-          {/* RED */}
-          <GlassCard
-            variant="high"
-            className="text-center animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-400"
-          >
-            <div className="text-3xl mb-3">🔴</div>
-            <AlertBadge level="high" size="sm" showIcon={false} />
-            <p className="text-xs text-slate-500 mt-3">
-              Critical threshold breached. Immediate escalation.
-            </p>
-          </GlassCard>
-        </div>
-      </section>
-
-      {/* ── Divider ─────────────────────────────────────── */}
-      <div className="divider-gradient max-w-4xl mx-auto" />
-
-      {/* ══════════════════════════════════════════════════
-          FEATURE GRID
-          ══════════════════════════════════════════════════ */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 mb-3">
-            Core Capabilities
-          </h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
-            Everything a maternal care team needs — from patient onboarding to
-            AI-powered risk explanations.
+            Everything a maternal care team and patient need — from lab report OCR scanning to long-term chatbot memory.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <FeatureCard
-            icon={<ClipboardPlus size={24} />}
-            title="Patient Onboarding"
-            description="Comprehensive baseline profile with medical history, obstetric data, and risk factor assessment."
-            href="/onboarding"
+            icon={<ScanLine size={24} />}
+            title="Lab Report OCR Scanner"
+            description="Upload lab reports & ultrasound images to parse structured Hemoglobin, Platelets, and Proteinuria metrics."
+            href="/ocr"
             color="brand"
             delay="animation-delay-100"
           />
           <FeatureCard
-            icon={<Activity size={24} />}
-            title="Daily Check-in"
-            description="Wizard-style vital logging — blood pressure, weight, symptoms, and fetal monitoring in under 2 minutes."
+            icon={<ClipboardPlus size={24} />}
+            title="Daily Check-in (24h Frequency)"
+            description="Log vitals and symptoms once every 24 hours with automatic countdown timer and risk escalation."
             href="/checkin"
             color="green"
             delay="animation-delay-200"
           />
           <FeatureCard
-            icon={<Heart size={24} />}
-            title="My Health Profile"
-            description="View your active vital trends, upcoming check-ins, and personal medical baseline."
+            icon={<Brain size={24} />}
+            title="Dual-Memory AI Chatbot"
+            description="Short-term conversation memory and long-term lab dataset access to answer questions about past lab trends."
             href="/chat"
-            color="yellow"
+            color="violet"
             delay="animation-delay-300"
           />
           <FeatureCard
-            icon={<Brain size={24} />}
-            title="AI Medical Assistant"
-            description="Ask questions about your pregnancy symptoms and receive safe, evidence-based guidance."
-            href="/chat"
-            color="violet"
+            icon={<Stethoscope size={24} />}
+            title="Doctor Clinical Triage"
+            description="Real-time alert queue for physicians with rule-based preeclampsia escalation."
+            href="/doctor"
+            color="yellow"
             delay="animation-delay-400"
           />
           <FeatureCard
-            icon={<MessageCircle size={24} />}
-            title="Smart Chat + OCR"
-            description="24/7 empathetic chatbot with lab test image upload. OCR extracts structured data automatically."
-            href="/chat"
-            color="brand"
+            icon={<Shield size={24} />}
+            title="Admin Governance & Token Dashboard"
+            description="Admin control panel to manage user roles, review API usage, block users, and audit logs."
+            href="/admin"
+            color="red"
             delay="animation-delay-500"
           />
           <FeatureCard
-            icon={<Shield size={24} />}
-            title="Safety Guardrails"
-            description="Deterministic clinical rules that AI cannot override. CDSS disclaimers on every interface."
-            href="/chat"
-            color="red"
+            icon={<Activity size={24} />}
+            title="Patient Dashboard"
+            description="Centralized view of gestational age, upcoming appointments, check-in status, and risk level."
+            href="/dashboard"
+            color="brand"
             delay="animation-delay-700"
           />
         </div>
       </section>
-
-      {/* ── Bottom Spacer ───────────────────────────────── */}
-      <div className="h-8" />
     </div>
   );
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Materna AI - Evaluation & Metrics Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #090d16; color: #f1f5f9; margin: 0; padding: 30px; }
+        .header { border-bottom: 1px solid #1e293b; padding-bottom: 15px; margin-bottom: 30px; }
+        h1 { color: #38bdf8; margin: 0 0 5px 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .metric-title { font-size: 12px; color: #94a3b8; text-transform: uppercase; font-weight: bold; margin-bottom: 8px; }
+        .metric-value { font-size: 28px; font-weight: bold; color: #38bdf8; font-family: monospace; }
+        .metric-green { color: #34d399; }
+        .metric-amber { color: #fbbf24; }
+        .metric-rose { color: #f43f5e; }
+        table { w-full; width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th, td { border: 1px solid #1e293b; padding: 10px; text-align: left; }
+        th { background: #1e293b; color: #cbd5e1; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Materna AI - Clinical Benchmark & Evaluation Report</h1>
+        <p style="color: #94a3b8; font-size: 13px;">Generated on 2026-08-20 05:38:05 | Test Cases: 8 | Exec Duration: 0.0s</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="metric-title">RAG Hit Rate @ K=1</div>
+            <div class="metric-value metric-green">75.0%</div>
+        </div>
+        <div class="card">
+            <div class="metric-title">RAG MRR @ K=3</div>
+            <div class="metric-value">0.75</div>
+        </div>
+        <div class="card">
+            <div class="metric-title">Citation Groundedness Score</div>
+            <div class="metric-value metric-green">0.0%</div>
+        </div>
+        <div class="card">
+            <div class="metric-title">Clinical Sensitivity (Safety)</div>
+            <div class="metric-value metric-green">100.0%</div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;" class="grid">
+        <div class="card">
+            <h3 style="color: #cbd5e1; margin-top:0;">RAG Retrieval Accuracy</h3>
+            <table>
+                <tr><th>Metric</th><th>Score</th></tr>
+                <tr><td>Hit Rate @ K=1</td><td>0.75</td></tr>
+                <tr><td>Hit Rate @ K=3</td><td>0.75</td></tr>
+                <tr><td>MRR @ K=3</td><td>0.75</td></tr>
+                <tr><td>NDCG @ K=3</td><td>0.8549</td></tr>
+                <tr><td>Precision @ 3</td><td>0.25</td></tr>
+                <tr><td>Recall @ 3</td><td>0.8125</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #cbd5e1; margin-top:0;">Clinical Generation Metrics</h3>
+            <table>
+                <tr><th>Metric</th><th>Score</th></tr>
+                <tr><td>Groundedness Score</td><td style="color:#34d399">0.0</td></tr>
+                <tr><td>Hallucination Rate</td><td style="color:#f43f5e">1.0</td></tr>
+                <tr><td>JSON Schema Compliance</td><td>1.0</td></tr>
+                <tr><td>Out-of-Scope Refusal Acc.</td><td>1.0</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3 style="color: #cbd5e1; margin-top:0;">Agent Latency Benchmark (ms)</h3>
+            <table>
+                <tr><th>Agent Name</th><th>Avg Latency</th></tr>
+                <tr><td>OCR Scanner Agent</td><td style='font-family:monospace'>261.38 ms</td></tr><tr><td>Vitals Validation Agent</td><td style='font-family:monospace'>74.75 ms</td></tr><tr><td>Risk Engine Evaluator</td><td style='font-family:monospace'>168.0 ms</td></tr><tr><td>Timeline Trend Agent</td><td style='font-family:monospace'>299.75 ms</td></tr><tr><td>Doctor Escalation Agent</td><td style='font-family:monospace'>171.25 ms</td></tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

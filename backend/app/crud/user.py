@@ -1,7 +1,5 @@
 """CRUD operations for the User model."""
 
-from uuid import UUID
-
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -10,9 +8,9 @@ from app.models.user import User
 from app.schemas.user import UserCreate
 
 
-async def get_user_by_id(db: AsyncSession, user_id: UUID) -> User | None:
+async def get_user_by_id(db: AsyncSession, user_id) -> User | None:
     """Fetch a user by primary key."""
-    result = await db.execute(select(User).where(User.id == user_id))
+    result = await db.execute(select(User).where(User.id == str(user_id)))
     return result.scalar_one_or_none()
 
 

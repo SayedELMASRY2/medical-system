@@ -10,6 +10,7 @@ export interface GlassCardProps {
   hover?: boolean;
   padding?: "none" | "sm" | "md" | "lg";
   animate?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const variantClasses: Record<string, string> = {
@@ -36,14 +37,16 @@ const GlassCard: React.FC<GlassCardProps> = ({
   hover = false,
   padding = "md",
   animate = false,
+  onClick,
 }) => {
   return (
     <div
+      onClick={onClick}
       className={cn(
         variantClasses[variant],
         paddingClasses[padding],
         hover &&
-          "transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-glass-lg hover:border-glass-border-light cursor-pointer",
+        "transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-glass-lg hover:border-glass-border-light cursor-pointer",
         animate && "animate-fade-in-up",
         className
       )}

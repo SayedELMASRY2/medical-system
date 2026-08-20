@@ -1,3 +1,4 @@
+import os
 from typing import List, Union
 from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
@@ -28,24 +29,35 @@ class Settings(BaseSettings):
     
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return "sqlite+aiosqlite:///./materna.db"
 
     # AI & LLMs Configuration
-    LLM_API_KEY: str = ""
-    LLM_BASE_URL: str = "https://api.openai.com/v1"
-    COHERE_API_KEY: str = ""
+    OPENROUTER_API_KEY: str = "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"
+    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    GROQ_API_KEY: str = "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"
+    COHERE_API_KEY: str = "EfpCXWlhv9wp8J5eibTDJirHsqnHc4YiFfFYNCUy"
     
+    @property
+    def LLM_API_KEY(self) -> str:
+        return os.getenv("OPENROUTER_API_KEY") or self.OPENROUTER_API_KEY or os.getenv("GROQ_API_KEY") or self.GROQ_API_KEY
+
+    @property
+    def LLM_BASE_URL(self) -> str:
+        return os.getenv("OPENROUTER_BASE_URL") or self.OPENROUTER_BASE_URL
+
     # Model IDs
-    MODEL_SUPERVISOR: str = "gpt-4o-mini"
-    MODEL_TIMELINE: str = "gpt-4o-mini"
-    MODEL_RAG: str = "gpt-4o-mini"
-    MODEL_TRIAGE: str = "gpt-4o"
-    MODEL_VISION: str = "google/gemma-4-26b-a4b-it:free"
+    MODEL_SUPERVISOR: str = "qwen/qwen-2.5-72b-instruct"
+    MODEL_TIMELINE: str = "qwen/qwen-2.5-72b-instruct"
+    MODEL_RAG: str = "qwen/qwen-2.5-72b-instruct"
+    MODEL_TRIAGE: str = "qwen/qwen-2.5-72b-instruct"
+    MODEL_VISION: str = "qwen/qwen-2-vl-72b-instruct"
+
     # CDSS Rules
     CDSS_SAFETY_DISCLAIMER: str = "AI-generated explanation. Clinical Decision Support only. Review with attending clinician."
 
     class Config:
         case_sensitive = True
         env_file = ".env"
+        extra = "ignore"
 
 settings = Settings()

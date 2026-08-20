@@ -54,10 +54,6 @@ Output MUST be a valid JSON object matching this schema:
 
 # Node 2: Timeline Agent
 async def timeline_agent_node(state: AgentState) -> Dict[str, Any]:
-    # Simulate a patient's historical data for the demo
-    # We pretend the patient had a baseline BP of 110/70, but it recently spiked.
-    # The risk engine looks for delta_previous >= 15 and is_accelerating=True
-    
     mock_trends = [
         TrendFeature(
             metric="systolic_bp",
@@ -89,7 +85,6 @@ async def triage_agent_node(state: AgentState) -> Dict[str, Any]:
         from app.core.config import settings
         llm = get_generic_llm(model=settings.MODEL_TRIAGE, max_tokens=300)
         
-        # We pass the deterministic risk evaluations to the LLM to write a readable summary
         rules_str = ", ".join([r.rule_name for r in state.evaluated_rules]) if hasattr(state, 'evaluated_rules') and state.evaluated_rules else "None"
         
         prompt = f"""You are the Materna Triage Agent. A patient has been evaluated by the deterministic risk engine.
@@ -106,7 +101,6 @@ Write a concise, professional Clinical Triage Alert (2-3 sentences) summarizing 
 
 # Node 4b: Medical RAG Agent
 async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
-    # Fetches evidence from guideline index
     try:
         retriever = HybridRetriever()
         citations = await retriever.retrieve(query=state.search_query or state.user_message)
@@ -121,21 +115,25 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
         from app.core.config import settings
         llm = get_generic_llm(model=settings.MODEL_RAG, max_tokens=1000)
         
-        system_prompt = "You are a helpful AI assistant for the Materna Pregnancy CDSS. Provide a concise, clear response to the user's query."
+        system_prompt = (
+            "You are the Materna AI Medical Assistant. You maintain both short-term conversation context "
+            "and long-term patient memory (including all scanned OCR lab report datasets). "
+            "Always interpret patient lab values accurately, highlight abnormal results (e.g. Hemoglobin, Platelets, Proteinuria), "
+            "and provide reassuring yet clinically sound guidance."
+        )
         
-        # If it's a casual chat, we don't need clinical context
         is_casual = state.supervisor and state.supervisor.route == "casual_chat"
         
         if not is_casual:
             if state.lab_results:
-                system_prompt += f"\n\nThe following structured lab data was extracted from the user's uploaded image:\n{state.lab_results}\nInterpret this data carefully."
+                system_prompt += f"\n\n[PATIENT LONG-TERM OCR LAB DATASET & RECENT LAB RESULTS]:\n{json.dumps(state.lab_results, indent=2)}\nUse these exact numerical figures to answer questions about the patient's lab history."
                 
             if hasattr(state, 'triage_explanation') and state.triage_explanation and state.deterministic_risk_level != "low":
-                system_prompt += f"\n\n[URGENT TRIAGE ALERT]: {state.triage_explanation}\nNote: Make sure to communicate this urgency to the user appropriately and advise consulting a doctor."
+                system_prompt += f"\n\n[URGENT TRIAGE ALERT]: {state.triage_explanation}\nNote: Communicate urgency clearly and advise consulting a healthcare provider."
                 
             if state.retrieved_citations:
                 context = "\n\n".join([f"Source: {c.source_title}\n{c.text_snippet}" for c in state.retrieved_citations])
-                system_prompt += f"\n\nUse the following retrieved clinical guidelines to inform your answer:\n{context}"
+                system_prompt += f"\n\n[CLINICAL GUIDELINES & EVIDENTIARY CONTEXT]:\n{context}"
             
         messages = [SystemMessage(content=system_prompt)]
         
@@ -182,7 +180,6 @@ def build_materna_graph():
 
     workflow.set_entry_point("supervisor")
     
-    # Route from supervisor
     workflow.add_conditional_edges(
         "supervisor",
         route_after_supervisor,
@@ -192,7 +189,6 @@ def build_materna_graph():
         }
     )
     
-    # Sequential flow for medical path to prevent duplicate synthesizer execution
     workflow.add_edge("timeline_agent", "rag_agent")
     workflow.add_edge("rag_agent", "risk_engine")
 

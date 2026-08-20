@@ -57,6 +57,23 @@ export default function OnboardingForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof OnboardingData, string>>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+
+  // Check on mount if onboarding is already completed
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const completed = localStorage.getItem("onboarding_completed");
+      if (completed === "true") {
+        setIsAlreadyCompleted(true);
+        const savedData = localStorage.getItem("onboarding_baseline_data");
+        if (savedData) {
+          try {
+            setFormData(JSON.parse(savedData));
+          } catch (e) {}
+        }
+      }
+    }
+  }, []);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof OnboardingData, string>> = {};
@@ -101,10 +118,15 @@ export default function OnboardingForm() {
     setStatus("submitting");
     setErrorMessage("");
 
-    // Mock API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // In a real scenario, we would POST the structured formData here.
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      
+      // Save onboarding completion permanently
+      if (typeof window !== "undefined") {
+        localStorage.setItem("onboarding_completed", "true");
+        localStorage.setItem("onboarding_baseline_data", JSON.stringify(formData));
+      }
+
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -122,11 +144,39 @@ export default function OnboardingForm() {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
     
-    // Clear error for this field
     if (errors[name as keyof OnboardingData]) {
       setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
+
+  // View shown if user has already completed onboarding
+  if (isAlreadyCompleted && status !== "submitting") {
+    return (
+      <GlassCard className="max-w-2xl mx-auto text-center py-10 animate-fade-in-up">
+        <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-glow-green">
+          <CheckCircle size={36} />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-100 mb-2">Onboarding Completed</h2>
+        <p className="text-slate-300 text-sm mb-6 max-w-md mx-auto leading-relaxed">
+          Your baseline clinical profile is already established and active in the Materna AI Risk Engine. You do not need to fill out this form again.
+        </p>
+        <div className="flex items-center justify-center gap-4">
+          <button 
+            className="btn-primary text-xs"
+            onClick={() => window.location.href = '/dashboard'}
+          >
+            Go to Patient Dashboard
+          </button>
+          <button 
+            className="btn-secondary text-xs text-slate-300"
+            onClick={() => setIsAlreadyCompleted(false)}
+          >
+            Update Baseline Profile
+          </button>
+        </div>
+      </GlassCard>
+    );
+  }
 
   if (status === "success") {
     return (
@@ -140,9 +190,9 @@ export default function OnboardingForm() {
         </p>
         <button 
           className="btn-primary"
-          onClick={() => window.location.href = '/chat'}
+          onClick={() => window.location.href = '/dashboard'}
         >
-          Go to Materna Chat
+          Go to Patient Dashboard
         </button>
       </GlassCard>
     );

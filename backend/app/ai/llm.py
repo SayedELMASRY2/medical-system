@@ -1,16 +1,20 @@
 from langchain_openai import ChatOpenAI
 from app.core.config import settings
 
-def get_generic_llm(model: str, temperature: float = 0.1, max_tokens: int = 1000) -> ChatOpenAI:
+def get_generic_llm(model: str = None, temperature: float = 0.1, max_tokens: int = 1000) -> ChatOpenAI:
     """
-    Factory function to initialize ChatOpenAI client (can point to OpenAI, Ollama, Groq, etc.).
+    Factory function to initialize ChatOpenAI client pointing to OpenRouter API.
     """
+    selected_model = model or settings.MODEL_SUPERVISOR
+    api_key = settings.LLM_API_KEY
+    base_url = settings.LLM_BASE_URL
+
     return ChatOpenAI(
-        model=model,
+        model=selected_model,
         temperature=temperature,
         max_tokens=max_tokens,
-        openai_api_key=settings.LLM_API_KEY,
-        openai_api_base=settings.LLM_BASE_URL,
+        api_key=api_key,
+        base_url=base_url,
         default_headers={
             "HTTP-Referer": "https://materna-health.local",
             "X-Title": "Materna Pregnancy CDSS"
