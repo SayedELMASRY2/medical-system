@@ -206,6 +206,10 @@ export default function ChatAIPage() {
         }
       }
 
+      if (attachments.length > 0) {
+        finalContentToBackend += `\n\n[System Note: I have just attached a new lab report/document. Please prioritize analyzing the "newly_uploaded_metrics" in my lab history if my question is brief.]`;
+      }
+
       // Placeholder for streaming assistant response
       const assistantMsgId = `bot-${Date.now()}`;
       const placeholderAssistantMsg: ChatMessage = {
