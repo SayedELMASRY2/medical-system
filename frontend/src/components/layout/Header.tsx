@@ -57,6 +57,7 @@ export default function Header({ className }: HeaderProps) {
     if (typeof window !== "undefined") {
       localStorage.removeItem("access_token");
       localStorage.removeItem("user_id");
+      document.cookie = "access_token=; path=/; max-age=0;";
     }
     router.push("/login");
   };

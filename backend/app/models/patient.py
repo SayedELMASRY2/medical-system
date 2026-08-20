@@ -73,6 +73,14 @@ class PatientProfile(Base):
     clinical_trend_summary = Column(String, nullable=True)
     is_active = Column(Boolean, default=True, nullable=False)
 
+    # Doctor assignment — links this patient to their assigned physician
+    assigned_doctor_id = Column(
+        String(36),
+        ForeignKey("users.id"),
+        nullable=True,
+        index=True,
+    )
+
     created_at = Column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -91,10 +99,19 @@ class PatientProfile(Base):
         back_populates="patient_profile",
         foreign_keys=[user_id],
     )
+    assigned_doctor = relationship(
+        "User",
+        foreign_keys=[assigned_doctor_id],
+    )
     daily_checkins = relationship(
         "DailyCheckIn",
         back_populates="patient",
         order_by="DailyCheckIn.checkin_date.desc()",
+    )
+    lab_reports = relationship(
+        "LabReport",
+        back_populates="patient",
+        order_by="LabReport.report_date.desc()",
     )
 
     def __repr__(self):

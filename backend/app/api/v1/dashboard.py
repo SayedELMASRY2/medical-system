@@ -92,16 +92,25 @@ async def get_doctor_patients(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Returns all patients sorted by risk level for doctor dashboard."""
+    """Returns patients assigned to this doctor + unassigned patients, sorted by risk level."""
     from app.models.user import UserRole
+    from sqlalchemy import or_
     if current_user.role not in (UserRole.DOCTOR, UserRole.ADMIN):
         raise HTTPException(status_code=403, detail="Doctor or Admin access required.")
 
-    result = await db.execute(
-        select(PatientProfile)
-        .where(PatientProfile.is_active == True)
-        .order_by(PatientProfile.risk_status.desc())
-    )
+    # Admins see all patients; Doctors see their assigned + unassigned
+    if current_user.role == UserRole.ADMIN:
+        query = select(PatientProfile).where(PatientProfile.is_active == True)
+    else:
+        query = select(PatientProfile).where(
+            PatientProfile.is_active == True,
+            or_(
+                PatientProfile.assigned_doctor_id == str(current_user.id),
+                PatientProfile.assigned_doctor_id == None,
+            )
+        )
+
+    result = await db.execute(query.order_by(PatientProfile.risk_status.desc()))
     patients = result.scalars().all()
 
     return {
@@ -114,6 +123,7 @@ async def get_doctor_patients(
                 "risk_status": p.risk_status,
                 "estimated_due_date": p.estimated_due_date.isoformat() if p.estimated_due_date else None,
                 "created_at": p.created_at.isoformat() if p.created_at else None,
+                "assigned_doctor_id": p.assigned_doctor_id,
             }
             for p in patients
         ],

@@ -4,15 +4,83 @@ import uuid
 import io
 import re
 import hashlib
+from datetime import date
 from uuid import UUID
 from fastapi import APIRouter, Depends, File, UploadFile, Query
 from fastapi.responses import StreamingResponse
-from app.api.deps import get_current_user
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from app.api.deps import get_current_user, get_db
 from app.models.user import User
+from app.models.patient import PatientProfile
+from app.models.lab_report import LabReport, LabResultItem, LabReportType
 from app.ai.graph import materna_graph
 from app.ai.state import AgentState
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
+
+# Mapping of test name keywords to report types for AI auto-classification
+_REPORT_TYPE_KEYWORDS = {
+    LabReportType.BLOOD: ["hemoglobin", "hgb", "rbc", "wbc", "platelet", "cbc", "hematocrit", "mcv", "mch"],
+    LabReportType.URINE: ["urine", "proteinuria", "urinalysis", "specific gravity", "ph urine"],
+    LabReportType.KIDNEY: ["creatinine", "bun", "egfr", "urea", "uric acid"],
+    LabReportType.LIVER: ["ast", "alt", "bilirubin", "albumin", "alkaline phosphatase", "ggt"],
+    LabReportType.GLUCOSE: ["glucose", "hba1c", "ogtt", "fasting sugar", "blood sugar"],
+    LabReportType.THYROID: ["tsh", "t3", "t4", "thyroid"],
+    LabReportType.COAGULATION: ["pt", "inr", "aptt", "fibrinogen"],
+}
+
+
+def _classify_report_type(structured_data: dict) -> LabReportType:
+    """Auto-detect lab report type from extracted test names."""
+    all_keys = " ".join(structured_data.keys()).lower()
+    scores = {}
+    for rtype, keywords in _REPORT_TYPE_KEYWORDS.items():
+        scores[rtype] = sum(1 for kw in keywords if kw in all_keys)
+    best = max(scores, key=scores.get)
+    return best if scores[best] > 0 else LabReportType.OTHER
+
+
+async def _persist_lab_report(
+    db: AsyncSession,
+    patient_id: str,
+    structured_data: dict,
+    raw_text: str,
+    filename: str,
+) -> LabReport:
+    """Save OCR results to the database as a LabReport with LabResultItems."""
+    report_type = _classify_report_type(structured_data)
+
+    report = LabReport(
+        patient_id=patient_id,
+        report_type=report_type,
+        report_date=date.today(),
+        source_filename=filename,
+        ocr_raw_text=raw_text[:5000] if raw_text else None,
+    )
+    db.add(report)
+    await db.flush()  # get report.id
+
+    for test_name, value_str in structured_data.items():
+        if test_name.lower() in ("report name", "file hash"):
+            continue
+        # Split value and unit (e.g. "11.5 g/dL" -> value="11.5", unit="g/dL")
+        parts = str(value_str).strip().split(" ", 1)
+        value = parts[0]
+        unit = parts[1] if len(parts) > 1 else None
+
+        item = LabResultItem(
+            report_id=report.id,
+            test_name=test_name,
+            value=value,
+            unit=unit,
+            is_abnormal=False,
+        )
+        db.add(item)
+
+    await db.commit()
+    await db.refresh(report)
+    return report
 
 def parse_lab_text_dynamically(raw_text: str) -> dict:
     """
@@ -38,7 +106,9 @@ def parse_lab_text_dynamically(raw_text: str) -> dict:
 
 @router.post("/upload")
 async def upload_file_for_ocr(
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Real OCR endpoint for PDFs and Images with dynamic content extraction per file.
@@ -85,6 +155,13 @@ Extracted PDF Text:
             response = await llm.ainvoke([HumanMessage(content=prompt)])
             content_str = response.content.strip().strip("```json").strip("```").strip()
             ocr_result = json.loads(content_str)
+            # Persist to DB
+            structured = ocr_result.get("structured_data", {})
+            if structured:
+                result = await db.execute(select(PatientProfile).where(PatientProfile.user_id == str(current_user.id)))
+                patient = result.scalar_one_or_none()
+                if patient:
+                    await _persist_lab_report(db, str(patient.id), structured, ocr_result.get("text", ""), filename)
             return {"message": "PDF processed successfully", "ocrResult": ocr_result}
         except Exception as e:
             print(f"LLM PDF parsing notice: {e}")
@@ -112,6 +189,13 @@ Extracted PDF Text:
             response = await vision_llm.ainvoke(messages)
             content_str = response.content.strip().strip("```json").strip("```").strip()
             ocr_result = json.loads(content_str)
+            # Persist to DB
+            structured = ocr_result.get("structured_data", {})
+            if structured:
+                result = await db.execute(select(PatientProfile).where(PatientProfile.user_id == str(current_user.id)))
+                patient = result.scalar_one_or_none()
+                if patient:
+                    await _persist_lab_report(db, str(patient.id), structured, ocr_result.get("text", ""), filename)
             return {"message": "Image processed via Vision OCR", "ocrResult": ocr_result}
         except Exception as vision_err:
             print(f"Vision model notice: {vision_err}")
@@ -139,6 +223,14 @@ Extracted PDF Text:
             "ALT (Liver)": f"{alt} U/L"
         }
     }
+
+    # Persist fallback results to DB
+    structured = dynamic_ocr_result.get("structured_data", {})
+    if structured:
+        result = await db.execute(select(PatientProfile).where(PatientProfile.user_id == str(current_user.id)))
+        patient = result.scalar_one_or_none()
+        if patient:
+            await _persist_lab_report(db, str(patient.id), structured, dynamic_ocr_result.get("text", ""), filename)
 
     return {
         "status": "success",

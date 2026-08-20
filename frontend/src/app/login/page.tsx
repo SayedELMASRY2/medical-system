@@ -52,6 +52,7 @@ export default function LoginPage() {
 
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
+      document.cookie = `access_token=${data.access_token}; path=/; max-age=86400; SameSite=Lax`;
 
       const decoded = parseJwt(data.access_token);
       const userRole = decoded?.role || "PATIENT";

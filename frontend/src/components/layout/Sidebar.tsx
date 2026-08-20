@@ -146,6 +146,7 @@ export default function Sidebar() {
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("access_token");
+      document.cookie = "access_token=; path=/; max-age=0;";
     }
     router.push("/login");
   };

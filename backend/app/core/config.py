@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return "sqlite+aiosqlite:///./materna.db"
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
 
     # AI & LLMs Configuration
     OPENROUTER_API_KEY: str = "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"

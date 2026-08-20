@@ -22,3 +22,6 @@ from app.models.daily_checkin import (  # noqa: F401
 
 # RAG / Vector DB models
 from app.models.document import DocumentChunk  # noqa: F401
+
+# Lab Results models
+from app.models.lab_report import LabReport, LabResultItem, LabReportType  # noqa: F401
