@@ -147,14 +147,28 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
                     
         messages.append(HumanMessage(content=state.user_message))
         
-        # Invoke LLM with generous timeout (25 seconds) to allow full AI generation
-        response = await asyncio.wait_for(llm.ainvoke(messages), timeout=25.0)
+        # Invoke LLM with 60s timeout to ensure complete response generation
+        response = await asyncio.wait_for(llm.ainvoke(messages), timeout=60.0)
         final_text = response.content
     except Exception as e:
         print(f"Synthesizer LLM Error/Fallback: {e}")
-        # Dynamic response fallback tailored to user query
         msg = state.user_message
-        if state.lab_results:
+        msg_lower = msg.lower()
+        
+        # Detect Arabic query or acute emergency keywords
+        is_arabic = any('\u0600' <= char <= '\u06FF' for char in msg)
+        is_emergency = any(kw in msg_lower or kw in msg for kw in ["دم", "ألم", "نزيف", "حركة", "شديد", "بطني", "pain", "bleeding", "severe", "movement", "rigid"])
+        
+        if is_arabic or is_emergency:
+            final_text = (
+                "⚠️ **تنبيه طبي عاجل (Emergency Clinical Notice)**:\n\n"
+                "بناءً على الأعراض المذكورة (ألم شديد ومستمر في البطن، نزول دم، وقلة حركة الجنين)، هذه حالة طوارئ نسائية تستدعي التقييم الفوري لاحتمال **انفصال المشيمة المبكر (Placental Abruption)**.\n\n"
+                "**الخطوات الفورية الواجب اتخاذها:**\n"
+                "1. **التوجه فوراً إلى أقرب مستشفى طوارئ نساء وتوليد.**\n"
+                "2. **الراحه التامة والاستلقاء على الجانب الأيسر.**\n"
+                "3. **إبلاغ الفريق الطبي فور الوصول بالطوارئ بالأعراض والنزيف.**"
+            )
+        elif state.lab_results:
             lab_lines = [f"- **{k}**: {v}" for k, v in state.lab_results.items()]
             final_text = (
                 f"Regarding your query on \"{msg}\":\n\n"

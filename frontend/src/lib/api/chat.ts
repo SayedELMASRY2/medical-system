@@ -5,7 +5,7 @@ export function getApiBase(): string {
     return `${process.env.NEXT_PUBLIC_API_BASE.replace(/\/$/, "")}/chat`;
   }
   if (typeof window !== "undefined" && window.location.hostname.includes("trycloudflare.com")) {
-    return "https://slot-configurations-committed-colon.trycloudflare.com/api/v1/chat";
+    return "https://inspection-days-detection-diesel.trycloudflare.com/api/v1/chat";
   }
   return "http://localhost:8000/api/v1/chat";
 }
