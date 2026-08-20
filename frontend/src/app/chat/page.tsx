@@ -112,7 +112,7 @@ export default function ChatAIPage() {
 
     try {
       let finalContentToBackend = content;
-      let finalLabResults: any = null;
+      let finalLabResults: any = {};
 
       if (typeof window !== "undefined") {
         // 1. Inject Baseline Onboarding Profile & Medical History if available
@@ -133,7 +133,7 @@ export default function ChatAIPage() {
             if (ob.familyHistoryPreeclampsia) obList.push(`Family History of Preeclampsia: Yes`);
 
             if (obList.length > 0) {
-              finalContentToBackend += `\n\n[PATIENT BASELINE CLINICAL & OBSTETRIC PROFILE]:\n` + obList.map((item) => `- ${item}`).join("\n");
+              finalLabResults.baseline_profile = obList;
             }
           } catch (e) {}
         }
@@ -156,12 +156,12 @@ export default function ChatAIPage() {
             if (vitals.kickCounts) vitalsList.push(`Kick Count: ${vitals.kickCounts}`);
 
             if (vitalsList.length > 0) {
-              finalContentToBackend += `\n\n[PATIENT DAILY CHECK-IN VITALS & SYMPTOMS LOGGED TODAY]:\n` + vitalsList.map((v) => `- ${v}`).join("\n");
+              finalLabResults.todays_vitals_log = vitalsList;
             }
           } catch (e) {}
         }
 
-        // 2. Automatically include saved patient OCR dataset from memory if available
+        // 3. Automatically include saved patient OCR dataset from memory if available
         const stored = localStorage.getItem(getScopedKey("patient_ocr_dataset"));
         if (stored) {
           try {
@@ -177,11 +177,12 @@ export default function ChatAIPage() {
                   ocrTextCombined += `\n- [${item.filename || 'Lab Report'}]: ${item.text.slice(0, 300)}`;
                 }
               });
-              finalLabResults = merged;
-
-              if (Object.keys(merged).length > 0 || ocrTextCombined) {
-                const metricsStr = Object.entries(merged).map(([k, v]) => `${k}: ${v}`).join(", ");
-                finalContentToBackend += `\n\n[PATIENT SAVED OCR LAB DATASET & HISTORICAL MEMORY]:\nScanned Metrics: ${metricsStr}${ocrTextCombined ? `\nScanned Details: ${ocrTextCombined}` : ''}`;
+              
+              if (Object.keys(merged).length > 0) {
+                finalLabResults.ocr_scanned_metrics = merged;
+              }
+              if (ocrTextCombined) {
+                finalLabResults.ocr_scanned_text_details = ocrTextCombined;
               }
             }
           } catch (e) {}
@@ -194,10 +195,10 @@ export default function ChatAIPage() {
           try {
             const ocrResult = await uploadFileForOCR(att.file);
             if (ocrResult.extracted_metrics) {
-              finalLabResults = { ...(finalLabResults || {}), ...ocrResult.extracted_metrics };
+              finalLabResults.newly_uploaded_metrics = { ...(finalLabResults.newly_uploaded_metrics || {}), ...ocrResult.extracted_metrics };
             }
             if (ocrResult.text) {
-              finalContentToBackend += `\n[Uploaded Document Content]: ${ocrResult.text.slice(0, 500)}`;
+              finalLabResults.newly_uploaded_text = (finalLabResults.newly_uploaded_text || "") + `\n[Uploaded Document Content]: ${ocrResult.text.slice(0, 500)}`;
             }
           } catch (e) {
             console.warn("OCR backend processing offline, using client fallback", e);
