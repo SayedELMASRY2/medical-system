@@ -169,8 +169,7 @@ export default function ChatAIPage() {
     <div className="flex min-h-screen bg-slate-950 text-slate-100">
       <Sidebar />
       <div className="flex-1 lg:ml-[var(--sidebar-width)] flex flex-col min-h-screen">
-        <Header />
-        <main className="p-4 md:p-6 max-w-7xl mx-auto flex-1 flex flex-col w-full min-h-[calc(100vh-4rem)]">
+        <main className="p-4 md:p-6 max-w-7xl mx-auto flex-1 flex flex-col w-full min-h-screen">
           {/* Main Chat Container - Single Card with integrated Header */}
           <GlassCard className="flex-1 flex flex-col min-h-[600px] p-0 overflow-hidden border-slate-800 shadow-2xl">
             {/* Single Unified Card Header Bar */}
