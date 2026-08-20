@@ -1,0 +1,15 @@
+==================================================
+        CAIRO CENTRAL MEDICAL LABORATORY
+Patient Name: Sarah Mansour      Date: 2026-08-19
+==================================================
+TEST NAME               RESULT      UNITS     STATUS
+--------------------------------------------------
+Hemoglobin               8.2        g/dL      LOW
+Platelets                88000      /uL       LOW
+Fasting Blood Glucose    142        mg/dL     HIGH
+D-Dimer                  0.85       mg/L      HIGH
+ALT (SGPT)               85         U/L       HIGH
+AST (SGOT)               92         U/L       HIGH
+Systolic BP              165        mmHg      HIGH
+Diastolic BP             108        mmHg      HIGH
+==================================================
