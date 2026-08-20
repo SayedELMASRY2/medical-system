@@ -32,6 +32,7 @@ interface NavItem {
   badge?: string;
   adminOnly?: boolean;
   doctorOnly?: boolean;
+  patientOnly?: boolean;
 }
 
 const navItems: NavItem[] = [
@@ -39,6 +40,7 @@ const navItems: NavItem[] = [
     label: "Dashboard",
     href: "/dashboard",
     icon: <LayoutDashboard size={20} />,
+    patientOnly: true,
   },
   {
     label: "Doctor Triage",
@@ -57,11 +59,13 @@ const navItems: NavItem[] = [
     label: "Calendar",
     href: "/calendar",
     icon: <CalendarIcon size={20} />,
+    patientOnly: true,
   },
   {
     label: "AI Agents",
     href: "/agents",
     icon: <Brain size={20} />,
+    adminOnly: true,
   },
   {
     label: "3D Body Simulator",
@@ -74,6 +78,7 @@ const navItems: NavItem[] = [
     href: "/evaluations",
     icon: <BarChart3 size={20} className="text-emerald-400" />,
     badge: "RAG EVAL",
+    adminOnly: true,
   },
   {
     label: "Lab OCR Scanner",
@@ -84,16 +89,19 @@ const navItems: NavItem[] = [
     label: "Daily Check-in",
     href: "/checkin",
     icon: <ClipboardPlus size={20} />,
+    patientOnly: true,
   },
   {
     label: "Onboarding",
     href: "/onboarding",
     icon: <UserPlus size={20} />,
+    patientOnly: true,
   },
   {
     label: "Clinical Forms",
     href: "/forms",
     icon: <FileText size={20} />,
+    patientOnly: true,
   },
   {
     label: "Admin Panel",
@@ -154,6 +162,7 @@ export default function Sidebar() {
   const filteredNavItems = navItems.filter((item) => {
     if (item.adminOnly && userRole !== "ADMIN") return false;
     if (item.doctorOnly && !["DOCTOR", "ADMIN"].includes(userRole)) return false;
+    if (item.patientOnly && !["PATIENT"].includes(userRole)) return false;
     return true;
   });
 
