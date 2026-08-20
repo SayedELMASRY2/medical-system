@@ -25,10 +25,14 @@ export async function uploadFileForOCR(file: File): Promise<{ ocrResult: any; ex
   const formData = new FormData();
   formData.append("file", file);
 
+  // Helper to get token
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const authHeader = token ? `Bearer ${token}` : "Bearer MOCK_TOKEN";
+
   const res = await fetch(`${getApiBase()}/upload`, {
     method: "POST",
     headers: {
-      "Authorization": "Bearer MOCK_TOKEN" // Assuming standard auth header
+      "Authorization": authHeader
     },
     body: formData,
   });
@@ -40,7 +44,7 @@ export async function uploadFileForOCR(file: File): Promise<{ ocrResult: any; ex
   const data = await res.json();
   return { 
     ocrResult: data.ocrResult,
-    extracted_metrics: data.extracted_metrics || data.ocrResult?.extracted_metrics,
+    extracted_metrics: data.extracted_metrics || data.ocrResult?.extracted_metrics || data.ocrResult?.structured_data,
     text: data.text || data.ocrResult?.text
   };
 }
@@ -63,10 +67,13 @@ async function fetchChatStream(
     lab_results: labResults
   };
 
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const authHeader = token ? `Bearer ${token}` : "Bearer MOCK_TOKEN";
+
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      "Authorization": "Bearer MOCK_TOKEN",
+      "Authorization": authHeader,
       "Accept": "text/event-stream",
       "Content-Type": "application/json"
     },
