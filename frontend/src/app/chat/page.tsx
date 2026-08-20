@@ -41,6 +41,16 @@ export default function ChatAIPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const savedChat = localStorage.getItem("materna_chat_session");
+      if (savedChat) {
+        try {
+          const parsed = JSON.parse(savedChat);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setMessages(parsed);
+          }
+        } catch (e) {}
+      }
+
       const stored = localStorage.getItem("patient_ocr_dataset");
       if (stored) {
         try {
@@ -60,6 +70,13 @@ export default function ChatAIPage() {
       }
     }
   }, []);
+
+  // Save messages to localStorage whenever conversation updates
+  useEffect(() => {
+    if (typeof window !== "undefined" && messages.length > 0) {
+      localStorage.setItem("materna_chat_session", JSON.stringify(messages));
+    }
+  }, [messages]);
 
   // If query passed in URL (e.g. from OCR or Dashboard link), auto-send
   useEffect(() => {
@@ -241,6 +258,9 @@ export default function ChatAIPage() {
   };
 
   const clearChat = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("materna_chat_session");
+    }
     setMessages(getWelcomeMessages());
     setActiveRisk(null);
   };
