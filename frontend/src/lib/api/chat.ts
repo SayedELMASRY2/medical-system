@@ -1,8 +1,14 @@
 import { ChatMessage, FileAttachment } from "@/types/chat";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE
-  ? `${process.env.NEXT_PUBLIC_API_BASE.replace(/\/$/, "")}/chat`
-  : "http://localhost:8000/api/v1/chat";
+export function getApiBase(): string {
+  if (process.env.NEXT_PUBLIC_API_BASE) {
+    return `${process.env.NEXT_PUBLIC_API_BASE.replace(/\/$/, "")}/chat`;
+  }
+  if (typeof window !== "undefined" && window.location.hostname.includes("trycloudflare.com")) {
+    return "https://slot-configurations-committed-colon.trycloudflare.com/api/v1/chat";
+  }
+  return "http://localhost:8000/api/v1/chat";
+}
 
 export function getWelcomeMessages(): ChatMessage[] {
   return [
@@ -19,7 +25,7 @@ export async function uploadFileForOCR(file: File): Promise<{ ocrResult: any; ex
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${API_BASE}/upload`, {
+  const res = await fetch(`${getApiBase()}/upload`, {
     method: "POST",
     headers: {
       "Authorization": "Bearer MOCK_TOKEN" // Assuming standard auth header
@@ -47,7 +53,7 @@ async function fetchChatStream(
   labResults: any = null,
   onChunk?: (partialText: string) => void
 ): Promise<ChatMessage> {
-  const url = `${API_BASE}/stream`;
+  const url = `${getApiBase()}/stream`;
 
   const body = {
     message: content,

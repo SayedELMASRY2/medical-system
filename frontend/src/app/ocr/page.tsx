@@ -5,6 +5,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import GlassCard from "@/components/ui/GlassCard";
 import { cn } from "@/lib/utils";
+import { getApiBase } from "@/lib/api/chat";
 import {
   ScanLine,
   UploadCloud,
@@ -112,7 +113,7 @@ export default function OCRScannerPage() {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const res = await fetch("http://localhost:8000/api/v1/chat/upload", {
+      const res = await fetch(`${getApiBase()}/upload`, {
         method: "POST",
         body: formData,
       });
