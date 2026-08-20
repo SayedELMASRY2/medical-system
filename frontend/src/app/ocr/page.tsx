@@ -113,8 +113,10 @@ export default function OCRScannerPage() {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
+      const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
       const res = await fetch(`${getApiBase()}/upload`, {
         method: "POST",
+        headers: token ? { "Authorization": `Bearer ${token}` } : undefined,
         body: formData,
       });
 
