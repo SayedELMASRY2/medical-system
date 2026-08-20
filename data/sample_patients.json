@@ -1,0 +1,67 @@
+[
+  {
+    "patient_id": "P-1042",
+    "name": "Sarah Jenkins",
+    "age": 31,
+    "gestational_age_weeks": 28,
+    "current_visit": {
+      "date": "2026-08-17",
+      "vitals": {
+        "systolic_bp": 148,
+        "diastolic_bp": 96,
+        "heart_rate": 84,
+        "weight_kg": 74.2,
+        "proteinuria": "+1"
+      },
+      "symptoms": [
+        "visual disturbances",
+        "persistent frontal headache"
+      ]
+    },
+    "history": [
+      {
+        "week": 24,
+        "systolic_bp": 128,
+        "diastolic_bp": 82,
+        "proteinuria": "negative"
+      },
+      {
+        "week": 26,
+        "systolic_bp": 136,
+        "diastolic_bp": 88,
+        "proteinuria": "negative"
+      }
+    ],
+    "expected_risk": "HIGH_PRIORITY",
+    "expected_rule": "R-HTN-02"
+  },
+  {
+    "patient_id": "P-1043",
+    "name": "Nour El-Din",
+    "age": 27,
+    "gestational_age_weeks": 16,
+    "current_visit": {
+      "date": "2026-08-17",
+      "vitals": {
+        "systolic_bp": 115,
+        "diastolic_bp": 74,
+        "heart_rate": 76,
+        "weight_kg": 63.5,
+        "proteinuria": "negative"
+      },
+      "symptoms": [
+        "mild fatigue"
+      ]
+    },
+    "history": [
+      {
+        "week": 12,
+        "systolic_bp": 112,
+        "diastolic_bp": 72,
+        "proteinuria": "negative"
+      }
+    ],
+    "expected_risk": "LOW",
+    "expected_rule": null
+  }
+]

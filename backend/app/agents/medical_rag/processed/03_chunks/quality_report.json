@@ -1,0 +1,183 @@
+{
+  "chunker_version": "2026-08-19-v2-table-aware-semantic",
+  "method": "Table-Aware Sentence-based Semantic Change-Point + Adaptive Size Constraints",
+  "input_directory": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned",
+  "output_directory": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks",
+  "configuration": {
+    "min_chunk_words": 120,
+    "target_chunk_words": 220,
+    "max_chunk_words": 350,
+    "max_table_chunk_words": 900,
+    "max_sentence_words": 90,
+    "breakpoint_percentile": 90.0,
+    "smoothing_window": 3,
+    "require_local_peak": true,
+    "peak_margin": 0.01,
+    "cohere_model": "embed-v4.0",
+    "cohere_output_dimension": 1024
+  },
+  "summary": {
+    "documents_found": 5,
+    "documents_successful": 5,
+    "documents_failed": 0,
+    "total_sentences": 6927,
+    "total_chunks": 958
+  },
+  "documents": [
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_antenatal_care_2016_cleaned.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks\\who_antenatal_care_2016_chunks.jsonl",
+      "chunker_version": "2026-08-19-v2-table-aware-semantic",
+      "statistics": {
+        "document_id": "who_antenatal_care_2016",
+        "input_blocks": 159,
+        "narrative_blocks": 139,
+        "table_blocks": 20,
+        "sentences_created": 2542,
+        "semantic_boundaries_detected": 171,
+        "chunks_created": 326,
+        "narrative_chunks": 298,
+        "table_chunks": 28,
+        "min_chunk_words": 10,
+        "max_chunk_words": 760,
+        "mean_chunk_words": 257.22698974609375,
+        "median_chunk_words": 224.5,
+        "chunks_below_min": 1,
+        "chunks_above_max": 0,
+        "oversized_sentences": 7,
+        "threshold_flagged_chunks": 155,
+        "duplicate_chunks_excluded": 1,
+        "embedding_batches": 39,
+        "embedding_failures": 0
+      },
+      "validation": {
+        "errors": [],
+        "valid": true
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_bp_self_monitoring_dak_2025_cleaned.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks\\who_bp_self_monitoring_dak_2025_chunks.jsonl",
+      "chunker_version": "2026-08-19-v2-table-aware-semantic",
+      "statistics": {
+        "document_id": "who_bp_self_monitoring_dak_2025",
+        "input_blocks": 59,
+        "narrative_blocks": 58,
+        "table_blocks": 1,
+        "sentences_created": 854,
+        "semantic_boundaries_detected": 51,
+        "chunks_created": 92,
+        "narrative_chunks": 91,
+        "table_chunks": 1,
+        "min_chunk_words": 124,
+        "max_chunk_words": 323,
+        "mean_chunk_words": 221.6521759033203,
+        "median_chunk_words": 218.5,
+        "chunks_below_min": 0,
+        "chunks_above_max": 0,
+        "oversized_sentences": 15,
+        "threshold_flagged_chunks": 4,
+        "duplicate_chunks_excluded": 0,
+        "embedding_batches": 10,
+        "embedding_failures": 0
+      },
+      "validation": {
+        "errors": [],
+        "valid": true
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_maternal_health_2025_cleaned.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks\\who_maternal_health_2025_chunks.jsonl",
+      "chunker_version": "2026-08-19-v2-table-aware-semantic",
+      "statistics": {
+        "document_id": "who_maternal_health_2025",
+        "input_blocks": 204,
+        "narrative_blocks": 202,
+        "table_blocks": 2,
+        "sentences_created": 2797,
+        "semantic_boundaries_detected": 174,
+        "chunks_created": 413,
+        "narrative_chunks": 411,
+        "table_chunks": 2,
+        "min_chunk_words": 120,
+        "max_chunk_words": 384,
+        "mean_chunk_words": 223.5641632080078,
+        "median_chunk_words": 218.0,
+        "chunks_below_min": 0,
+        "chunks_above_max": 0,
+        "oversized_sentences": 20,
+        "threshold_flagged_chunks": 90,
+        "duplicate_chunks_excluded": 2,
+        "embedding_batches": 31,
+        "embedding_failures": 0
+      },
+      "validation": {
+        "errors": [],
+        "valid": true
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_non_severe_hypertension_2020_cleaned.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks\\who_non_severe_hypertension_2020_chunks.jsonl",
+      "chunker_version": "2026-08-19-v2-table-aware-semantic",
+      "statistics": {
+        "document_id": "who_non_severe_hypertension_2020",
+        "input_blocks": 46,
+        "narrative_blocks": 37,
+        "table_blocks": 9,
+        "sentences_created": 432,
+        "semantic_boundaries_detected": 30,
+        "chunks_created": 71,
+        "narrative_chunks": 51,
+        "table_chunks": 20,
+        "min_chunk_words": 20,
+        "max_chunk_words": 892,
+        "mean_chunk_words": 339.9013977050781,
+        "median_chunk_words": 228.0,
+        "chunks_below_min": 3,
+        "chunks_above_max": 0,
+        "oversized_sentences": 1,
+        "threshold_flagged_chunks": 34,
+        "duplicate_chunks_excluded": 0,
+        "embedding_batches": 12,
+        "embedding_failures": 0
+      },
+      "validation": {
+        "errors": [],
+        "valid": true
+      }
+    },
+    {
+      "input": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\02_cleaned\\who_severe_hypertension_2018_cleaned.json",
+      "output": "D:\\ai dev\\medical-system\\backend\\app\\agents\\medical_rag\\processed\\03_chunks\\who_severe_hypertension_2018_chunks.jsonl",
+      "chunker_version": "2026-08-19-v2-table-aware-semantic",
+      "statistics": {
+        "document_id": "who_severe_hypertension_2018",
+        "input_blocks": 38,
+        "narrative_blocks": 33,
+        "table_blocks": 5,
+        "sentences_created": 302,
+        "semantic_boundaries_detected": 21,
+        "chunks_created": 56,
+        "narrative_chunks": 40,
+        "table_chunks": 16,
+        "min_chunk_words": 47,
+        "max_chunk_words": 895,
+        "mean_chunk_words": 347.8928527832031,
+        "median_chunk_words": 232.5,
+        "chunks_below_min": 1,
+        "chunks_above_max": 0,
+        "oversized_sentences": 1,
+        "threshold_flagged_chunks": 31,
+        "duplicate_chunks_excluded": 0,
+        "embedding_batches": 8,
+        "embedding_failures": 0
+      },
+      "validation": {
+        "errors": [],
+        "valid": true
+      }
+    }
+  ]
+}
