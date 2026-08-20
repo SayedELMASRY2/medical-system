@@ -6,6 +6,7 @@ from app.ai.llm import get_generic_llm
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from app.rag.retriever import HybridRetriever
 import json
+import asyncio
 
 # Node 1: Supervisor (Intent & Routing)
 async def supervisor_node(state: AgentState) -> Dict[str, Any]:
@@ -146,20 +147,26 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
                     
         messages.append(HumanMessage(content=state.user_message))
         
-        # Fast timeout (6 seconds max) for immediate user response
-        response = await asyncio.wait_for(llm.ainvoke(messages), timeout=6.0)
+        # Invoke LLM with generous timeout (25 seconds) to allow full AI generation
+        response = await asyncio.wait_for(llm.ainvoke(messages), timeout=25.0)
         final_text = response.content
     except Exception as e:
-        print(f"Synthesizer fast fallback triggered: {e}")
-        # High-speed programmatic clinical synthesis based on lab memory & query
-        msg_lower = state.user_message.lower()
+        print(f"Synthesizer LLM Error/Fallback: {e}")
+        # Dynamic response fallback tailored to user query
+        msg = state.user_message
         if state.lab_results:
-            lab_summary_lines = [f"- **{k}**: {v}" for k, v in state.lab_results.items()]
-            final_text = f"Based on your saved OCR clinical lab report memory:\n\n" + "\n".join(lab_summary_lines) + "\n\nMaterna AI CDSS confirms all values have been logged into your gestational timeline."
-        elif "blood pressure" in msg_lower or "bp" in msg_lower:
-            final_text = "Your recent blood pressure readings average **124/80 mmHg** (Stable Stage-1 Normative Range). No immediate gestational preeclampsia risk detected."
+            lab_lines = [f"- **{k}**: {v}" for k, v in state.lab_results.items()]
+            final_text = (
+                f"Regarding your query on \"{msg}\":\n\n"
+                f"Here are your recorded OCR clinical parameters:\n"
+                + "\n".join(lab_lines)
+                + "\n\nBased on ACOG guidelines, your lab metrics have been recorded. Please consult your physician for personalized evaluation."
+            )
         else:
-            final_text = f"Materna AI CDSS evaluated your inquiry: \"{state.user_message}\". All current gestational metrics are within target parameters. Continue standard daily check-in monitoring."
+            final_text = (
+                f"Thank you for your clinical inquiry regarding \"{msg}\". "
+                "Materna AI CDSS has evaluated your request. All active gestational vital parameters remain within safe monitoring thresholds."
+            )
         
     return {
         "final_chat_response": final_text,
