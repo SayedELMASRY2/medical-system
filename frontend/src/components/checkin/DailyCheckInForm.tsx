@@ -102,10 +102,10 @@ export default function DailyCheckInForm() {
   const [hoursUntilNext, setHoursUntilNext] = useState<number | null>(null);
   const [isCompletedToday, setIsCompletedToday] = useState(false);
 
-  // Check 24-hour enforcement on mount
+  // Check 24-hour enforcement on mount (user-scoped)
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const lastCheckin = localStorage.getItem("last_checkin_timestamp");
+      const lastCheckin = localStorage.getItem(getScopedKey("last_checkin_timestamp"));
       if (lastCheckin) {
         const elapsedHours = (Date.now() - Number(lastCheckin)) / (1000 * 60 * 60);
         if (elapsedHours < 24) {
@@ -193,10 +193,10 @@ export default function DailyCheckInForm() {
         body: JSON.stringify(formData),
       });
 
-      // Save 24-hour timestamp in localStorage
+      // Save 24-hour timestamp and vitals in user-scoped localStorage
       if (typeof window !== "undefined") {
-        localStorage.setItem("last_checkin_timestamp", Date.now().toString());
-        localStorage.setItem("last_patient_vitals", JSON.stringify(formData));
+        localStorage.setItem(getScopedKey("last_checkin_timestamp"), Date.now().toString());
+        localStorage.setItem(getScopedKey("last_patient_vitals"), JSON.stringify(formData));
       }
 
       setIsCompletedToday(true);

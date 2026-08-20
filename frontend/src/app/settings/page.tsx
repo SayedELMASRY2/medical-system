@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import GlassCard from "@/components/ui/GlassCard";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import {
   User,
   Camera,
@@ -42,7 +42,7 @@ export default function SettingsPage() {
   // Load existing saved profile on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("materna_user_profile");
+      const saved = localStorage.getItem(getScopedKey("materna_user_profile"));
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -92,7 +92,7 @@ export default function SettingsPage() {
     };
 
     if (typeof window !== "undefined") {
-      localStorage.setItem("materna_user_profile", JSON.stringify(updatedProfile));
+      localStorage.setItem(getScopedKey("materna_user_profile"), JSON.stringify(updatedProfile));
     }
 
     setSavedSuccess(true);

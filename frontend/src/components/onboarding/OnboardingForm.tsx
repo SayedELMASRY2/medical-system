@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import GlassCard from "@/components/ui/GlassCard";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import { CheckCircle, AlertTriangle, Loader2, User, Baby, Activity, HeartPulse, History } from "lucide-react";
 
 export type OnboardingData = {
@@ -59,13 +59,13 @@ export default function OnboardingForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
 
-  // Check on mount if onboarding is already completed
+  // Check on mount if onboarding is already completed (user-scoped)
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      const completed = localStorage.getItem("onboarding_completed");
+      const completed = localStorage.getItem(getScopedKey("onboarding_completed"));
       if (completed === "true") {
         setIsAlreadyCompleted(true);
-        const savedData = localStorage.getItem("onboarding_baseline_data");
+        const savedData = localStorage.getItem(getScopedKey("onboarding_baseline_data"));
         if (savedData) {
           try {
             setFormData(JSON.parse(savedData));
@@ -121,10 +121,10 @@ export default function OnboardingForm() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       
-      // Save onboarding completion permanently
+      // Save onboarding completion permanently (user-scoped)
       if (typeof window !== "undefined") {
-        localStorage.setItem("onboarding_completed", "true");
-        localStorage.setItem("onboarding_baseline_data", JSON.stringify(formData));
+        localStorage.setItem(getScopedKey("onboarding_completed"), "true");
+        localStorage.setItem(getScopedKey("onboarding_baseline_data"), JSON.stringify(formData));
       }
 
       setStatus("success");

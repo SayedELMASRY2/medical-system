@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import { Bell, Search, User, Menu, LogOut, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default function Header({ className }: HeaderProps) {
         if (decoded?.sub) setUserEmail(decoded.sub);
       }
 
-      const savedProfile = localStorage.getItem("materna_user_profile");
+      const savedProfile = localStorage.getItem(getScopedKey("materna_user_profile"));
       if (savedProfile) {
         try {
           const parsed = JSON.parse(savedProfile);

@@ -10,6 +10,7 @@ import TypingIndicator from "@/components/chat/TypingIndicator";
 import { ChatMessage, FileAttachment } from "@/types/chat";
 import { sendChatMessage, getWelcomeMessages, uploadFileForOCR } from "@/lib/api/chat";
 import { Bot, Sparkles, Shield, RefreshCw, FileText, Activity, AlertCircle } from "lucide-react";
+import { getScopedKey } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
 const SUGGESTED_QUERIES = [
@@ -43,7 +44,7 @@ export default function ChatAIPage() {
   // Load chat session on mount BEFORE enabling auto-save
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedChat = localStorage.getItem("materna_chat_session");
+      const savedChat = localStorage.getItem(getScopedKey("materna_chat_session"));
       if (savedChat) {
         try {
           const parsed = JSON.parse(savedChat);
@@ -60,7 +61,7 @@ export default function ChatAIPage() {
       }
       setIsInitialized(true);
 
-      const stored = localStorage.getItem("patient_ocr_dataset");
+      const stored = localStorage.getItem(getScopedKey("patient_ocr_dataset"));
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -69,11 +70,11 @@ export default function ChatAIPage() {
           }
         } catch (e) {}
       }
-      const storedVitals = localStorage.getItem("last_patient_vitals");
+      const storedVitals = localStorage.getItem(getScopedKey("last_patient_vitals"));
       if (storedVitals) {
         setHasDailyVitals(true);
       }
-      const storedOnboarding = localStorage.getItem("onboarding_baseline_data");
+      const storedOnboarding = localStorage.getItem(getScopedKey("onboarding_baseline_data"));
       if (storedOnboarding) {
         setHasBaseline(true);
       }
@@ -83,7 +84,7 @@ export default function ChatAIPage() {
   // Save messages to localStorage ONLY after initial load is completed
   useEffect(() => {
     if (isInitialized && typeof window !== "undefined" && messages.length > 0) {
-      localStorage.setItem("materna_chat_session", JSON.stringify(messages));
+      localStorage.setItem(getScopedKey("materna_chat_session"), JSON.stringify(messages));
     }
   }, [messages, isInitialized]);
 
@@ -115,7 +116,7 @@ export default function ChatAIPage() {
 
       if (typeof window !== "undefined") {
         // 1. Inject Baseline Onboarding Profile & Medical History if available
-        const storedOnboarding = localStorage.getItem("onboarding_baseline_data");
+        const storedOnboarding = localStorage.getItem(getScopedKey("onboarding_baseline_data"));
         if (storedOnboarding) {
           try {
             const ob = JSON.parse(storedOnboarding);
@@ -138,7 +139,7 @@ export default function ChatAIPage() {
         }
 
         // 2. Inject Daily Check-In Vitals if logged today
-        const storedVitals = localStorage.getItem("last_patient_vitals");
+        const storedVitals = localStorage.getItem(getScopedKey("last_patient_vitals"));
         if (storedVitals) {
           try {
             const vitals = JSON.parse(storedVitals);
@@ -161,7 +162,7 @@ export default function ChatAIPage() {
         }
 
         // 2. Automatically include saved patient OCR dataset from memory if available
-        const stored = localStorage.getItem("patient_ocr_dataset");
+        const stored = localStorage.getItem(getScopedKey("patient_ocr_dataset"));
         if (stored) {
           try {
             const datasets = JSON.parse(stored);
@@ -268,7 +269,7 @@ export default function ChatAIPage() {
 
   const clearChat = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("materna_chat_session");
+      localStorage.removeItem(getScopedKey("materna_chat_session"));
     }
     setMessages(getWelcomeMessages());
     setActiveRisk(null);

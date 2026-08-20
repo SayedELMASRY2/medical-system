@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
 import GlassCard from "@/components/ui/GlassCard";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import { getApiBase } from "@/lib/api/chat";
 import {
   ScanLine,
@@ -44,10 +44,10 @@ export default function OCRScannerPage() {
   const [savedDatasets, setSavedDatasets] = useState<SavedDatasetItem[]>([]);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
-  // Load dataset history on mount
+  // Load dataset history on mount (user-scoped)
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("patient_ocr_dataset");
+      const stored = localStorage.getItem(getScopedKey("patient_ocr_dataset"));
       if (stored) {
         try {
           setSavedDatasets(JSON.parse(stored));
@@ -91,7 +91,7 @@ export default function OCRScannerPage() {
       const filtered = prev.filter((item) => item.filename !== fname);
       const updated = [newItem, ...filtered];
       if (typeof window !== "undefined") {
-        localStorage.setItem("patient_ocr_dataset", JSON.stringify(updated));
+        localStorage.setItem(getScopedKey("patient_ocr_dataset"), JSON.stringify(updated));
       }
       return updated;
     });
@@ -158,7 +158,7 @@ export default function OCRScannerPage() {
     const updated = savedDatasets.filter((item) => item.id !== id);
     setSavedDatasets(updated);
     if (typeof window !== "undefined") {
-      localStorage.setItem("patient_ocr_dataset", JSON.stringify(updated));
+      localStorage.setItem(getScopedKey("patient_ocr_dataset"), JSON.stringify(updated));
     }
   };
 

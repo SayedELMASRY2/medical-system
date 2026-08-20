@@ -5,7 +5,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import AlertBadge from "@/components/ui/AlertBadge";
 import Sidebar from "@/components/layout/Sidebar";
 import Header from "@/components/layout/Header";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import {
   Heart,
   Activity,
@@ -112,8 +112,8 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // 1. Read Daily Check-in Form Vitals
-      const storedVitals = localStorage.getItem("last_patient_vitals");
+      // 1. Read Daily Check-in Form Vitals (user-scoped)
+      const storedVitals = localStorage.getItem(getScopedKey("last_patient_vitals"));
       let vitalsObj: any = null;
       if (storedVitals) {
         try {
@@ -122,8 +122,8 @@ export default function DashboardPage() {
         } catch (e) {}
       }
 
-      // 2. Read OCR Lab Dataset
-      const storedOcr = localStorage.getItem("patient_ocr_dataset");
+      // 2. Read OCR Lab Dataset (user-scoped)
+      const storedOcr = localStorage.getItem(getScopedKey("patient_ocr_dataset"));
       let ocrList: any[] = [];
       if (storedOcr) {
         try {

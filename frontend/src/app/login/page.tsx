@@ -17,7 +17,7 @@ import {
   ArrowLeft,
   Home,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey, parseJwt } from "@/lib/utils";
 
 const API_BASE = "http://localhost:8000/api/v1";
 
@@ -77,7 +77,7 @@ export default function LoginPage() {
       } else if (userRole === "DOCTOR") {
         router.push("/doctor");
       } else {
-        const isCompleted = typeof window !== "undefined" && localStorage.getItem("onboarding_completed") === "true";
+        const isCompleted = typeof window !== "undefined" && localStorage.getItem(getScopedKey("onboarding_completed")) === "true";
         if (!isCompleted) {
           router.push("/onboarding");
         } else {
