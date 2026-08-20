@@ -114,7 +114,7 @@ async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
 async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
     try:
         from app.core.config import settings
-        llm = get_generic_llm(model=settings.MODEL_RAG, max_tokens=500)
+        llm = get_generic_llm(model=settings.MODEL_RAG, max_tokens=3000)
         
         system_prompt = (
             "You are the Materna AI Medical Assistant. You maintain both short-term conversation context "

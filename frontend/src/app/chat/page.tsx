@@ -28,6 +28,7 @@ export default function ChatAIPage() {
   const [activeRisk, setActiveRisk] = useState<"GREEN" | "YELLOW" | "RED" | null>(null);
   const [ocrCount, setOcrCount] = useState<number>(0);
   const [hasDailyVitals, setHasDailyVitals] = useState<boolean>(false);
+  const [hasBaseline, setHasBaseline] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -52,6 +53,10 @@ export default function ChatAIPage() {
       const storedVitals = localStorage.getItem("last_patient_vitals");
       if (storedVitals) {
         setHasDailyVitals(true);
+      }
+      const storedOnboarding = localStorage.getItem("onboarding_baseline_data");
+      if (storedOnboarding) {
+        setHasBaseline(true);
       }
     }
   }, []);
@@ -83,7 +88,30 @@ export default function ChatAIPage() {
       let finalLabResults: any = null;
 
       if (typeof window !== "undefined") {
-        // 1. Inject Daily Check-In Vitals if logged today
+        // 1. Inject Baseline Onboarding Profile & Medical History if available
+        const storedOnboarding = localStorage.getItem("onboarding_baseline_data");
+        if (storedOnboarding) {
+          try {
+            const ob = JSON.parse(storedOnboarding);
+            const obList: string[] = [];
+            if (ob.age) obList.push(`Age: ${ob.age} years`);
+            if (ob.height) obList.push(`Height: ${ob.height} cm`);
+            if (ob.prePregnancyWeight) obList.push(`Pre-pregnancy Weight: ${ob.prePregnancyWeight} kg`);
+            if (ob.baselineBp) obList.push(`Baseline BP: ${ob.baselineBp} mmHg`);
+            if (ob.pregnancyDate) obList.push(`Gestational Date (${ob.dateType || 'LMP'}): ${ob.pregnancyDate}`);
+            if (ob.fetalCount) obList.push(`Fetal Count: ${ob.fetalCount}`);
+            if (ob.chronicHypertension) obList.push(`Chronic Hypertension: Yes`);
+            if (ob.preExistingDiabetes && ob.preExistingDiabetes !== "None") obList.push(`Pre-existing Diabetes: ${ob.preExistingDiabetes}`);
+            if (ob.previousPreeclampsia) obList.push(`Previous Preeclampsia History: Yes`);
+            if (ob.familyHistoryPreeclampsia) obList.push(`Family History of Preeclampsia: Yes`);
+
+            if (obList.length > 0) {
+              finalContentToBackend += `\n\n[PATIENT BASELINE CLINICAL & OBSTETRIC PROFILE]:\n` + obList.map((item) => `- ${item}`).join("\n");
+            }
+          } catch (e) {}
+        }
+
+        // 2. Inject Daily Check-In Vitals if logged today
         const storedVitals = localStorage.getItem("last_patient_vitals");
         if (storedVitals) {
           try {
@@ -249,6 +277,11 @@ export default function ChatAIPage() {
                 {hasDailyVitals && (
                   <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5 animate-fade-in">
                     <Activity size={13} className="text-emerald-400" /> Today's Vitals Logged
+                  </span>
+                )}
+                {hasBaseline && (
+                  <span className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-xs font-semibold border border-indigo-500/30 flex items-center gap-1.5 animate-fade-in">
+                    <Shield size={13} className="text-indigo-400" /> Baseline Memory Active
                   </span>
                 )}
                 <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
