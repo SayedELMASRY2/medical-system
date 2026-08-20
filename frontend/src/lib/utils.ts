@@ -55,30 +55,22 @@ export function parseJwt(token: string) {
 }
 
 export function getCurrentUserId(): string {
-  if (typeof window === "undefined") return "default_user";
+  if (typeof window === "undefined") return "guest";
   const token = localStorage.getItem("access_token");
   if (token) {
     const decoded = parseJwt(token);
-    if (decoded?.sub) return String(decoded.sub);
+    if (decoded?.sub) {
+      return String(decoded.sub).toLowerCase().replace(/[^a-z0-9]/g, "_");
+    }
   }
   const explicitId = localStorage.getItem("user_id");
-  if (explicitId) return explicitId;
-  return "default_user";
+  if (explicitId) {
+    return String(explicitId).toLowerCase().replace(/[^a-z0-9]/g, "_");
+  }
+  return "guest";
 }
 
 export function getScopedKey(baseKey: string): string {
   const userId = getCurrentUserId();
-  const scopedKey = `${baseKey}_user_${userId}`;
-  if (typeof window !== "undefined") {
-    try {
-      const scopedVal = localStorage.getItem(scopedKey);
-      if (scopedVal === null) {
-        const legacyVal = localStorage.getItem(baseKey);
-        if (legacyVal !== null) {
-          localStorage.setItem(scopedKey, legacyVal);
-        }
-      }
-    } catch (e) {}
-  }
-  return scopedKey;
+  return `${baseKey}_user_${userId}`;
 }

@@ -56,6 +56,7 @@ export default function Header({ className }: HeaderProps) {
   const handleLogout = () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("access_token");
+      localStorage.removeItem("user_id");
     }
     router.push("/login");
   };
