@@ -125,10 +125,10 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
         
         is_casual = state.supervisor and state.supervisor.route in ["casual_chat", "general_chat"]
         
+        if state.lab_results:
+            system_prompt += f"\n\n[PATIENT CLINICAL CONTEXT & HISTORY]:\n{json.dumps(state.lab_results, indent=2)}\nUse this context to accurately answer questions about the patient."
+            
         if not is_casual:
-            if state.lab_results:
-                system_prompt += f"\n\n[PATIENT LONG-TERM OCR LAB DATASET & RECENT LAB RESULTS]:\n{json.dumps(state.lab_results, indent=2)}\nUse these exact numerical figures to answer questions about the patient's lab history."
-                
             if hasattr(state, 'triage_explanation') and state.triage_explanation and state.deterministic_risk_level != "low":
                 system_prompt += f"\n\n[URGENT TRIAGE ALERT]: {state.triage_explanation}\nNote: Communicate urgency clearly and advise consulting a healthcare provider."
                 
