@@ -1,6 +1,8 @@
 import { ChatMessage, FileAttachment } from "@/types/chat";
 
-const API_BASE = "http://localhost:8000/api/v1/chat";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE
+  ? `${process.env.NEXT_PUBLIC_API_BASE.replace(/\/$/, "")}/chat`
+  : "http://localhost:8000/api/v1/chat";
 
 export function getWelcomeMessages(): ChatMessage[] {
   return [
