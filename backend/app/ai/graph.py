@@ -158,7 +158,7 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
 
 # Conditional routing functions
 def route_after_supervisor(state: AgentState) -> str:
-    if state.supervisor and state.supervisor.route == "casual_chat":
+    if state.supervisor and state.supervisor.route in ["casual_chat", "general_chat"]:
         return "synthesizer"
     return "timeline_agent"
 

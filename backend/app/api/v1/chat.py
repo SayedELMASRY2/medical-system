@@ -140,7 +140,15 @@ Extracted PDF Text:
         }
     }
 
-    return {"message": "File parsed successfully", "ocrResult": dynamic_ocr_result}
+    return {
+        "status": "success",
+        "message": "File parsed successfully",
+        "ocrResult": dynamic_ocr_result,
+        "extracted_metrics": dynamic_ocr_result.get("structured_data"),
+        "text": dynamic_ocr_result.get("text"),
+        "lab_results": dynamic_ocr_result.get("structured_data"),
+        "agent_response": f"Extracted lab parameters from {filename}."
+    }
 
 
 from pydantic import BaseModel
@@ -148,10 +156,33 @@ from typing import List, Dict, Any, Optional
 
 class ChatRequest(BaseModel):
     message: str
-    patient_id: str
+    patient_id: Optional[str] = "mock-patient-id"
     escalate: bool = False
     chat_history: List[Dict[str, str]] = []
     lab_results: Optional[Dict[str, Any]] = None
+
+@router.post("/")
+async def chat_endpoint(req: ChatRequest):
+    """
+    Standard JSON response endpoint for non-streaming clients.
+    """
+    initial_state = AgentState(
+        execution_id=str(uuid.uuid4()),
+        patient_id=req.patient_id or "mock-patient-id",
+        user_message=req.message,
+        chat_history=req.chat_history,
+        lab_results=req.lab_results
+    )
+    final_state = await materna_graph.ainvoke(initial_state)
+    return {
+        "response": final_state.get("final_chat_response") or "Processed request.",
+        "thread_id": req.patient_id or "default-session",
+        "current_agent": "materna_graph",
+        "lab_results": final_state.get("lab_results"),
+        "risk_level": final_state.get("deterministic_risk_level", "low"),
+        "triage_alert": final_state.get("triage_explanation"),
+        "citations_count": len(final_state.get("retrieved_citations", []))
+    }
 
 @router.post("/stream")
 async def chat_stream(req: ChatRequest):
@@ -161,7 +192,7 @@ async def chat_stream(req: ChatRequest):
     async def event_generator():
         initial_state = AgentState(
             execution_id=str(uuid.uuid4()),
-            patient_id=req.patient_id,
+            patient_id=req.patient_id or "mock-patient-id",
             user_message=req.message,
             chat_history=req.chat_history,
             lab_results=req.lab_results
@@ -188,3 +219,4 @@ async def chat_stream(req: ChatRequest):
             yield f"data: {json.dumps({'event': 'done'})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+

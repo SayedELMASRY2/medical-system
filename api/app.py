@@ -12,7 +12,6 @@ from fastapi.responses import FileResponse
 
 from config.settings import settings
 from api.v1.health import router as health_router
-from api.v1.chat import router as chat_router
 from api.v1.dashboard import router as dashboard_router
 from api.v1.checkin import router as checkin_router
 
@@ -20,6 +19,7 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.patients import router as patients_router
 from app.api.v1.vitals import router as vitals_router
 from app.api.v1.admin import router as admin_router
+from app.api.v1.chat import router as chat_router
 
 
 def create_api_app() -> FastAPI:
