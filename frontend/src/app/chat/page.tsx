@@ -171,36 +171,40 @@ export default function ChatAIPage() {
       <div className="flex-1 lg:ml-[var(--sidebar-width)] flex flex-col min-h-screen">
         <Header />
         <main className="flex-1 p-4 md:p-6 max-w-6xl w-full mx-auto flex flex-col">
-          {/* Header Banner */}
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-6 animate-fade-in">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-slate-100 mb-1 flex items-center gap-3">
-                <Bot size={28} className="text-sky-400" />
-                Materna AI Clinical Assistant
-              </h1>
-              <p className="text-slate-400 text-xs md:text-sm">
-                Ground-anchored decision support engine powered by ACOG practice guidelines.
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={clearChat}
-                className="btn-secondary text-xs flex items-center gap-1.5"
-                title="Reset conversation"
-              >
-                <RefreshCw size={13} /> Reset Chat
-              </button>
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> RAG Grounding Active
-              </span>
-            </div>
-          </div>
-
           {/* Main Chat Container */}
-          <GlassCard className="flex-1 flex flex-col min-h-[550px] p-0 overflow-hidden border-slate-800 shadow-2xl mb-4">
-            {/* Active Risk Banner inside container if escalated */}
+          <GlassCard className="flex-1 flex flex-col min-h-[600px] p-0 overflow-hidden border-slate-800 shadow-2xl mb-4">
+            {/* Single Unified Header */}
+            <div className="p-4 md:px-6 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                  <Bot size={22} />
+                </div>
+                <div>
+                  <h1 className="text-base md:text-lg font-bold text-slate-100">
+                    Materna AI Clinical Assistant
+                  </h1>
+                  <p className="text-slate-400 text-xs">
+                    Ground-anchored decision support engine powered by ACOG practice guidelines.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> RAG Grounding Active
+                </span>
+                <button
+                  onClick={clearChat}
+                  className="btn-secondary text-xs flex items-center gap-1.5"
+                  title="Reset conversation"
+                >
+                  <RefreshCw size={13} /> Reset Chat
+                </button>
+              </div>
+            </div>
+
+            {/* Active Risk Notification (Only when triggered) */}
             {activeRisk === "RED" && (
-              <div className="bg-rose-500/20 border-b border-rose-500/40 p-3.5 px-6 text-rose-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
+              <div className="bg-rose-500/20 border-b border-rose-500/40 p-3 px-6 text-rose-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
                 <span className="flex items-center gap-2">
                   <AlertCircle size={16} className="text-rose-400 animate-bounce" />
                   HIGH CLINICAL RISK DETECTED: Escalated to attending obstetrician protocol.
@@ -212,7 +216,7 @@ export default function ChatAIPage() {
             )}
 
             {activeRisk === "YELLOW" && (
-              <div className="bg-amber-500/20 border-b border-amber-500/40 p-3.5 px-6 text-amber-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
+              <div className="bg-amber-500/20 border-b border-amber-500/40 p-3 px-6 text-amber-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
                 <span className="flex items-center gap-2">
                   <Activity size={16} className="text-amber-400" />
                   MONITORING THRESHOLD EXCEEDED: Vital signs require 24-hour trend evaluation.
