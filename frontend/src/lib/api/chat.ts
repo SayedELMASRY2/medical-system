@@ -26,7 +26,7 @@ export async function uploadFileForOCR(file: File): Promise<{ ocrResult: any; ex
   formData.append("file", file);
 
   // Helper to get token
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
   const authHeader = token ? `Bearer ${token}` : "Bearer MOCK_TOKEN";
 
   const res = await fetch(`${getApiBase()}/upload`, {
@@ -67,7 +67,7 @@ async function fetchChatStream(
     lab_results: labResults
   };
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
   const authHeader = token ? `Bearer ${token}` : "Bearer MOCK_TOKEN";
 
   const res = await fetch(url, {
