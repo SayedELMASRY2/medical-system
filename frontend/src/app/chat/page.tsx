@@ -27,6 +27,7 @@ export default function ChatAIPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [activeRisk, setActiveRisk] = useState<"GREEN" | "YELLOW" | "RED" | null>(null);
   const [ocrCount, setOcrCount] = useState<number>(0);
+  const [hasDailyVitals, setHasDailyVitals] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -47,6 +48,10 @@ export default function ChatAIPage() {
             setOcrCount(parsed.length);
           }
         } catch (e) {}
+      }
+      const storedVitals = localStorage.getItem("last_patient_vitals");
+      if (storedVitals) {
+        setHasDailyVitals(true);
       }
     }
   }, []);
@@ -77,8 +82,31 @@ export default function ChatAIPage() {
       let finalContentToBackend = content;
       let finalLabResults: any = null;
 
-      // Automatically include saved patient OCR dataset from memory if available
       if (typeof window !== "undefined") {
+        // 1. Inject Daily Check-In Vitals if logged today
+        const storedVitals = localStorage.getItem("last_patient_vitals");
+        if (storedVitals) {
+          try {
+            const vitals = JSON.parse(storedVitals);
+            const vitalsList: string[] = [];
+            if (vitals.systolic && vitals.diastolic) vitalsList.push(`Blood Pressure: ${vitals.systolic}/${vitals.diastolic} mmHg`);
+            if (vitals.weight) vitalsList.push(`Weight: ${vitals.weight} kg`);
+            if (vitals.bloodSugar) vitalsList.push(`Blood Sugar: ${vitals.bloodSugar} mg/dL`);
+            if (vitals.headache) vitalsList.push(`Headache: ${vitals.headache}`);
+            if (vitals.swelling && vitals.swelling.length > 0) vitalsList.push(`Swelling: ${vitals.swelling.join(", ")}`);
+            if (vitals.abdominalPain) vitalsList.push(`Abdominal Pain: Yes`);
+            if (vitals.vaginalBleeding) vitalsList.push(`Vaginal Bleeding: Yes`);
+            if (vitals.visionChanges) vitalsList.push(`Vision Changes: Yes`);
+            if (vitals.fetalMovement) vitalsList.push(`Fetal Movement: ${vitals.fetalMovement}`);
+            if (vitals.kickCounts) vitalsList.push(`Kick Count: ${vitals.kickCounts}`);
+
+            if (vitalsList.length > 0) {
+              finalContentToBackend += `\n\n[PATIENT DAILY CHECK-IN VITALS & SYMPTOMS LOGGED TODAY]:\n` + vitalsList.map((v) => `- ${v}`).join("\n");
+            }
+          } catch (e) {}
+        }
+
+        // 2. Automatically include saved patient OCR dataset from memory if available
         const stored = localStorage.getItem("patient_ocr_dataset");
         if (stored) {
           try {
@@ -216,6 +244,11 @@ export default function ChatAIPage() {
                 {ocrCount > 0 && (
                   <span className="px-3 py-1 rounded-full bg-sky-500/10 text-sky-300 text-xs font-semibold border border-sky-500/30 flex items-center gap-1.5 animate-fade-in">
                     <FileText size={13} className="text-sky-400" /> OCR Memory ({ocrCount} {ocrCount === 1 ? 'Report' : 'Reports'})
+                  </span>
+                )}
+                {hasDailyVitals && (
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5 animate-fade-in">
+                    <Activity size={13} className="text-emerald-400" /> Today's Vitals Logged
                   </span>
                 )}
                 <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">

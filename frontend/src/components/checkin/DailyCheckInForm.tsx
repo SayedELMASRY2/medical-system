@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import GlassCard from "@/components/ui/GlassCard";
 import { cn } from "@/lib/utils";
+import { getApiBase } from "@/lib/api/chat";
 import {
   CheckCircle,
   AlertTriangle,
@@ -185,8 +186,8 @@ export default function DailyCheckInForm() {
     setErrorMessage("");
 
     try {
-      // Send to backend API
-      const res = await fetch("http://localhost:8000/api/v1/patients/checkin", {
+      const baseUrl = getApiBase().replace(/\/chat$/, "");
+      const res = await fetch(`${baseUrl}/patients/checkin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

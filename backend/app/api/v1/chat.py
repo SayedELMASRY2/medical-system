@@ -198,18 +198,20 @@ async def chat_stream(req: ChatRequest):
             lab_results=req.lab_results
         )
         
+        # Immediate ping to inform frontend the AI is actively evaluating
+        yield f"data: {json.dumps({'event': 'agent_thought', 'agent': 'System', 'content': 'Evaluating clinical context and longitudinal parameters...'})}\n\n"
+        
         try:
             async for event in materna_graph.astream(initial_state):
                 for node_name, state_update in event.items():
                     display_name = node_name.replace("_", " ").title()
                     yield f"data: {json.dumps({'event': 'agent_start', 'agent': display_name})}\n\n"
-                    await asyncio.sleep(0.1)
                     
                     if state_update and isinstance(state_update, dict) and "final_chat_response" in state_update and state_update["final_chat_response"]:
                         words = state_update["final_chat_response"].split(" ")
                         for word in words:
                             yield f"data: {json.dumps({'event': 'chat_chunk', 'content': word + ' '})}\n\n"
-                            await asyncio.sleep(0.05)
+                            await asyncio.sleep(0.01)
                             
             yield f"data: {json.dumps({'event': 'done'})}\n\n"
         except Exception as e:

@@ -88,22 +88,28 @@ async function fetchChatStream(
     done = readerDone;
     if (value) {
       buffer += decoder.decode(value, { stream: true });
-      const parts = buffer.split("\n\n");
-      buffer = parts.pop() || ""; // Keep the last incomplete chunk in the buffer
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || ""; // Keep the last incomplete line in buffer
 
-      for (const part of parts) {
-        if (part.startsWith("data: ")) {
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (line.startsWith("data: ")) {
           try {
-            const data = JSON.parse(part.slice(6));
-            if (data.event === "chat_chunk") {
+            const jsonStr = line.slice(6).trim();
+            if (!jsonStr || jsonStr === "[DONE]") continue;
+            const data = JSON.parse(jsonStr);
+            if (data.event === "chat_chunk" && data.content) {
               finalContent += data.content;
               if (onChunk) onChunk(finalContent);
-            } else if (data.event === "agent_thought" && data.agent === "System") {
-              finalContent += "\n\n**System Notice:** " + data.content + "\n\n";
-              if (onChunk) onChunk(finalContent);
+            } else if (data.event === "agent_thought" && data.agent === "System" && data.content) {
+              // Only append thinking note if finalContent doesn't contain it yet
+              if (!finalContent.includes(data.content)) {
+                finalContent = `*(System: ${data.content})*\n\n` + finalContent;
+                if (onChunk) onChunk(finalContent);
+              }
             }
           } catch (e) {
-            console.error("Failed to parse SSE chunk:", part, e);
+            console.error("Failed to parse SSE line:", line, e);
           }
         }
       }
