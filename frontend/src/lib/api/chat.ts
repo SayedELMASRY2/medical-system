@@ -101,12 +101,6 @@ async function fetchChatStream(
             if (data.event === "chat_chunk" && data.content) {
               finalContent += data.content;
               if (onChunk) onChunk(finalContent);
-            } else if (data.event === "agent_thought" && data.agent === "System" && data.content) {
-              // Only append thinking note if finalContent doesn't contain it yet
-              if (!finalContent.includes(data.content)) {
-                finalContent = `*(System: ${data.content})*\n\n` + finalContent;
-                if (onChunk) onChunk(finalContent);
-              }
             }
           } catch (e) {
             console.error("Failed to parse SSE line:", line, e);
