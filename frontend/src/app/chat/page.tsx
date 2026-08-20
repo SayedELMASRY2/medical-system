@@ -23,7 +23,8 @@ export default function ChatAIPage() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("query");
 
-  const [messages, setMessages] = useState<ChatMessage[]>(getWelcomeMessages());
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [activeRisk, setActiveRisk] = useState<"GREEN" | "YELLOW" | "RED" | null>(null);
   const [ocrCount, setOcrCount] = useState<number>(0);
@@ -39,6 +40,7 @@ export default function ChatAIPage() {
     scrollToBottom();
   }, [messages, isTyping]);
 
+  // Load chat session on mount BEFORE enabling auto-save
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedChat = localStorage.getItem("materna_chat_session");
@@ -47,9 +49,16 @@ export default function ChatAIPage() {
           const parsed = JSON.parse(savedChat);
           if (Array.isArray(parsed) && parsed.length > 0) {
             setMessages(parsed);
+          } else {
+            setMessages(getWelcomeMessages());
           }
-        } catch (e) {}
+        } catch (e) {
+          setMessages(getWelcomeMessages());
+        }
+      } else {
+        setMessages(getWelcomeMessages());
       }
+      setIsInitialized(true);
 
       const stored = localStorage.getItem("patient_ocr_dataset");
       if (stored) {
@@ -71,19 +80,19 @@ export default function ChatAIPage() {
     }
   }, []);
 
-  // Save messages to localStorage whenever conversation updates
+  // Save messages to localStorage ONLY after initial load is completed
   useEffect(() => {
-    if (typeof window !== "undefined" && messages.length > 0) {
+    if (isInitialized && typeof window !== "undefined" && messages.length > 0) {
       localStorage.setItem("materna_chat_session", JSON.stringify(messages));
     }
-  }, [messages]);
+  }, [messages, isInitialized]);
 
   // If query passed in URL (e.g. from OCR or Dashboard link), auto-send
   useEffect(() => {
-    if (initialQuery && initialQuery.trim()) {
+    if (isInitialized && initialQuery && initialQuery.trim()) {
       handleSend(initialQuery.trim(), []);
     }
-  }, [initialQuery]);
+  }, [initialQuery, isInitialized]);
 
   const handleSend = async (content: string, attachments: FileAttachment[]) => {
     if (!content.trim() && attachments.length === 0) return;
