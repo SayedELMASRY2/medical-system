@@ -103,10 +103,105 @@ function CustomTooltip({ active, payload, label }: any) {
    DASHBOARD PAGE
    ═══════════════════════════════════════════════════════ */
 export default function DashboardPage() {
-  const heartRate = useMockVital(78, 8, 2000);
-  const systolic = useMockVital(118, 12, 3000);
-  const diastolic = useMockVital(76, 8, 3500);
-  const weight = useMockVital(72.5, 0.3, 5000);
+  const [patientVitals, setPatientVitals] = useState<any>(null);
+  const [ocrLabs, setOcrLabs] = useState<any[]>([]);
+  const [riskLevel, setRiskLevel] = useState<"low" | "monitor" | "clinical_review" | "high">("low");
+  const [dynamicAlerts, setDynamicAlerts] = useState<Array<{ time: string; message: string; level: "low" | "monitor" | "clinical_review" | "high" }>>([]);
+
+  const heartRate = useMockVital(78, 4, 3000);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // 1. Read Daily Check-in Form Vitals
+      const storedVitals = localStorage.getItem("last_patient_vitals");
+      let vitalsObj: any = null;
+      if (storedVitals) {
+        try {
+          vitalsObj = JSON.parse(storedVitals);
+          setPatientVitals(vitalsObj);
+        } catch (e) {}
+      }
+
+      // 2. Read OCR Lab Dataset
+      const storedOcr = localStorage.getItem("patient_ocr_dataset");
+      let ocrList: any[] = [];
+      if (storedOcr) {
+        try {
+          ocrList = JSON.parse(storedOcr);
+          setOcrLabs(ocrList);
+        } catch (e) {}
+      }
+
+      // 3. Evaluate Clinical Risk Level
+      let calculatedLevel: "low" | "monitor" | "clinical_review" | "high" = "low";
+      const alerts: Array<{ time: string; message: string; level: "low" | "monitor" | "clinical_review" | "high" }> = [];
+
+      const sys = vitalsObj?.systolic ? Number(vitalsObj.systolic) : 120;
+      const dia = vitalsObj?.diastolic ? Number(vitalsObj.diastolic) : 80;
+      const headache = vitalsObj?.headache || "";
+      const vision = Boolean(vitalsObj?.visionChanges);
+      const abdo = Boolean(vitalsObj?.abdominalPain);
+      const bleeding = Boolean(vitalsObj?.vaginalBleeding);
+      const fetalMove = vitalsObj?.fetalMovement || "";
+
+      if (sys >= 140 || dia >= 90 || headache === "Severe/Unrelenting" || vision || abdo || bleeding || fetalMove === "Decreased" || fetalMove === "None") {
+        calculatedLevel = "high";
+        alerts.push({
+          time: "Today's Check-in",
+          message: `🚨 HIGH RISK: Blood pressure ${sys}/${dia} mmHg with ${headache || 'severe symptoms'}. Immediate clinical evaluation recommended.`,
+          level: "high",
+        });
+      } else if (sys >= 130 || dia >= 85 || headache === "Mild" || (vitalsObj?.swelling && vitalsObj.swelling.length > 1)) {
+        calculatedLevel = "monitor";
+        alerts.push({
+          time: "Today's Check-in",
+          message: `⚠️ Elevated parameters: Blood pressure ${sys}/${dia} mmHg. Continue close vital tracking.`,
+          level: "monitor",
+        });
+      } else if (vitalsObj) {
+        alerts.push({
+          time: "Today's Check-in",
+          message: `✅ Daily check-in logged: Blood pressure ${sys}/${dia} mmHg, weight ${vitalsObj.weight || 68} kg. All vitals stable.`,
+          level: "low",
+        });
+      }
+
+      // Add OCR alerts if available
+      if (ocrList.length > 0) {
+        alerts.push({
+          time: "Saved Lab Memory",
+          message: `📄 ${ocrList.length} OCR clinical report(s) integrated into gestational timeline.`,
+          level: "low",
+        });
+      }
+
+      if (alerts.length === 0) {
+        alerts.push({
+          time: "System Default",
+          message: "No daily check-in logged yet for today. Click 'Daily Check-in' to update your vitals.",
+          level: "monitor",
+        });
+      }
+
+      setRiskLevel(calculatedLevel);
+      setDynamicAlerts(alerts);
+    }
+  }, []);
+
+  const sysVal = patientVitals?.systolic ? Number(patientVitals.systolic) : 120;
+  const diaVal = patientVitals?.diastolic ? Number(patientVitals.diastolic) : 80;
+  const weightVal = patientVitals?.weight ? `${patientVitals.weight}` : "72.5";
+  const hydrationVal = patientVitals?.hydrationCups ? `${patientVitals.hydrationCups} cups` : "2.2 L";
+
+  // Dynamic BP Chart Data
+  const dynamicBPData = [...mockBPData];
+  if (patientVitals) {
+    dynamicBPData[dynamicBPData.length - 1] = {
+      date: "Today",
+      systolic: sysVal,
+      diastolic: diaVal,
+    };
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -115,13 +210,19 @@ export default function DashboardPage() {
         <Header />
         <main className="p-6 max-w-7xl mx-auto">
           {/* ── Page Title ───────────────────────────── */}
-          <div className="mb-8 animate-fade-in">
-            <h1 className="text-3xl font-bold text-slate-100 mb-1">
-              Patient Dashboard
-            </h1>
-            <p className="text-slate-400">
-              Good morning! Here's your pregnancy health overview.
-            </p>
+          <div className="mb-8 animate-fade-in flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-100 mb-1">
+                Patient Clinical Dashboard
+              </h1>
+              <p className="text-slate-400 text-sm">
+                Real-time longitudinal risk engine & decision support telemetry.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-slate-400">Current Risk Status:</span>
+              <AlertBadge level={riskLevel} size="lg" pulse={riskLevel === "high"} />
+            </div>
           </div>
 
           {/* ── Pregnancy Progress Card ──────────────── */}
@@ -132,24 +233,24 @@ export default function DashboardPage() {
                   <Baby size={28} className="text-white" />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-400">Gestational Age</p>
+                  <p className="text-sm text-slate-400">Gestational Timeline</p>
                   <p className="text-2xl font-bold text-slate-100">Week 14, Day 2</p>
-                  <p className="text-xs text-slate-500">2nd Trimester • EDD: Feb 19, 2027</p>
+                  <p className="text-xs text-slate-500">2nd Trimester • ACOG Monitoring Active</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <AlertBadge level="low" size="lg" />
+                <AlertBadge level={riskLevel} size="md" />
                 <div className="w-px h-8 bg-glass-border" />
                 <Link href="/checkin" className="btn-primary text-sm">
                   <CalendarCheck size={16} />
-                  Daily Check-in
+                  {patientVitals ? "Update Check-in" : "Daily Check-in"}
                 </Link>
               </div>
             </div>
             {/* Progress bar */}
             <div className="mt-4">
               <div className="flex justify-between text-xs text-slate-500 mb-1">
-                <span>Progress</span>
+                <span>Gestational Progress</span>
                 <span>14 / 40 weeks (35%)</span>
               </div>
               <div className="w-full h-2 bg-glass-light rounded-full overflow-hidden">
@@ -161,10 +262,10 @@ export default function DashboardPage() {
           {/* ── Live Vitals Strip ────────────────────── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {[
-              { icon: <Activity size={20} />, label: "Heart Rate", value: heartRate, unit: "bpm", color: "red", trend: "stable" as const },
-              { icon: <TrendingUp size={20} />, label: "Blood Pressure", value: `${systolic}/${diastolic}`, unit: "mmHg", color: "yellow", trend: "up" as const },
-              { icon: <Zap size={20} />, label: "Weight", value: weight, unit: "kg", color: "green", trend: "stable" as const },
-              { icon: <Droplet size={20} />, label: "Hydration", value: "2.2", unit: "L today", color: "brand", trend: "stable" as const },
+              { icon: <Activity size={20} />, label: "Heart Rate", value: heartRate, unit: "bpm", color: "red" },
+              { icon: <TrendingUp size={20} />, label: "Blood Pressure", value: `${sysVal}/${diaVal}`, unit: "mmHg", color: sysVal >= 140 ? "red" : sysVal >= 130 ? "yellow" : "green" },
+              { icon: <Zap size={20} />, label: "Weight Today", value: weightVal, unit: "kg", color: "green" },
+              { icon: <Droplet size={20} />, label: "Daily Hydration", value: hydrationVal, unit: "", color: "brand" },
             ].map((stat, i) => (
               <GlassCard
                 key={stat.label}
@@ -197,17 +298,17 @@ export default function DashboardPage() {
             <GlassCard className="animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-300">
               <h3 className="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
                 <Activity size={16} className="text-alert-yellow" />
-                7-Day Blood Pressure Trend
+                7-Day Blood Pressure Trajectory
               </h3>
               <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockBPData}>
+                  <LineChart data={dynamicBPData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                     <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} domain={[60, 140]} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} domain={[60, 170]} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Line type="monotone" dataKey="systolic" stroke="#f59e0b" strokeWidth={2} dot={{ fill: "#f59e0b", r: 3 }} name="systolic" />
-                    <Line type="monotone" dataKey="diastolic" stroke="#06b6d4" strokeWidth={2} dot={{ fill: "#06b6d4", r: 3 }} name="diastolic" />
+                    <Line type="monotone" dataKey="systolic" stroke="#f59e0b" strokeWidth={2} dot={{ fill: "#f59e0b", r: 4 }} name="systolic" />
+                    <Line type="monotone" dataKey="diastolic" stroke="#06b6d4" strokeWidth={2} dot={{ fill: "#06b6d4", r: 4 }} name="diastolic" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -217,14 +318,14 @@ export default function DashboardPage() {
             <GlassCard className="animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-400">
               <h3 className="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
                 <Zap size={16} className="text-alert-green" />
-                7-Day Weight Trend
+                7-Day Weight Tracking
               </h3>
               <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={mockWeightData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                     <XAxis dataKey="date" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} domain={[71, 73.5]} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} domain={[71, 74]} />
                     <Tooltip content={<CustomTooltip />} />
                     <defs>
                       <linearGradient id="weightGrad" x1="0" y1="0" x2="0" y2="1">
@@ -246,13 +347,13 @@ export default function DashboardPage() {
               <GlassCard className="animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-500">
                 <h3 className="text-sm font-semibold text-slate-300 mb-4 flex items-center gap-2">
                   <AlertTriangle size={16} className="text-alert-yellow" />
-                  Recent Alerts
+                  Live Patient Telemetry & Risk Alerts
                 </h3>
                 <div className="space-y-3">
-                  <AlertItem time="Today, 1:30 AM" message="Blood pressure slightly elevated — 125/80 mmHg. Continue monitoring." level="monitor" />
-                  <AlertItem time="Yesterday" message="Daily check-in completed. All vitals within normal range." level="low" />
-                  <AlertItem time="Aug 17" message="Weight gain trend detected: +0.5 kg over 3 days. Check hydration." level="monitor" />
-                  <AlertItem time="Aug 15" message="Mild headache reported. No vision changes. Monitor closely." level="low" />
+                  {dynamicAlerts.map((alt, idx) => (
+                    <AlertItem key={idx} time={alt.time} message={alt.message} level={alt.level} />
+                  ))}
+                  <AlertItem time="Longitudinal History" message="Prior 14-day trajectory remains stored in clinical timeline." level="low" />
                 </div>
               </GlassCard>
             </div>
@@ -266,9 +367,9 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 {[
                   { label: "Daily Check-in", href: "/checkin", icon: <CalendarCheck size={16} />, desc: "Log today's vitals" },
-                  { label: "Evaluations", href: "/evaluations", icon: <Zap size={16} />, desc: "RAG & Safety Metrics" },
-                  { label: "Calendar", href: "/calendar", icon: <CalendarCheck size={16} />, desc: "View check-in history" },
-                  { label: "Settings", href: "/settings", icon: <Zap size={16} />, desc: "Profile & preferences" },
+                  { label: "AI Clinical Chat", href: "/chat", icon: <Activity size={16} />, desc: "Consult Materna AI" },
+                  { label: "OCR Lab Upload", href: "/ocr", icon: <Zap size={16} />, desc: "Scan new lab PDFs" },
+                  { label: "Calendar & History", href: "/calendar", icon: <CalendarCheck size={16} />, desc: "View history log" },
                 ].map((action) => (
                   <Link
                     key={action.label}
