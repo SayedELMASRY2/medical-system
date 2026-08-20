@@ -68,5 +68,17 @@ export function getCurrentUserId(): string {
 
 export function getScopedKey(baseKey: string): string {
   const userId = getCurrentUserId();
-  return `${baseKey}_user_${userId}`;
+  const scopedKey = `${baseKey}_user_${userId}`;
+  if (typeof window !== "undefined") {
+    try {
+      const scopedVal = localStorage.getItem(scopedKey);
+      if (scopedVal === null) {
+        const legacyVal = localStorage.getItem(baseKey);
+        if (legacyVal !== null) {
+          localStorage.setItem(scopedKey, legacyVal);
+        }
+      }
+    } catch (e) {}
+  }
+  return scopedKey;
 }
