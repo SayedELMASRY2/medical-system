@@ -42,7 +42,8 @@ async function fetchChatStream(
   content: string,
   escalate: boolean,
   chatHistory: { role: string, content: string }[] = [],
-  labResults: any = null
+  labResults: any = null,
+  onChunk?: (partialText: string) => void
 ): Promise<ChatMessage> {
   const url = `${API_BASE}/stream`;
 
@@ -88,8 +89,10 @@ async function fetchChatStream(
             const data = JSON.parse(part.slice(6));
             if (data.event === "chat_chunk") {
               finalContent += data.content;
+              if (onChunk) onChunk(finalContent);
             } else if (data.event === "agent_thought" && data.agent === "System") {
               finalContent += "\n\n**System Notice:** " + data.content + "\n\n";
+              if (onChunk) onChunk(finalContent);
             }
           } catch (e) {
             console.error("Failed to parse SSE chunk:", part, e);
@@ -102,7 +105,7 @@ async function fetchChatStream(
   return {
     id: `assistant-${Date.now()}`,
     role: "assistant",
-    content: finalContent.trim() || "Simulation finished.",
+    content: finalContent.trim() || "Response completed.",
     timestamp: new Date().toISOString(),
   };
 }
@@ -110,14 +113,15 @@ async function fetchChatStream(
 export async function sendChatMessage(
   content: string,
   chatHistory: any[] = [],
-  labResults: any = null
+  labResults: any = null,
+  onChunk?: (partialText: string) => void
 ): Promise<ChatMessage> {
   try {
     const formattedHistory = chatHistory.map((m) => ({
       role: m.role,
       content: m.content,
     }));
-    return await fetchChatStream(content, false, formattedHistory, labResults);
+    return await fetchChatStream(content, false, formattedHistory, labResults, onChunk);
   } catch (err) {
     console.warn("Backend API offline or unreachable, using Materna CDSS reasoning fallback simulation.");
 
@@ -146,6 +150,8 @@ export async function sendChatMessage(
       replyText = `Thank you for your clinical inquiry regarding "${content.slice(0, 40)}...". Materna AI CDSS has verified your records. All gestational metrics are stable. Please log your morning blood pressure in the daily check-in tab.`;
       riskStatus = "NONE";
     }
+
+    if (onChunk) onChunk(replyText);
 
     return {
       id: `bot-${Date.now()}`,

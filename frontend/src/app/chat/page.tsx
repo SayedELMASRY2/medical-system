@@ -62,13 +62,32 @@ export default function ChatAIPage() {
       let finalContentToBackend = content;
       let finalLabResults: any = null;
 
+      // Automatically include saved patient OCR dataset from memory if available
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("patient_ocr_dataset");
+        if (stored) {
+          try {
+            const datasets = JSON.parse(stored);
+            if (Array.isArray(datasets) && datasets.length > 0) {
+              const merged: Record<string, any> = {};
+              datasets.forEach((item: any) => {
+                if (item.metrics) {
+                  Object.assign(merged, item.metrics);
+                }
+              });
+              finalLabResults = merged;
+            }
+          } catch (e) {}
+        }
+      }
+
       // Handle attached OCR files if present
       for (const att of attachments) {
         if (att.file) {
           try {
             const ocrResult = await uploadFileForOCR(att.file);
             if (ocrResult.extracted_metrics) {
-              finalLabResults = ocrResult.extracted_metrics;
+              finalLabResults = { ...(finalLabResults || {}), ...ocrResult.extracted_metrics };
             }
             if (ocrResult.text) {
               finalContentToBackend += `\n[Uploaded Document Content]: ${ocrResult.text.slice(0, 500)}`;
@@ -79,29 +98,53 @@ export default function ChatAIPage() {
         }
       }
 
-      // 2. Call backend or client CDSS stream fallback
+      // Placeholder for streaming assistant response
+      const assistantMsgId = `bot-${Date.now()}`;
+      const placeholderAssistantMsg: ChatMessage = {
+        id: assistantMsgId,
+        role: "assistant",
+        content: "...",
+        timestamp: new Date().toISOString(),
+      };
+
+      setMessages((prev) => [...prev, placeholderAssistantMsg]);
+      setIsTyping(false);
+
+      // 2. Call backend CDSS stream with live token callback
       const response = await sendChatMessage(
         finalContentToBackend,
         messages.map((m) => ({ role: m.role, content: m.content })),
-        finalLabResults
+        finalLabResults,
+        (partialText) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMsgId
+                ? { ...msg, content: partialText }
+                : msg
+            )
+          );
+        }
       );
-
-      const botMsg: ChatMessage = {
-        id: response.id || `bot-${Date.now()}`,
-        role: "assistant",
-        content: response.content,
-        timestamp: response.timestamp || new Date().toISOString(),
-        riskStatus: response.riskStatus,
-        citations: response.citations,
-        vitalsExtracted: response.vitalsExtracted,
-        confidence: response.confidence ?? 0.98,
-      };
 
       if (response.riskStatus && response.riskStatus !== "NONE") {
         setActiveRisk(response.riskStatus);
       }
 
-      setMessages((prev) => [...prev, botMsg]);
+      // Finalize full message metadata
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMsgId
+            ? {
+                ...msg,
+                content: response.content || msg.content,
+                riskStatus: response.riskStatus,
+                citations: response.citations,
+                vitalsExtracted: response.vitalsExtracted,
+                confidence: response.confidence ?? 0.98,
+              }
+            : msg
+        )
+      );
     } catch (err) {
       console.error("Error sending message", err);
       const fallbackMsg: ChatMessage = {
