@@ -170,34 +170,39 @@ export default function ChatAIPage() {
       <Sidebar />
       <div className="flex-1 lg:ml-[var(--sidebar-width)] flex flex-col min-h-screen">
         <Header />
-        <main className="p-6 max-w-7xl mx-auto space-y-6 flex-1 flex flex-col w-full">
-          {/* Standard Page Header matching Dashboard & OCR pages */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 animate-fade-in">
-            <div>
-              <h1 className="text-3xl font-bold text-slate-100 mb-1 flex items-center gap-3">
-                <Bot size={30} className="text-sky-400" />
-                Materna AI Clinical Assistant
-              </h1>
-              <p className="text-slate-400 text-sm">
-                Ground-anchored decision support engine powered by ACOG practice guidelines.
-              </p>
-            </div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> RAG Grounding Active
-              </span>
-              <button
-                onClick={clearChat}
-                className="btn-secondary text-xs flex items-center gap-1.5 py-2 px-3.5"
-                title="Reset conversation"
-              >
-                <RefreshCw size={14} /> Reset Chat
-              </button>
-            </div>
-          </div>
+        <main className="p-4 md:p-6 max-w-7xl mx-auto flex-1 flex flex-col w-full min-h-[calc(100vh-4rem)]">
+          {/* Main Chat Container - Single Card with integrated Header */}
+          <GlassCard className="flex-1 flex flex-col min-h-[600px] p-0 overflow-hidden border-slate-800 shadow-2xl">
+            {/* Single Unified Card Header Bar */}
+            <div className="p-4 px-6 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                  <Bot size={22} />
+                </div>
+                <div>
+                  <h1 className="text-base md:text-lg font-bold text-slate-100 flex items-center gap-2">
+                    Materna AI Clinical Assistant
+                  </h1>
+                  <p className="text-slate-400 text-xs">
+                    Ground-anchored decision support engine powered by ACOG practice guidelines.
+                  </p>
+                </div>
+              </div>
 
-          {/* Main Chat Container */}
-          <GlassCard className="flex-1 flex flex-col min-h-[580px] p-0 overflow-hidden border-slate-800 shadow-2xl">
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> RAG Grounding Active
+                </span>
+                <button
+                  onClick={clearChat}
+                  className="btn-secondary text-xs flex items-center gap-1.5 py-1.5 px-3"
+                  title="Reset conversation"
+                >
+                  <RefreshCw size={13} /> Reset Chat
+                </button>
+              </div>
+            </div>
+
             {/* Active Risk Notification (Only when triggered) */}
             {activeRisk === "RED" && (
               <div className="bg-rose-500/20 border-b border-rose-500/40 p-3 px-6 text-rose-300 text-xs font-semibold flex items-center justify-between animate-fade-in">
@@ -224,7 +229,7 @@ export default function ChatAIPage() {
             )}
 
             {/* Scrollable Message History */}
-            <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 max-h-[520px]">
+            <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 max-h-[550px]">
               {messages.map((msg) => (
                 <ChatBubble key={msg.id} message={msg} />
               ))}
@@ -259,11 +264,6 @@ export default function ChatAIPage() {
               <ChatInput onSend={handleSend} disabled={isTyping} />
             </div>
           </GlassCard>
-
-          {/* Footer matching application standards */}
-          <footer className="py-3 text-center text-xs text-slate-500 border-t border-slate-800/40 mt-auto">
-            Materna AI Clinical Decision Support System • Powered by ACOG Guidelines & Local RAG Architecture
-          </footer>
         </main>
       </div>
     </div>
