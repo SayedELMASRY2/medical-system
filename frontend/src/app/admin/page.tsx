@@ -580,7 +580,7 @@ export default function AdminPage() {
                       title={`Delete all users matching "${searchTerm}"`}
                     >
                       <Trash2 size={13} />
-                      Purge All "{searchTerm}"
+                      Purge All &quot;{searchTerm}&quot;
                     </button>
                   )}
                 </div>

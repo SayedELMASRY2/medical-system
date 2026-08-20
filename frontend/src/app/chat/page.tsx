@@ -306,7 +306,7 @@ export default function ChatAIPage() {
                 )}
                 {hasDailyVitals && (
                   <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5 animate-fade-in">
-                    <Activity size={13} className="text-emerald-400" /> Today's Vitals Logged
+                    <Activity size={13} className="text-emerald-400" /> Today&apos;s Vitals Logged
                   </span>
                 )}
                 {hasBaseline && (

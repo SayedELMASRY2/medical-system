@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import GlassCard from "@/components/ui/GlassCard";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey } from "@/lib/utils";
 import { getApiBase } from "@/lib/api/chat";
 import {
   CheckCircle,
