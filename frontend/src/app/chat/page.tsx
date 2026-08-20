@@ -26,6 +26,7 @@ export default function ChatAIPage() {
   const [messages, setMessages] = useState<ChatMessage[]>(getWelcomeMessages());
   const [isTyping, setIsTyping] = useState(false);
   const [activeRisk, setActiveRisk] = useState<"GREEN" | "YELLOW" | "RED" | null>(null);
+  const [ocrCount, setOcrCount] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -35,6 +36,20 @@ export default function ChatAIPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("patient_ocr_dataset");
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            setOcrCount(parsed.length);
+          }
+        } catch (e) {}
+      }
+    }
+  }, []);
 
   // If query passed in URL (e.g. from OCR or Dashboard link), auto-send
   useEffect(() => {
@@ -70,12 +85,21 @@ export default function ChatAIPage() {
             const datasets = JSON.parse(stored);
             if (Array.isArray(datasets) && datasets.length > 0) {
               const merged: Record<string, any> = {};
+              let ocrTextCombined = "";
               datasets.forEach((item: any) => {
                 if (item.metrics) {
                   Object.assign(merged, item.metrics);
                 }
+                if (item.text) {
+                  ocrTextCombined += `\n- [${item.filename || 'Lab Report'}]: ${item.text.slice(0, 300)}`;
+                }
               });
               finalLabResults = merged;
+
+              if (Object.keys(merged).length > 0 || ocrTextCombined) {
+                const metricsStr = Object.entries(merged).map(([k, v]) => `${k}: ${v}`).join(", ");
+                finalContentToBackend += `\n\n[PATIENT SAVED OCR LAB DATASET & HISTORICAL MEMORY]:\nScanned Metrics: ${metricsStr}${ocrTextCombined ? `\nScanned Details: ${ocrTextCombined}` : ''}`;
+              }
             }
           } catch (e) {}
         }
@@ -189,6 +213,11 @@ export default function ChatAIPage() {
               </div>
 
               <div className="flex items-center gap-3">
+                {ocrCount > 0 && (
+                  <span className="px-3 py-1 rounded-full bg-sky-500/10 text-sky-300 text-xs font-semibold border border-sky-500/30 flex items-center gap-1.5 animate-fade-in">
+                    <FileText size={13} className="text-sky-400" /> OCR Memory ({ocrCount} {ocrCount === 1 ? 'Report' : 'Reports'})
+                  </span>
+                )}
                 <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/30 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> RAG Grounding Active
                 </span>
