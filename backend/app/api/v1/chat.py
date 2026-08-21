@@ -69,6 +69,10 @@ async def upload_file_for_ocr(
 
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
+from sqlalchemy.orm import Session
+from app.api.deps import get_db
+from app.crud.chat import get_chat_history
+from app.schemas.chat import ChatMessageResponse
 
 class ChatRequest(BaseModel):
     message: str
@@ -118,3 +122,15 @@ async def chat_stream(req: ChatRequest):
             yield f"data: {json.dumps({'event': 'done'})}\n\n"
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+@router.get("/history/{patient_id}", response_model=List[ChatMessageResponse])
+def read_chat_history(
+    patient_id: str,
+    limit: int = 100,
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieve chat history for a patient.
+    """
+    messages = get_chat_history(db, patient_id=patient_id, limit=limit)
+    return messages

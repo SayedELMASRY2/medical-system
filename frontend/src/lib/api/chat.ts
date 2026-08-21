@@ -1,6 +1,6 @@
 import { ChatMessage, FileAttachment } from "@/types/chat";
 
-const API_BASE = "http://localhost:8000/api/v1/chat";
+const API_BASE = "https://travelling-klein-bargains-obituaries.trycloudflare.com/api/v1/chat";
 
 export function getWelcomeMessages(): ChatMessage[] {
   return [

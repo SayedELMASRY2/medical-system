@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = "https://travelling-klein-bargains-obituaries.trycloudflare.com/api/v1";
 
 export default function LoginPage() {
   const router = useRouter();
