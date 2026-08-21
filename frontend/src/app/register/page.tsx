@@ -17,6 +17,8 @@ import {
   User,
   Stethoscope,
   Baby,
+  ArrowLeft,
+  Home,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +56,6 @@ export default function RegisterPage() {
     e.preventDefault();
     setError(null);
 
-    // Validation
     if (password.length < 8) {
       setError("Password must be at least 8 characters.");
       return;
@@ -85,8 +86,31 @@ export default function RegisterPage() {
         );
       }
 
-      // Success — redirect to login
-      router.push("/login?registered=true");
+      // Save new user to localStorage so Admin panel picks them up instantly
+      if (typeof window !== "undefined") {
+        const existingUsers = JSON.parse(localStorage.getItem("materna_registered_users") || "[]");
+        const newUserObj = {
+          id: `usr-${Date.now()}`,
+          name: fullName,
+          email: email,
+          role: role,
+          status: "active",
+          lastActive: "Just now",
+          tokensUsed: 0,
+        };
+        existingUsers.push(newUserObj);
+        localStorage.setItem("materna_registered_users", JSON.stringify(existingUsers));
+      }
+
+      // Set first signup onboarding flag for patients
+      if (role === "PATIENT") {
+        if (typeof window !== "undefined") {
+          localStorage.setItem("onboarding_completed", "false");
+        }
+        router.push("/onboarding?signup=true");
+      } else {
+        router.push("/login?registered=true");
+      }
     } catch (err: any) {
       setError(err.message || "Registration failed. Please try again.");
     } finally {
@@ -95,20 +119,32 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative">
+      {/* Back to Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          href="/"
+          className="btn-secondary py-2.5 px-4 text-xs flex items-center gap-2 text-cyan-300 hover:text-white"
+        >
+          <ArrowLeft size={16} />
+          <Home size={15} />
+          <span>Back to Home</span>
+        </Link>
+      </div>
+
       {/* Background accent */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-radial from-brand-500/15 via-transparent to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-radial from-cyan-500/20 via-violet-500/10 to-transparent blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo / Branding */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-500/15 mb-4">
-            <Heart size={32} className="text-brand-400" fill="currentColor" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cyan-500/20 border border-cyan-500/30 mb-4 shadow-[0_0_25px_rgba(6,182,212,0.3)]">
+            <Heart size={32} className="text-cyan-400" fill="currentColor" />
           </div>
           <h1 className="text-3xl font-bold text-slate-100 mb-1">
             Create Account
           </h1>
-          <p className="text-slate-400">
+          <p className="text-slate-400 text-sm">
             Join <span className="text-gradient-brand font-semibold">Materna</span> — safe pregnancy monitoring
           </p>
         </div>
@@ -121,7 +157,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Error Alert */}
             {error && (
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-alert-red/10 border border-alert-red/20 text-alert-red text-sm animate-fade-in">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm animate-fade-in">
                 <AlertCircle size={16} className="flex-shrink-0" />
                 <span>{error}</span>
               </div>
@@ -141,22 +177,22 @@ export default function RegisterPage() {
                     className={cn(
                       "flex flex-col items-center gap-2 px-4 py-4 rounded-xl border transition-all duration-200 text-center",
                       role === r.value
-                        ? "border-brand-500/50 bg-brand-500/10 text-brand-400 shadow-glow-brand/20"
-                        : "border-glass-border bg-glass-light text-slate-400 hover:border-glass-border-light hover:text-slate-300"
+                        ? "border-cyan-500/50 bg-cyan-500/15 text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
+                        : "border-glass-border bg-surface-800/60 text-slate-400 hover:border-glass-border-light hover:text-slate-200"
                     )}
                   >
                     <div
                       className={cn(
-                        "w-10 h-10 rounded-xl flex items-center justify-center",
+                        "w-10 h-10 rounded-xl flex items-center justify-center font-bold",
                         role === r.value
-                          ? "bg-brand-500/20 text-brand-400"
-                          : "bg-glass text-slate-500"
+                          ? "bg-cyan-500/25 text-cyan-300"
+                          : "bg-surface-700 text-slate-400"
                       )}
                     >
                       {r.icon}
                     </div>
                     <span className="text-sm font-medium">{r.label}</span>
-                    <span className="text-[10px] text-slate-500 leading-tight">
+                    <span className="text-[10px] text-slate-400 leading-tight">
                       {r.description}
                     </span>
                   </button>
@@ -182,7 +218,7 @@ export default function RegisterPage() {
                   type="text"
                   required
                   autoComplete="name"
-                  placeholder="Amina Ali"
+                  placeholder="Mariam Hassan"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="input-glass pl-11"
@@ -305,7 +341,7 @@ export default function RegisterPage() {
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-brand-400 hover:text-brand-300 font-medium transition-colors"
+              className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
             >
               Sign In
             </Link>
@@ -314,9 +350,9 @@ export default function RegisterPage() {
 
         {/* CDSS Badge */}
         <div className="flex justify-center mt-6 animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-300">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-slate-500">
-            <Shield size={12} className="text-brand-400" />
-            Clinical Decision Support System — Not for autonomous diagnosis
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-slate-400 border border-glass-border">
+            <Shield size={12} className="text-cyan-400" />
+            Clinical Decision Support System — Protected Access
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ class UserCreate(BaseModel):
 # ---------------------------------------------------------------------------
 
 class UserResponse(BaseModel):
-    id: UUID
+    id: str
     email: str
     full_name: str
     role: UserRole
@@ -41,3 +41,4 @@ class UserResponse(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+

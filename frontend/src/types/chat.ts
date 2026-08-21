@@ -31,6 +31,10 @@ export interface ChatMessage {
   content: string;
   timestamp: string;     // ISO datetime
   attachments?: FileAttachment[];
+  riskStatus?: "GREEN" | "YELLOW" | "RED" | "NONE";
+  citations?: string[];
+  vitalsExtracted?: Record<string, number | string>;
+  confidence?: number;
   /** If the message triggered a risk escalation */
   riskAlert?: {
     level: RiskLevel;

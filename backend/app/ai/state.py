@@ -28,7 +28,7 @@ class TimelineContext(BaseModel):
 
 class SupervisorDecision(BaseModel):
     """Output of the Supervisor Router."""
-    route: Literal["medical_rag", "general_chat", "clarify_intent"]
+    route: Literal["medical_rag", "general_chat", "casual_chat", "clarify_intent"]
     reasoning: str
     urgency_level: str
 

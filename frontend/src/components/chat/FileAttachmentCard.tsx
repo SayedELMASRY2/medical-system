@@ -141,7 +141,7 @@ export default function FileAttachmentCard({
 
       {/* ── OCR Results ───────────────────────────────── */}
       {status === "success" && ocrResult?.structured_data && (
-        <OCRResultCard result={ocrResult.structured_data} />
+        <OCRResultCard result={ocrResult.structured_data as any} />
       )}
     </div>
   );

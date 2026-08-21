@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materna AI — Maternal Health & Clinical Decision Support System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="dark-theme">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>Materna<span>AI</span></h2>
+                    <p>Maternal Health CDSS</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#chat" class="nav-item" data-tab="chat">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <span>Medical Chat & RAG</span>
+                </a>
+                <a href="#ocr" class="nav-item" data-tab="ocr">
+                    <i class="fa-solid fa-file-medical"></i>
+                    <span>Lab OCR Parser</span>
+                </a>
+                <a href="#checkin" class="nav-item" data-tab="checkin">
+                    <i class="fa-solid fa-clipboard-user"></i>
+                    <span>Daily Check-in</span>
+                </a>
+                <a href="#timeline" class="nav-item" data-tab="timeline">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Pregnancy Timeline</span>
+                </a>
+            </nav>
+
+            <div class="patient-card">
+                <div class="patient-avatar">FA</div>
+                <div class="patient-info">
+                    <h4>Fatima Ahmed</h4>
+                    <p>GA: <strong>14 Weeks 2 Days</strong></p>
+                    <p class="edd-badge"><i class="fa-solid fa-baby"></i> EDD: 2027-02-20</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top App Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="page-title">Maternal Health Dashboard</h1>
+                    <p class="subtitle">Multi-Agent AI Pipeline • Real-time Early Warning Triage</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <span class="pulse-dot"></span>
+                        <span class="status-text">LLM: Groq Llama-3.3 • Qdrant RAG</span>
+                    </div>
+
+                    <div class="risk-badge risk-low" id="header-risk-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="header-risk-text">LOW RISK</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab: Dashboard -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="grid-layout">
+                    <!-- Key Vitals Grid -->
+                    <div class="card vitals-summary-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-heart-pulse icon-accent"></i> Current Vital Signs</h3>
+                            <button class="btn-sm btn-glass" onclick="refreshVitals()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                        </div>
+                        <div class="vitals-grid">
+                            <div class="vital-item">
+                                <div class="vital-icon bp-icon"><i class="fa-solid fa-stethoscope"></i></div>
+                                <div class="vital-data">
+                                    <span class="label">Blood Pressure</span>
+                                    <span class="value" id="vital-bp">120/80 <small>mmHg</small></span>
+                                    <span class="trend trend-good"><i class="fa-solid fa-arrow-down"></i> Normal</span>
+                                </div>
+                            </div>
+
+                            <div class="vital-item">
+                                <div class="vital-icon hr-icon"><i class="fa-solid fa-heart"></i></div>
+                                <div class="vital-data">
+                                    <span class="label">Heart Rate</span>
+                                    <span class="value" id="vital-hr">78 <small>bpm</small></span>
+                                    <span class="trend trend-good"><i class="fa-solid fa-check"></i> Normal</span>
+                                </div>
+                            </div>
+
+                            <div class="vital-item">
+                                <div class="vital-icon fhr-icon"><i class="fa-solid fa-child-reaching"></i></div>
+                                <div class="vital-data">
+                                    <span class="label">Fetal Heart Rate</span>
+                                    <span class="value" id="vital-fhr">145 <small>bpm</small></span>
+                                    <span class="trend trend-good"><i class="fa-solid fa-check"></i> Reassuring</span>
+                                </div>
+                            </div>
+
+                            <div class="vital-item">
+                                <div class="vital-icon hb-icon"><i class="fa-solid fa-vial"></i></div>
+                                <div class="vital-data">
+                                    <span class="label">Hemoglobin</span>
+                                    <span class="value" id="vital-hb">11.8 <small>g/dL</small></span>
+                                    <span class="trend trend-good"><i class="fa-solid fa-check"></i> Optimal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Triage & Clinical Risk Panel -->
+                    <div class="card triage-panel-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-triangle-exclamation icon-warning"></i> Clinical Triage & Risk Assessment</h3>
+                            <span class="badge badge-info" id="triage-status">Deterministic Engine</span>
+                        </div>
+                        <div class="triage-body">
+                            <div class="risk-level-banner risk-low" id="triage-banner">
+                                <div class="banner-icon"><i class="fa-solid fa-circle-check"></i></div>
+                                <div class="banner-info">
+                                    <h4 id="triage-banner-title">Low Clinical Risk</h4>
+                                    <p id="triage-banner-desc">All evaluated vital parameters and lab values remain within safe gestational thresholds.</p>
+                                </div>
+                            </div>
+
+                            <div class="rules-list" id="triage-rules-list">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                    <p>No critical clinical rules triggered.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Pipeline Graph Visualization -->
+                    <div class="card pipeline-card full-width">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-diagram-project icon-purple"></i> Multi-Agent Orchestration Flow</h3>
+                            <span class="badge badge-purple">LangGraph Sequential Router</span>
+                        </div>
+                        <div class="pipeline-flow">
+                            <div class="flow-step step-ocr" id="step-ocr">
+                                <div class="step-icon"><i class="fa-solid fa-eye"></i></div>
+                                <div class="step-name">1. OCR Agent</div>
+                                <div class="step-desc">Vision LLM / PDF Extractor</div>
+                            </div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="flow-step step-supervisor" id="step-supervisor">
+                                <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+                                <div class="step-name">2. Supervisor Router</div>
+                                <div class="step-desc">Intent & Task Orchestration</div>
+                            </div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="flow-step step-medical" id="step-medical">
+                                <div class="step-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+                                <div class="step-name">3. Medical RAG Agent</div>
+                                <div class="step-desc">Qdrant + Cohere Rerank</div>
+                            </div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="flow-step step-triage" id="step-triage">
+                                <div class="step-icon"><i class="fa-solid fa-shield-cat"></i></div>
+                                <div class="step-name">4. Triage Agent</div>
+                                <div class="step-desc">Risk Rules & Alerts</div>
+                            </div>
+                            <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                            <div class="flow-step step-dashboard" id="step-dashboard">
+                                <div class="step-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                                <div class="step-name">5. Dashboard / Chat</div>
+                                <div class="step-desc">Final Structured Response</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Medical Chat & RAG -->
+            <section id="tab-chat" class="tab-content">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            <div>
+                                <h3>Evidence-Based Maternal Health Assistant</h3>
+                                <p>Grounded in WHO Clinical Guidelines via Qdrant Hybrid RAG</p>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn-sm btn-glass" onclick="clearChat()"><i class="fa-solid fa-trash"></i> Clear Chat</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message system-message">
+                            <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                            <div class="msg-content">
+                                <p>Welcome! I am your <strong>Materna AI Assistant</strong>. Ask any question in Arabic or English about pregnancy nutrition, symptoms, exercise, or medical guidelines.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <div class="quick-prompts">
+                            <button class="chip" onclick="sendQuickPrompt('What are the warning signs of preeclampsia in week 14?')">⚠️ Preeclampsia warning signs</button>
+                            <button class="chip" onclick="sendQuickPrompt('ما هي الفيتامينات والمعادن الضرورية في الشهر الرابع؟')">🍎 تغذية الشهر الرابع</button>
+                            <button class="chip" onclick="sendQuickPrompt('How do I manage morning sickness safely?')">🤢 Morning sickness management</button>
+                        </div>
+                        <form id="chat-form" onsubmit="handleChatSubmit(event)">
+                            <input type="text" id="chat-input" placeholder="Type your medical question in Arabic or English..." autocomplete="off">
+                            <button type="submit" class="btn-primary" id="btn-send"><i class="fa-solid fa-paper-plane"></i> Send</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: OCR Parser -->
+            <section id="tab-ocr" class="tab-content">
+                <div class="grid-layout">
+                    <!-- File Upload Card -->
+                    <div class="card upload-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-file-medical icon-accent"></i> Upload Medical Lab Report</h3>
+                            <span class="badge badge-purple">Vision LLM + PyMuPDF</span>
+                        </div>
+                        <div class="upload-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+                            <input type="file" id="file-input" accept="image/*,.pdf" style="display:none;" onchange="handleFileSelect(event)">
+                            <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                            <h4>Drag & Drop your Lab Report Image or PDF</h4>
+                            <p>Supports JPG, PNG, WEBP, and PDF documents in any language (Arabic/English)</p>
+                            <button class="btn-primary btn-sm"><i class="fa-solid fa-folder-open"></i> Browse Files</button>
+                        </div>
+                        <div id="file-preview" class="file-preview hidden">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span id="file-name">filename.pdf</span>
+                            <button class="btn-sm btn-danger" onclick="removeFile()"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- OCR Extraction Results Inspector -->
+                    <div class="card ocr-results-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-square-poll-vertical icon-green"></i> Extracted Lab Values</h3>
+                            <span class="badge badge-success" id="ocr-confidence-badge">Ready for Upload</span>
+                        </div>
+                        <div class="ocr-results-body" id="ocr-results-body">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-microscope"></i>
+                                <p>Upload a lab report image or PDF to extract structured test data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Daily Patient Check-in & Calendar -->
+            <section id="tab-checkin" class="tab-content">
+                <div class="grid-layout">
+                    <!-- High-Fidelity Multi-Step Daily Form Card -->
+                    <div class="card checkin-card">
+                        <div class="card-header">
+                            <div>
+                                <h3><i class="fa-solid fa-clipboard-check icon-accent"></i> Daily Health Check-in (الفحص اليومي المتقدم)</h3>
+                                <p class="subtitle">Quick 60-Second Longitudinal Log • Immediate Obstetric Triage</p>
+                            </div>
+                            <span class="badge badge-info"><i class="fa-solid fa-bolt"></i> Fast Fill &lt; 1 Min</span>
+                        </div>
+
+                        <!-- Progress Bar Header -->
+                        <div class="wizard-progress-wrapper">
+                            <div class="wizard-progress-bar">
+                                <div class="wizard-progress-fill" id="wizard-progress-fill" style="width: 16.6%;"></div>
+                            </div>
+                            <div class="wizard-progress-text">
+                                <span id="wizard-step-title">Step 1: Vital Measurements</span>
+                                <span id="wizard-step-pct">16% Completed</span>
+                            </div>
+                        </div>
+
+                        <form id="daily-checkin-form" onsubmit="handleCheckInSubmit(event)">
+                            <div class="wizard-steps">
+                                <div class="step-badge active" data-step="1" onclick="goToStep(1)"><i class="fa-solid fa-heart-pulse"></i> Vitals</div>
+                                <div class="step-badge" data-step="2" onclick="goToStep(2)"><i class="fa-solid fa-apple-whole"></i> Nutrition</div>
+                                <div class="step-badge" data-step="3" onclick="goToStep(3)"><i class="fa-solid fa-person-walking"></i> Lifestyle</div>
+                                <div class="step-badge" data-step="4" onclick="goToStep(4)"><i class="fa-solid fa-pills"></i> Meds</div>
+                                <div class="step-badge" data-step="5" onclick="goToStep(5)"><i class="fa-solid fa-triangle-exclamation"></i> Symptoms</div>
+                                <div class="step-badge" data-step="6" onclick="goToStep(6)"><i class="fa-solid fa-baby"></i> Fetal</div>
+                            </div>
+
+                            <!-- Step 1: Basic Vitals -->
+                            <div class="wizard-step active" id="step-1">
+                                <div class="step-header-banner">
+                                    <i class="fa-solid fa-stethoscope"></i>
+                                    <div>
+                                        <h4>Basic Vital Signs (القياسات الحيوية اليومية)</h4>
+                                        <p>Track sudden weight gains or BP spikes for preeclampsia screening.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-weight-scale icon-accent"></i> Weight (kg) — الوزن الحالي:</label>
+                                    <input type="number" step="0.1" id="chk-weight" value="68.5" placeholder="e.g. 68.5" class="glass-input">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-heart-pulse icon-accent"></i> Systolic BP (mmHg):</label>
+                                        <input type="number" id="chk-sys" value="120" placeholder="120" class="glass-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-heart icon-accent"></i> Diastolic BP (mmHg):</label>
+                                        <input type="number" id="chk-dia" value="80" placeholder="80" class="glass-input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-droplet icon-purple"></i> Blood Sugar (mg/dL — Optional):</label>
+                                    <input type="number" step="1" id="chk-sugar" placeholder="e.g. 95" class="glass-input">
+                                </div>
+                                <button type="button" class="btn btn-primary next-step-btn" onclick="goToStep(2)">Next: Nutrition & Hydration &rarr;</button>
+                            </div>
+
+                            <!-- Step 2: Nutrition & Hydration -->
+                            <div class="wizard-step" id="step-2">
+                                <div class="step-header-banner">
+                                    <i class="fa-solid fa-apple-whole"></i>
+                                    <div>
+                                        <h4>Nutrition & Hydration (التغذية والسوائل)</h4>
+                                        <p>Monitor salt intake and hydration levels to prevent edema and headaches.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Diet Quality (نوعية الأكل اليوم):</label>
+                                    <input type="hidden" id="chk-diet" value="Balanced">
+                                    <div class="option-cards-grid">
+                                        <div class="option-card active" onclick="selectOptionCard('chk-diet', 'Balanced', this)">
+                                            <div class="option-icon">🥗</div>
+                                            <div class="option-info">
+                                                <h5>Balanced</h5>
+                                                <small>متوازن وصحي</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-diet', 'High Protein', this)">
+                                            <div class="option-icon">🥩</div>
+                                            <div class="option-info">
+                                                <h5>High Protein</h5>
+                                                <small>عالي البروتين</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-diet', 'High Carbs', this)">
+                                            <div class="option-icon">🍞</div>
+                                            <div class="option-info">
+                                                <h5>High Carbs</h5>
+                                                <small>عالي النشويات</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card warning-option" onclick="selectOptionCard('chk-diet', 'High Sodium', this)">
+                                            <div class="option-icon">🧂</div>
+                                            <div class="option-info">
+                                                <h5>High Sodium</h5>
+                                                <small>عالي الأملاح ⚠️</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-glass-water icon-accent"></i> Daily Water Intake (معدل شرب المياه): <strong id="water-val-disp" class="highlight-val">8 Cups / Liters</strong></label>
+                                    <input type="range" min="1" max="16" value="8" id="chk-water" class="glass-slider" oninput="document.getElementById('water-val-disp').innerText = this.value + ' Cups / Liters'">
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary" onclick="goToStep(1)">&larr; Back</button>
+                                    <button type="button" class="btn btn-primary" onclick="goToStep(3)">Next: Lifestyle &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Lifestyle & Sleep -->
+                            <div class="wizard-step" id="step-3">
+                                <div class="step-header-banner">
+                                    <i class="fa-solid fa-person-walking"></i>
+                                    <div>
+                                        <h4>Lifestyle & Activity (المجهود والنوم)</h4>
+                                        <p>Record daily physical rest and sleep quality.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Physical Activity (مستوى النشاط والمجهود):</label>
+                                    <input type="hidden" id="chk-activity" value="Light/Walking">
+                                    <div class="option-cards-grid">
+                                        <div class="option-card" onclick="selectOptionCard('chk-activity', 'Resting', this)">
+                                            <div class="option-icon">🛌</div>
+                                            <div class="option-info">
+                                                <h5>Resting</h5>
+                                                <small>راحة تامة</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card active" onclick="selectOptionCard('chk-activity', 'Light/Walking', this)">
+                                            <div class="option-icon">🚶</div>
+                                            <div class="option-info">
+                                                <h5>Light Walk</h5>
+                                                <small>مشي خفيف</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-activity', 'Moderate/Exercise', this)">
+                                            <div class="option-icon">🏃</div>
+                                            <div class="option-info">
+                                                <h5>Moderate</h5>
+                                                <small>نشاط متوسط</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-activity', 'Strenuous', this)">
+                                            <div class="option-icon">⚡</div>
+                                            <div class="option-info">
+                                                <h5>Strenuous</h5>
+                                                <small>مجهود شاق</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-moon icon-purple"></i> Sleep Duration (ساعات النوم): <strong id="sleep-val-disp" class="highlight-val">7.5 Hours</strong></label>
+                                    <input type="range" min="2" max="12" step="0.5" value="7.5" id="chk-sleep" class="glass-slider" oninput="document.getElementById('sleep-val-disp').innerText = this.value + ' Hours'">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sleep Quality (جودة النوم):</label>
+                                    <select id="chk-sleep-quality" class="glass-select">
+                                        <option value="Good" selected>Good (نوم جيد وهادئ)</option>
+                                        <option value="Fair">Fair (متوسط)</option>
+                                        <option value="Poor">Poor / Interrupted (نوم سيء ومتقطع)</option>
+                                    </select>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary" onclick="goToStep(2)">&larr; Back</button>
+                                    <button type="button" class="btn btn-primary" onclick="goToStep(4)">Next: Medications &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Medications & Supplements -->
+                            <div class="wizard-step" id="step-4">
+                                <div class="step-header-banner">
+                                    <i class="fa-solid fa-pills"></i>
+                                    <div>
+                                        <h4>Medications & Supplements (العلاجات والمكملات)</h4>
+                                        <p>Track daily compliance for prenatal vitamins and prescribed meds.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prenatal Supplements Taken Today:</label>
+                                    <div class="checkbox-grid">
+                                        <label class="custom-checkbox-card"><input type="checkbox" id="chk-vit-iron" checked> <span><i class="fa-solid fa-capsules icon-green"></i> Iron (حديد)</span></label>
+                                        <label class="custom-checkbox-card"><input type="checkbox" id="chk-vit-calcium" checked> <span><i class="fa-solid fa-bone icon-accent"></i> Calcium (كالسيوم)</span></label>
+                                        <label class="custom-checkbox-card"><input type="checkbox" id="chk-vit-folic" checked> <span><i class="fa-solid fa-tablets icon-purple"></i> Folic Acid (فوليك أسيد)</span></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-prescription-bottle-medical"></i> Prescribed Medications (Aspirin, Labetalol, Insulin):</label>
+                                    <input type="text" id="chk-meds" placeholder="e.g. Low-dose Aspirin 81mg, Labetalol 100mg" class="glass-input">
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary" onclick="goToStep(3)">&larr; Back</button>
+                                    <button type="button" class="btn btn-primary" onclick="goToStep(5)">Next: Symptoms & Red Flags &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Symptoms & Warning Signs -->
+                            <div class="wizard-step" id="step-5">
+                                <div class="step-header-banner danger-banner">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <div>
+                                        <h4>Symptoms & Warning Signs (الأعراض وعلامات الخطر)</h4>
+                                        <p>Immediate early warning signals for Preeclampsia, HELLP, and Obstetric emergencies.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Swelling / Peripheral Edema (التورم):</label>
+                                    <input type="hidden" id="chk-edema" value="None">
+                                    <div class="option-cards-grid">
+                                        <div class="option-card active" onclick="selectOptionCard('chk-edema', 'None', this)">
+                                            <div class="option-icon">🟢</div>
+                                            <div class="option-info">
+                                                <h5>None</h5>
+                                                <small>لا يوجد تورم</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-edema', 'Legs', this)">
+                                            <div class="option-icon">🦵</div>
+                                            <div class="option-info">
+                                                <h5>Legs / Feet</h5>
+                                                <small>تورم بالقدمين</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card danger-option" onclick="selectOptionCard('chk-edema', 'Hands/Face', this)">
+                                            <div class="option-icon">🚨</div>
+                                            <div class="option-info">
+                                                <h5>Hands / Face</h5>
+                                                <small>تورم مفاجئ بالوجه/اليدين ⚠️</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Headache Intensity (الصداع):</label>
+                                    <input type="hidden" id="chk-headache" value="None">
+                                    <div class="option-cards-grid">
+                                        <div class="option-card active" onclick="selectOptionCard('chk-headache', 'None', this)">
+                                            <div class="option-icon">🟢</div>
+                                            <div class="option-info">
+                                                <h5>None</h5>
+                                                <small>لا يوجد صداع</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card" onclick="selectOptionCard('chk-headache', 'Mild', this)">
+                                            <div class="option-icon">🟡</div>
+                                            <div class="option-info">
+                                                <h5>Mild</h5>
+                                                <small>صداع خفيف</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card danger-option" onclick="selectOptionCard('chk-headache', 'Severe/Unrelenting', this)">
+                                            <div class="option-icon">⚡</div>
+                                            <div class="option-info">
+                                                <h5>Severe / Constant</h5>
+                                                <small>صداع شديد مستمر ⚠️</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="toggle-cards-list">
+                                    <label class="toggle-card">
+                                        <input type="checkbox" id="chk-vision">
+                                        <div class="toggle-card-content">
+                                            <div class="toggle-icon"><i class="fa-solid fa-eye-slash"></i></div>
+                                            <div>
+                                                <h5>Blurred Vision / Visual Spots</h5>
+                                                <small>زغللة في الرؤية أو نقاط سوداء أفقية</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="toggle-card">
+                                        <input type="checkbox" id="chk-ruq">
+                                        <div class="toggle-card-content">
+                                            <div class="toggle-icon"><i class="fa-solid fa-file-waveform"></i></div>
+                                            <div>
+                                                <h5>Right Upper Quadrant Pain</h5>
+                                                <small>ألم أعلى اليمين تحت القفص الصدري (مؤشر كبد)</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="toggle-card danger-toggle">
+                                        <input type="checkbox" id="chk-bleeding">
+                                        <div class="toggle-card-content">
+                                            <div class="toggle-icon"><i class="fa-solid fa-droplet"></i></div>
+                                            <div>
+                                                <h5>Vaginal Bleeding / Spotting</h5>
+                                                <small>نزيف رحمي أو بقيع دموي طارئ 🚨</small>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary" onclick="goToStep(4)">&larr; Back</button>
+                                    <button type="button" class="btn btn-primary" onclick="goToStep(6)">Next: Fetal Monitoring &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 6: Fetal Monitoring -->
+                            <div class="wizard-step" id="step-6">
+                                <div class="step-header-banner purple-banner">
+                                    <i class="fa-solid fa-baby"></i>
+                                    <div>
+                                        <h4>Fetal Monitoring (>28 Weeks) (متابعة الجنين)</h4>
+                                        <p>Confirm normal fetal movements and daily kick counts.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fetal Movement Status (حركة الجنين):</label>
+                                    <input type="hidden" id="chk-fetal-mov" value="Normal">
+                                    <div class="option-cards-grid">
+                                        <div class="option-card active" onclick="selectOptionCard('chk-fetal-mov', 'Normal', this)">
+                                            <div class="option-icon">👶</div>
+                                            <div class="option-info">
+                                                <h5>Normal</h5>
+                                                <small>طبيعية ونشطة</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card warning-option" onclick="selectOptionCard('chk-fetal-mov', 'Decreased', this)">
+                                            <div class="option-icon">⚠️</div>
+                                            <div class="option-info">
+                                                <h5>Decreased</h5>
+                                                <small>قلة حركة الجنين</small>
+                                            </div>
+                                        </div>
+                                        <div class="option-card danger-option" onclick="selectOptionCard('chk-fetal-mov', 'None', this)">
+                                            <div class="option-icon">🚨</div>
+                                            <div class="option-info">
+                                                <h5>Zero Kicks</h5>
+                                                <small>توقف الحركة تماماً 🚨</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fa-solid fa-stopwatch icon-accent"></i> Kick Count (عدد الركلات في ساعتين):</label>
+                                    <input type="number" id="chk-kicks" value="10" placeholder="e.g. 10 kicks" class="glass-input">
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary" onclick="goToStep(5)">&larr; Back</button>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-paper-plane"></i> Submit Daily Check-in & Evaluate Risk</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Interactive Calendar & Trends Side Card -->
+                    <div class="card calendar-trends-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-calendar-days icon-accent"></i> Daily Check-in Calendar (التقويم اليومي)</h3>
+                            <span class="badge badge-purple" id="checkin-count-badge">0 Entries Logged</span>
+                        </div>
+                        
+                        <div class="calendar-wrapper" id="checkin-calendar">
+                            <!-- Dynamically populated month calendar grid -->
+                        </div>
+
+                        <div class="trends-section">
+                            <h4><i class="fa-solid fa-chart-line icon-green"></i> AI Timeline Longitudinal Trends</h4>
+                            <div class="trends-box" id="checkin-trends-box">
+                                <p><i class="fa-solid fa-circle-info"></i> Submit daily check-ins to generate automated trend analysis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Pregnancy Timeline -->
+            <section id="tab-timeline" class="tab-content">
+                <div class="card timeline-card full-width">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-calendar-days icon-accent"></i> Patient Pregnancy Timeline</h3>
+                        <span class="badge badge-info">Gestational Week 14</span>
+                    </div>
+
+                    <div class="trimester-progress">
+                        <div class="trimester T1 completed">
+                            <span>Trimester 1</span>
+                            <small>Weeks 1–12 (Complete)</small>
+                        </div>
+                        <div class="trimester T2 active">
+                            <span>Trimester 2</span>
+                            <small>Weeks 13–27 (Current: W14)</small>
+                        </div>
+                        <div class="trimester T3">
+                            <span>Trimester 3</span>
+                            <small>Weeks 28–40</small>
+                        </div>
+                    </div>
+
+                    <div class="timeline-entries" id="timeline-entries">
+                        <div class="timeline-item">
+                            <div class="timeline-marker marker-green"></div>
+                            <div class="timeline-content">
+                                <span class="time-stamp">2026-05-15</span>
+                                <h4>Last Menstrual Period (LMP)</h4>
+                                <p>Baseline recorded. Estimated Due Date set to February 20, 2027.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker marker-blue"></div>
+                            <div class="timeline-content">
+                                <span class="time-stamp">Week 8 • 2026-07-10</span>
+                                <h4>First Trimester Ultrasound & Lab Panel</h4>
+                                <p>Fetal cardiac activity confirmed (FHR: 152 bpm). Hemoglobin: 12.1 g/dL.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item current">
+                            <div class="timeline-marker marker-purple"></div>
+                            <div class="timeline-content">
+                                <span class="time-stamp">Week 14 • Today</span>
+                                <h4>Second Trimester Check-in</h4>
+                                <p>Vitals normal (BP: 120/80 mmHg). No severe red-flag symptoms reported.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
