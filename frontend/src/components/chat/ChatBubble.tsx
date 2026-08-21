@@ -91,47 +91,44 @@ export default function ChatBubble({ message, onRetryUpload, onRemoveAttachment 
   return (
     <div
       className={cn(
-        "flex gap-3 md:gap-4 animate-fade-in-up w-full my-3",
-        isUser ? "flex-row-reverse" : "flex-row"
+        "flex gap-4 w-full my-6 animate-fade-in-up",
+        isUser ? "justify-end" : "justify-start"
       )}
     >
-      {/* Avatar Container */}
-      <div
-        className={cn(
-          "w-9 h-9 md:w-10 md:h-10 rounded-2xl flex items-center justify-center flex-shrink-0 mt-1 border shadow-lg transition-transform hover:scale-105",
-          isUser
-            ? "bg-slate-800/90 text-slate-300 border-slate-700 shadow-inner"
-            : "bg-gradient-to-br from-cyan-500/20 via-brand-500/20 to-purple-500/20 text-cyan-300 border-cyan-500/30 shadow-[0_0_20px_rgba(6,182,212,0.25)]"
-        )}
-      >
-        {isUser ? <User size={18} /> : <Bot size={22} />}
-      </div>
+      {/* AI Avatar */}
+      {!isUser && (
+        <div className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-1 border border-brand-500/30 bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-sm">
+          <Bot size={18} />
+        </div>
+      )}
 
-      {/* Main Content Bubble */}
-      <div className={cn("max-w-[88%] md:max-w-[80%] flex flex-col space-y-1.5", isUser ? "items-end" : "items-start")}>
-        {/* Sub Header */}
-        <div className={cn("flex items-center gap-2 text-[11px] text-slate-400 px-1", isUser && "flex-row-reverse")}>
-          <span className="font-semibold text-slate-300">{isUser ? "You" : "Materna Neural AI"}</span>
-          <span>•</span>
-          <span className="flex items-center gap-1"><Clock size={10} /> {timeStr}</span>
-
-          {!isUser && message.confidence !== undefined && (
-            <span className="ml-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono font-semibold flex items-center gap-1">
+      {/* Main Content Container */}
+      <div className={cn("w-full flex flex-col space-y-2", isUser ? "items-end" : "items-start")}>
+        
+        {/* Sub Header for AI (Grounded Badge) */}
+        {!isUser && message.confidence !== undefined && (
+          <div className="flex items-center gap-2 mb-1">
+            <span className="font-semibold text-slate-300 text-sm">Materna Neural AI</span>
+            <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono font-semibold flex items-center gap-1">
               <ShieldCheck size={11} /> {(message.confidence * 100).toFixed(0)}% Grounded
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Message Container Card */}
+        {/* Message Content */}
         <div
           className={cn(
-            "rounded-2xl md:rounded-3xl p-4 md:p-5 shadow-2xl backdrop-blur-xl border relative transition-all",
+            "relative text-[15px] leading-relaxed",
             isUser
-              ? "bg-gradient-to-r from-brand-600 to-brand-700 text-white border-brand-400/40 rounded-tr-xs shadow-glow-brand"
-              : "bg-slate-900/85 text-slate-200 border-slate-800 rounded-tl-xs shadow-[0_8px_32px_rgba(0,0,0,0.5)] hover:border-slate-700"
+              ? "bg-slate-800 text-slate-100 rounded-3xl rounded-tr-sm px-5 py-3 shadow-sm"
+              : "text-slate-200"
           )}
         >
-          {renderFormattedText(message.content)}
+          {isUser ? (
+            <p className="whitespace-pre-wrap">{message.content}</p>
+          ) : (
+            renderFormattedText(message.content)
+          )}
 
           {/* Vitals Extracted Block */}
           {!isUser && message.vitalsExtracted && Object.keys(message.vitalsExtracted).length > 0 && (

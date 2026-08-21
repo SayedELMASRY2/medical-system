@@ -46,139 +46,44 @@ export default function DoctorPage() {
   const [selectedPatient, setSelectedPatient] = useState<DoctorPatient | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Sync and load ONLY REAL registered patients from database & registration control
+  // Sync and load ONLY REAL registered patients from database
   useEffect(() => {
     async function loadRealPatients() {
       if (typeof window === "undefined") return;
 
-      const deletedIds: string[] = JSON.parse(localStorage.getItem("admin_deleted_user_ids") || "[]");
-      const deletedNames: string[] = JSON.parse(localStorage.getItem("admin_deleted_names") || "[]");
-
-      let realPatientsMap = new Map<string, DoctorPatient>();
-
-      // 1. Load users registered via /register or /onboarding
-      const registered: any[] = JSON.parse(localStorage.getItem("materna_registered_users") || "[]");
-      registered.forEach((regUser, index) => {
-        if (regUser.role === "PATIENT" || !regUser.role) {
-          const key = (regUser.name || regUser.email || `user-${index}`).toLowerCase();
-          if (!realPatientsMap.has(key)) {
-            realPatientsMap.set(key, {
-              id: regUser.id || `reg-${index}`,
-              name: regUser.name || regUser.email.split("@")[0],
-              age: regUser.age || 28,
-              gestationalWeek: regUser.gestationalWeek || 26,
-              riskStatus: regUser.riskStatus || "monitor",
-              latestBP: regUser.latestBP || "120/80",
-              heartRate: regUser.heartRate || 80,
-              proteinuria: regUser.proteinuria || "negative",
-              symptoms: regUser.symptoms || ["Registered Patient"],
-              lastCheckin: "Recently Active",
-              escalated: false,
-            });
-          }
-        }
-      });
-
-      // 2. Load active saved profile if present
-      const profileStr = localStorage.getItem("materna_user_profile");
-      if (profileStr) {
-        try {
-          const prof = JSON.parse(profileStr);
-          if (prof.fullName) {
-            const key = prof.fullName.toLowerCase();
-            if (!realPatientsMap.has(key)) {
-              realPatientsMap.set(key, {
-                id: "active-profile-1",
-                name: prof.fullName,
-                age: 29,
-                gestationalWeek: prof.gestationalWeek || 28,
-                riskStatus: "clinical_review",
-                latestBP: "135/85",
-                heartRate: 88,
-                proteinuria: "trace",
-                symptoms: [prof.conditions || "Active Profile Patient"],
-                lastCheckin: "Just now",
-                escalated: false,
-              });
-            }
-          }
-        } catch (e) { }
-      }
-
-      // 3. Load users from admin panel if present
-      const adminUsersStr = localStorage.getItem("admin_users");
-      if (adminUsersStr) {
-        try {
-          const adminUsers: any[] = JSON.parse(adminUsersStr);
-          adminUsers.forEach((u, i) => {
-            if (u.role === "PATIENT") {
-              const key = u.name.toLowerCase();
-              if (!realPatientsMap.has(key)) {
-                realPatientsMap.set(key, {
-                  id: u.id || `admin-usr-${i}`,
-                  name: u.name,
-                  age: 27,
-                  gestationalWeek: 24,
-                  riskStatus: "monitor",
-                  latestBP: "124/82",
-                  heartRate: 82,
-                  proteinuria: "negative",
-                  symptoms: ["Admin Managed Patient"],
-                  lastCheckin: u.lastActive || "Active",
-                  escalated: false,
-                });
-              }
-            }
-          });
-        } catch (e) { }
-      }
-
-      // 4. Try fetching live users from backend API
       try {
         const token = localStorage.getItem("access_token");
-        const res = await fetch("http://localhost:8000/api/v1/admin/users", {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        if (!token) return;
+
+        const res = await fetch("http://localhost:8000/api/v1/dashboard/doctor/patients", {
+          headers: { Authorization: `Bearer ${token}` },
         });
+
         if (res.ok) {
           const data = await res.json();
-          data.users?.forEach((u: any, i: number) => {
-            if (u.role === "PATIENT") {
-              const uName = u.full_name || u.email.split("@")[0];
-              const key = uName.toLowerCase();
-              if (!realPatientsMap.has(key)) {
-                realPatientsMap.set(key, {
-                  id: u.id || `api-usr-${i}`,
-                  name: uName,
-                  age: 28,
-                  gestationalWeek: 26,
-                  riskStatus: "low",
-                  latestBP: "118/78",
-                  heartRate: 76,
-                  proteinuria: "negative",
-                  symptoms: ["Database Patient"],
-                  lastCheckin: "Live DB",
-                  escalated: false,
-                });
-              }
-            }
-          });
+          const realPatientsList: DoctorPatient[] = data.patients.map((u: any) => ({
+            id: u.id,
+            name: u.full_name,
+            age: u.age || 28,
+            gestationalWeek: u.gestational_age_weeks || 26,
+            riskStatus: u.risk_status || "low",
+            latestBP: u.latest_bp || "N/A",
+            heartRate: u.latest_heart_rate || 0,
+            proteinuria: "N/A", // Not implemented in summary yet
+            symptoms: u.latest_symptoms || [],
+            lastCheckin: u.created_at ? new Date(u.created_at).toLocaleDateString() : "Live DB",
+            escalated: u.risk_status === "high",
+          }));
+
+          setPatients(realPatientsList);
+          if (realPatientsList.length > 0) {
+            setSelectedPatient(realPatientsList[0]);
+          } else {
+            setSelectedPatient(null);
+          }
         }
-      } catch (e) { }
-
-      // Convert map to array and apply deletion filter
-      let realPatientsList = Array.from(realPatientsMap.values());
-
-      const filtered = realPatientsList.filter((p) => {
-        const isDeletedById = deletedIds.includes(p.id);
-        const isDeletedByName = deletedNames.some((dn) => dn.toLowerCase() === p.name.toLowerCase());
-        return !isDeletedById && !isDeletedByName;
-      });
-
-      setPatients(filtered);
-      if (filtered.length > 0) {
-        setSelectedPatient(filtered[0]);
-      } else {
-        setSelectedPatient(null);
+      } catch (e) {
+        console.error("Failed to load patients", e);
       }
     }
 

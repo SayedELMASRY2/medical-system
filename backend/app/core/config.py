@@ -33,7 +33,7 @@ class Settings(BaseSettings):
 
     # AI & LLMs Configuration
     OPENROUTER_API_KEY: str = "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"
-    OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
+    OPENROUTER_BASE_URL: str = "https://api.openrouter.ai/v1"
     GROQ_API_KEY: str = "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"
     COHERE_API_KEY: str = "EfpCXWlhv9wp8J5eibTDJirHsqnHc4YiFfFYNCUy"
     

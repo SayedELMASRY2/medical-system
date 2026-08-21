@@ -1,6 +1,7 @@
 from typing import Literal, Optional
 from pydantic_settings import BaseSettings
 from pydantic import Field
+import datetime
 
 
 class Settings(BaseSettings):
@@ -9,6 +10,7 @@ class Settings(BaseSettings):
     llm_model: str = Field(default="llama-3.3-70b-versatile")
     llm_temperature: float = Field(default=0.1, ge=0.0, le=2.0)
     llm_max_tokens: int = Field(default=4096, ge=256, le=32768)
+
 
     groq_api_key: str = Field(default="")
     openrouter_api_key: str = Field(default="")

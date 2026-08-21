@@ -82,6 +82,7 @@ async def get_dashboard_summary(
             "latest_weight": latest_checkin.weight_kg if latest_checkin else None,
             "latest_bp": f"{latest_checkin.systolic_bp}/{latest_checkin.diastolic_bp}" if latest_checkin and latest_checkin.systolic_bp else None,
             "latest_heart_rate": latest_checkin.heart_rate if latest_checkin else None,
+            "latest_hydration": latest_checkin.hydration_liters if latest_checkin else None,
         },
         "chart_data": chart_data,
     }
@@ -113,19 +114,31 @@ async def get_doctor_patients(
     result = await db.execute(query.order_by(PatientProfile.risk_status.desc()))
     patients = result.scalars().all()
 
+    patient_data = []
+    for p in patients:
+        # Fetch latest checkin for this patient
+        checkin_result = await db.execute(
+            select(DailyCheckIn)
+            .where(DailyCheckIn.patient_id == str(p.id))
+            .order_by(DailyCheckIn.checkin_date.desc())
+            .limit(1)
+        )
+        latest_checkin = checkin_result.scalar_one_or_none()
+        
+        patient_data.append({
+            "id": str(p.id),
+            "full_name": p.full_name,
+            "age": p.age,
+            "gestational_age_weeks": p.gestational_age_weeks,
+            "risk_status": p.risk_status,
+            "estimated_due_date": p.estimated_due_date.isoformat() if p.estimated_due_date else None,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+            "assigned_doctor_id": p.assigned_doctor_id,
+            "latest_bp": f"{latest_checkin.systolic_bp}/{latest_checkin.diastolic_bp}" if latest_checkin and latest_checkin.systolic_bp else "N/A",
+            "latest_heart_rate": latest_checkin.heart_rate if latest_checkin and latest_checkin.heart_rate else 0,
+        })
+
     return {
-        "patients": [
-            {
-                "id": str(p.id),
-                "full_name": p.full_name,
-                "age": p.age,
-                "gestational_age_weeks": p.gestational_age_weeks,
-                "risk_status": p.risk_status,
-                "estimated_due_date": p.estimated_due_date.isoformat() if p.estimated_due_date else None,
-                "created_at": p.created_at.isoformat() if p.created_at else None,
-                "assigned_doctor_id": p.assigned_doctor_id,
-            }
-            for p in patients
-        ],
+        "patients": patient_data,
         "total": len(patients),
     }

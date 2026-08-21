@@ -90,87 +90,92 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
   const canSend = (text.trim().length > 0 || pendingFiles.length > 0) && !disabled;
 
   return (
-    <div className="w-full">
-      {/* Floating Glass Dock Input Box */}
-      <div className="bg-slate-900/90 backdrop-blur-2xl border border-glass-border/80 focus-within:border-cyan-500/50 rounded-2xl md:rounded-3xl p-3 shadow-2xl transition-all duration-300">
+    <div className="w-full relative">
+      <div className="bg-slate-800 focus-within:bg-slate-700/80 rounded-3xl p-2 px-3 shadow-lg transition-all duration-300 flex flex-col relative border border-slate-700">
+        
         {/* Pending File Previews */}
         {pendingFiles.length > 0 && (
-          <div className="flex flex-wrap gap-2 px-2 pb-2">
+          <div className="flex flex-wrap gap-2 px-2 pb-2 mt-2">
             {pendingFiles.map((att) => (
               <div
                 key={att.id}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-xs animate-fade-in shadow-sm"
+                className="relative group w-14 h-14 rounded-xl border border-slate-600 bg-slate-900 overflow-hidden flex-shrink-0 flex items-center justify-center"
               >
-                {att.type.startsWith("image/") ? (
-                  <FileImage size={14} className="text-cyan-400" />
+                {att.previewUrl ? (
+                  <img src={att.previewUrl} alt="preview" className="w-full h-full object-cover" />
                 ) : (
-                  <FileText size={14} className="text-amber-400" />
+                  <FileText size={18} className="text-slate-400" />
                 )}
-                <span className="text-slate-200 max-w-[140px] truncate">{att.name}</span>
                 <button
+                  type="button"
                   onClick={() => removeFile(att.id)}
-                  className="p-1 text-slate-400 hover:text-rose-400 transition-colors"
+                  className="absolute top-0.5 right-0.5 bg-slate-950/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-500"
                 >
-                  <X size={12} />
+                  <X size={10} />
                 </button>
               </div>
             ))}
           </div>
         )}
 
-        <div className="flex items-end gap-2 px-2">
+        <div className="flex items-end gap-2">
           {/* Attachment Button */}
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
+            className="p-2 text-slate-400 hover:text-slate-200 rounded-full hover:bg-slate-600/50 transition-colors shrink-0 mb-0.5"
             disabled={disabled}
-            className="p-2.5 rounded-2xl text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors mb-0.5"
-            title="Attach lab report or image"
+            aria-label="Attach File"
           >
-            <Paperclip size={18} />
+            <Paperclip size={20} />
           </button>
-
           <input
-            ref={fileInputRef}
             type="file"
-            accept={ACCEPTED_TYPES}
             multiple
+            accept={ACCEPTED_TYPES}
+            ref={fileInputRef}
             onChange={handleFileSelect}
             className="hidden"
           />
 
-          {/* Textarea */}
+          {/* Text Area */}
           <textarea
             ref={textareaRef}
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => {
+              setText(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
+            }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Materna AI Co-Pilot (e.g., 'Evaluate my 14-day BP trend')..."
             disabled={disabled}
+            placeholder="Message Materna AI..."
+            className="flex-1 max-h-[200px] min-h-[24px] bg-transparent resize-none outline-none text-[15px] text-slate-100 placeholder:text-slate-500 py-2"
             rows={1}
-            className="flex-1 bg-transparent text-slate-100 text-xs md:text-sm placeholder:text-slate-500 outline-none resize-none max-h-32 min-h-[38px] py-2"
+            style={{ overflowY: text.split("\n").length > 5 ? "auto" : "hidden" }}
           />
 
-          {/* Glowing Send Button */}
+          {/* Send Button */}
           <button
-            type="button"
             onClick={handleSend}
             disabled={!canSend}
             className={cn(
-              "p-2.5 md:p-3 rounded-2xl flex items-center justify-center transition-all duration-200 flex-shrink-0 mb-0.5 shadow-md",
+              "p-2 rounded-full flex-shrink-0 transition-all mb-0.5",
               canSend
-                ? "bg-gradient-to-r from-brand-500 to-cyan-500 text-white shadow-glow-brand hover:scale-105"
-                : "bg-slate-800 text-slate-600 cursor-not-allowed"
+                ? "bg-white text-slate-900 hover:bg-slate-200 shadow-sm"
+                : "bg-slate-700/50 text-slate-500 cursor-not-allowed"
             )}
+            aria-label="Send Message"
           >
-            <Send size={16} className={cn(canSend && "translate-x-0.5")} />
+            <Send size={18} className={canSend ? "ml-0.5" : ""} />
           </button>
         </div>
       </div>
-
-      <p className="text-[10px] md:text-[11px] text-slate-500 text-center mt-2">
-        Materna AI provides clinical decision support anchored in ACOG protocols. Consult your attending physician for official diagnosis.
-      </p>
+      <div className="text-center mt-2">
+        <p className="text-[10px] text-slate-400">
+          Materna AI can make mistakes. Check important info.
+        </p>
+      </div>
     </div>
   );
 }
