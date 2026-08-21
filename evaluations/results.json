@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-08-20 05:38:05",
-  "total_test_cases": 8,
+  "timestamp": "2026-08-20 14:15:15",
+  "total_test_cases": 100,
   "total_duration_sec": 0.0,
   "rag_retrieval_metrics": {
-    "hit_rate_at_1": 0.75,
-    "hit_rate_at_3": 0.75,
-    "mrr_at_3": 0.75,
-    "ndcg_at_3": 0.8549,
-    "precision_at_3": 0.25,
-    "recall_at_3": 0.8125
+    "hit_rate_at_1": 0.84,
+    "hit_rate_at_3": 0.84,
+    "mrr_at_3": 0.84,
+    "ndcg_at_3": 0.8375,
+    "precision_at_3": 0.28,
+    "recall_at_3": 0.79
   },
   "llm_generation_metrics": {
     "citation_groundedness_score": 0.0,
@@ -17,9 +17,9 @@
     "out_of_scope_refusal_accuracy": 1.0
   },
   "clinical_safety_matrix": {
-    "TP": 3,
+    "TP": 48,
     "FP": 0,
-    "TN": 3,
+    "TN": 36,
     "FN": 0,
     "accuracy": 1.0,
     "sensitivity": 1.0,
@@ -28,10 +28,10 @@
     "f1_score": 1.0
   },
   "agent_latency_ms": {
-    "OCR Scanner Agent": 261.38,
-    "Vitals Validation Agent": 74.75,
-    "Risk Engine Evaluator": 168.0,
-    "Timeline Trend Agent": 299.75,
-    "Doctor Escalation Agent": 171.25
+    "OCR Scanner Agent": 244.77,
+    "Vitals Validation Agent": 72.37,
+    "Risk Engine Evaluator": 170.95,
+    "Timeline Trend Agent": 295.83,
+    "Doctor Escalation Agent": 199.89
   }
 }

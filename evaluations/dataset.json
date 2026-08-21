@@ -1,46 +1,649 @@
 [
   {
-    "id": "eval-01",
-    "category": "Preeclampsia Diagnostic",
-    "query": "Patient at 32 weeks with BP 165/108, severe frontal headache, proteinuria +2, and facial edema. What is the risk level and clinical action?",
-    "ground_truth_doc_ids": ["doc_preeclampsia_guidelines", "doc_acog_hypertension_2023"],
+    "id": "eval-001",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 9 hours at 28 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
     "expected_risk": "RED",
     "is_out_of_scope": false
   },
   {
-    "id": "eval-02",
+    "id": "eval-002",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 14 hours at 31 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-003",
     "category": "Gestational Diabetes",
-    "query": "Fasting blood sugar 104 mg/dL at 28 weeks. How should glucose tolerance test be interpreted?",
-    "ground_truth_doc_ids": ["doc_gdm_screening_ada", "doc_maternal_nutrition_guide"],
+    "query": "Fasting blood sugar 103 mg/dL at 25 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
     "expected_risk": "YELLOW",
     "is_out_of_scope": false
   },
   {
-    "id": "eval-03",
-    "category": "Routine Check-in",
-    "query": "BP 118/76 mmHg, weight gain 0.4kg this week, fetal movement normal at 24 weeks.",
-    "ground_truth_doc_ids": ["doc_routine_prenatal_care"],
-    "expected_risk": "GREEN",
+    "id": "eval-004",
+    "category": "HELLP Syndrome Emergency",
+    "query": "blurred vision, AST 78 U/L, platelets 51,000 /uL at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
     "is_out_of_scope": false
   },
   {
-    "id": "eval-04",
+    "id": "eval-005",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 109 mg/dL at 32 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-006",
+    "category": "HELLP Syndrome Emergency",
+    "query": "mild nausea, AST 177 U/L, platelets 64,000 /uL at 35 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-007",
+    "category": "HELLP Syndrome Emergency",
+    "query": "Right upper quadrant abdominal pain, AST 71 U/L, platelets 60,000 /uL at 39 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-008",
     "category": "Out-of-Scope Query",
-    "query": "How do I fix a flat tire on a 2018 Toyota Corolla?",
+    "query": "Best recipe for chocolate cake?",
     "ground_truth_doc_ids": [],
     "expected_risk": "NONE",
     "is_out_of_scope": true
   },
   {
-    "id": "eval-05",
-    "category": "HELLP Syndrome Emergency",
-    "query": "Right upper quadrant abdominal pain, AST 180 U/L, platelets 82,000 /uL at 34 weeks.",
-    "ground_truth_doc_ids": ["doc_preeclampsia_guidelines", "doc_hellp_syndrome_protocol"],
+    "id": "eval-009",
+    "category": "Routine Check-in",
+    "query": "BP 114/76 mmHg, weight gain 1.0kg this week, fetal movement normal at 22 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-010",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 29 weeks with BP 164/93, Right upper quadrant abdominal pain, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
     "expected_risk": "RED",
     "is_out_of_scope": false
   },
   {
-    "id": "eval-06",
+    "id": "eval-011",
+    "category": "HELLP Syndrome Emergency",
+    "query": "Right upper quadrant abdominal pain, AST 81 U/L, platelets 79,000 /uL at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-012",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 34 weeks with BP 145/107, Right upper quadrant abdominal pain, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-013",
+    "category": "HELLP Syndrome Emergency",
+    "query": "mild nausea, AST 87 U/L, platelets 52,000 /uL at 38 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-014",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 113 mg/dL at 25 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-015",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 143/102 mmHg at 28 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-016",
+    "category": "Out-of-Scope Query",
+    "query": "Best recipe for chocolate cake?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-017",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 118 mg/dL at 29 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-018",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 14 hours at 39 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-019",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 8 hours at 37 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-020",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 11 hours at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-021",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 13 hours at 30 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-022",
+    "category": "Out-of-Scope Query",
+    "query": "How to train a dog to sit?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-023",
+    "category": "Routine Check-in",
+    "query": "BP 130/77 mmHg, weight gain 0.7kg this week, fetal movement normal at 38 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-024",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 141/97 mmHg at 21 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-025",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 150/102 mmHg at 28 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-026",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 31 weeks with BP 176/118, Right upper quadrant abdominal pain, facial edema. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-027",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 21 hours at 34 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-028",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 20 hours at 30 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-029",
+    "category": "Routine Check-in",
+    "query": "BP 114/77 mmHg, weight gain 0.8kg this week, fetal movement normal at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-030",
+    "category": "Routine Check-in",
+    "query": "BP 128/83 mmHg, weight gain 0.9kg this week, fetal movement normal at 24 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-031",
+    "category": "Routine Check-in",
+    "query": "BP 117/74 mmHg, weight gain 0.6kg this week, fetal movement normal at 14 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-032",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 141/93 mmHg at 24 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-033",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 11 hours at 40 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-034",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 19 hours at 37 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-035",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 34 weeks with BP 164/109, blurred vision, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-036",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 99 U/L, platelets 93,000 /uL at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-037",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 148/100 mmHg at 23 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-038",
+    "category": "Routine Check-in",
+    "query": "BP 123/75 mmHg, weight gain 0.5kg this week, fetal movement normal at 35 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-039",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 14 hours at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-040",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 145/106 mmHg at 23 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-041",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 149/106 mmHg at 39 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-042",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 104 mg/dL at 29 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-043",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 152 U/L, platelets 81,000 /uL at 28 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-044",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 33 weeks with BP 159/97, severe frontal headache, facial edema. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-045",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 91 U/L, platelets 81,000 /uL at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-046",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 157/94 mmHg at 24 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-047",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 21 hours at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-048",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 111 mg/dL at 32 weeks. Previous history of GDM. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-049",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 129 mg/dL at 27 weeks. Previous history of GDM. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-050",
+    "category": "Out-of-Scope Query",
+    "query": "Best recipe for chocolate cake?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-051",
+    "category": "Out-of-Scope Query",
+    "query": "What are the best movies of 2024?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-052",
+    "category": "Out-of-Scope Query",
+    "query": "How do I fix a flat tire on a 2013 Toyota Corolla?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-053",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 33 weeks with BP 141/108, mild nausea, facial edema. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-054",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 29 weeks with BP 180/91, mild nausea, proteinuria +2. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-055",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 33 weeks with BP 144/106, mild nausea, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-056",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 21 hours at 31 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-057",
+    "category": "HELLP Syndrome Emergency",
+    "query": "mild nausea, AST 191 U/L, platelets 65,000 /uL at 40 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-058",
+    "category": "Out-of-Scope Query",
+    "query": "How to train a dog to sit?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-059",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 101 mg/dL at 25 weeks. Previous history of GDM. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-060",
+    "category": "Routine Check-in",
+    "query": "BP 123/83 mmHg, weight gain 0.5kg this week, fetal movement normal at 35 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-061",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 38 weeks with BP 146/91, blurred vision, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-062",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 143/97 mmHg at 26 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-063",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 129 mg/dL at 31 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-064",
     "category": "Out-of-Scope Query",
     "query": "What stock options should I buy for tech companies this quarter?",
     "ground_truth_doc_ids": [],
@@ -48,18 +651,361 @@
     "is_out_of_scope": true
   },
   {
-    "id": "eval-07",
+    "id": "eval-065",
+    "category": "Routine Check-in",
+    "query": "BP 124/77 mmHg, weight gain 0.9kg this week, fetal movement normal at 14 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-066",
+    "category": "Out-of-Scope Query",
+    "query": "What are the best movies of 2024?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-067",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 28 weeks with BP 174/116, severe frontal headache, proteinuria +2. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-068",
     "category": "Gestational Hypertension",
-    "query": "New onset blood pressure 142/92 mmHg at 30 weeks with negative proteinuria.",
-    "ground_truth_doc_ids": ["doc_acog_hypertension_2023"],
+    "query": "New onset blood pressure 147/95 mmHg at 33 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
     "expected_risk": "YELLOW",
     "is_out_of_scope": false
   },
   {
-    "id": "eval-08",
+    "id": "eval-069",
+    "category": "Out-of-Scope Query",
+    "query": "How to train a dog to sit?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-070",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 120 mg/dL at 24 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-071",
+    "category": "Out-of-Scope Query",
+    "query": "How do I fix a flat tire on a 2016 Honda Civic?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-072",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 154/99 mmHg at 33 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-073",
     "category": "Fetal Movement Monitoring",
-    "query": "Decreased fetal kick count over past 12 hours at 36 weeks.",
-    "ground_truth_doc_ids": ["doc_fetal_wellbeing_monitoring"],
+    "query": "Decreased fetal kick count over past 23 hours at 38 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-074",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 21 hours at 30 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-075",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 113 mg/dL at 27 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-076",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 150 U/L, platelets 53,000 /uL at 28 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-077",
+    "category": "HELLP Syndrome Emergency",
+    "query": "blurred vision, AST 198 U/L, platelets 83,000 /uL at 30 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-078",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 36 weeks with BP 145/117, mild nausea, proteinuria +2. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-079",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 130 U/L, platelets 75,000 /uL at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-080",
+    "category": "HELLP Syndrome Emergency",
+    "query": "mild nausea, AST 80 U/L, platelets 89,000 /uL at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-081",
+    "category": "Out-of-Scope Query",
+    "query": "What are the best movies of 2024?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-082",
+    "category": "HELLP Syndrome Emergency",
+    "query": "Right upper quadrant abdominal pain, AST 136 U/L, platelets 63,000 /uL at 38 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-083",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 16 hours at 31 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-084",
+    "category": "Routine Check-in",
+    "query": "BP 122/74 mmHg, weight gain 0.7kg this week, fetal movement normal at 21 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-085",
+    "category": "Out-of-Scope Query",
+    "query": "Best recipe for chocolate cake?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-086",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 142/90 mmHg at 34 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-087",
+    "category": "HELLP Syndrome Emergency",
+    "query": "severe frontal headache, AST 88 U/L, platelets 84,000 /uL at 31 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-088",
+    "category": "HELLP Syndrome Emergency",
+    "query": "Right upper quadrant abdominal pain, AST 103 U/L, platelets 72,000 /uL at 29 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-089",
+    "category": "Gestational Diabetes",
+    "query": "Fasting blood sugar 118 mg/dL at 28 weeks. No prior history. How should glucose tolerance test be interpreted?",
+    "ground_truth_doc_ids": [
+      "doc_gdm_screening_ada",
+      "doc_maternal_nutrition_guide"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-090",
+    "category": "Out-of-Scope Query",
+    "query": "What are the best movies of 2024?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-091",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 15 hours at 37 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-092",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 156/90 mmHg at 37 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-093",
+    "category": "Routine Check-in",
+    "query": "BP 113/74 mmHg, weight gain 0.3kg this week, fetal movement normal at 40 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_routine_prenatal_care"
+    ],
+    "expected_risk": "GREEN",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-094",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 39 weeks with BP 175/94, Right upper quadrant abdominal pain, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-095",
+    "category": "HELLP Syndrome Emergency",
+    "query": "mild nausea, AST 157 U/L, platelets 63,000 /uL at 38 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_hellp_syndrome_protocol"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-096",
+    "category": "Fetal Movement Monitoring",
+    "query": "Decreased fetal kick count over past 14 hours at 36 weeks.",
+    "ground_truth_doc_ids": [
+      "doc_fetal_wellbeing_monitoring"
+    ],
+    "expected_risk": "RED",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-097",
+    "category": "Out-of-Scope Query",
+    "query": "Best recipe for chocolate cake?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-098",
+    "category": "Gestational Hypertension",
+    "query": "New onset blood pressure 141/92 mmHg at 40 weeks with negative proteinuria.",
+    "ground_truth_doc_ids": [
+      "doc_acog_hypertension_2023"
+    ],
+    "expected_risk": "YELLOW",
+    "is_out_of_scope": false
+  },
+  {
+    "id": "eval-099",
+    "category": "Out-of-Scope Query",
+    "query": "Best recipe for chocolate cake?",
+    "ground_truth_doc_ids": [],
+    "expected_risk": "NONE",
+    "is_out_of_scope": true
+  },
+  {
+    "id": "eval-100",
+    "category": "Preeclampsia Diagnostic",
+    "query": "Patient at 28 weeks with BP 161/114, mild nausea, swollen ankles. What is the risk level and clinical action?",
+    "ground_truth_doc_ids": [
+      "doc_preeclampsia_guidelines",
+      "doc_acog_hypertension_2023"
+    ],
     "expected_risk": "RED",
     "is_out_of_scope": false
   }

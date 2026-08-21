@@ -9,6 +9,9 @@ import json
 import time
 import os
 import random
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 from typing import Dict, Any, List
 from evaluations.metrics import RAGEvaluator, ClinicalGenerationEvaluator, ClinicalDiagnosticEvaluator
 
@@ -168,7 +171,25 @@ def run_benchmark():
 
     # Build HTML Report
     generate_html_report(summary_results)
+    generate_matrix_picture(confusion_matrix)
 
+
+def generate_matrix_picture(confusion_matrix: Dict[str, Any]):
+    cm = np.array([[confusion_matrix.get("TN", 0), confusion_matrix.get("FP", 0)], 
+                   [confusion_matrix.get("FN", 0), confusion_matrix.get("TP", 0)]])
+    
+    plt.figure(figsize=(6, 5))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+                xticklabels=['Normal', 'High-Risk'], 
+                yticklabels=['Normal', 'High-Risk'])
+    plt.title('Clinical Risk Classification Confusion Matrix')
+    plt.ylabel('Actual Truth')
+    plt.xlabel('Prediction')
+    
+    matrix_path = os.path.join(os.path.dirname(__file__), "matrix_picture.png")
+    plt.savefig(matrix_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"🖼️ Generated Matrix Picture: {matrix_path}")
 
 def generate_html_report(results: Dict[str, Any]):
     html_path = os.path.join(os.path.dirname(__file__), "results.html")

@@ -1,5 +1,5 @@
-"""
-Materna CDSS — SQLAlchemy ORM Models.
+﻿"""
+Materna CDSS - SQLAlchemy ORM Models.
 
 All models inherit from the shared Base (declarative_base) defined in base.py.
 Import models here so that Alembic autogenerate and relationship resolution
@@ -19,9 +19,12 @@ from app.models.daily_checkin import (  # noqa: F401
     HeadacheSeverity,
     FetalMovement,
 )
-
 # RAG / Vector DB models
 from app.models.document import DocumentChunk  # noqa: F401
 
 # Lab Results models
 from app.models.lab_report import LabReport, LabResultItem, LabReportType  # noqa: F401
+
+# Chat and Alert models
+from app.models.chat import ChatMessage, ChatRole  # noqa: F401
+from app.models.alert import CDSSAlert, AlertSeverity  # noqa: F401
