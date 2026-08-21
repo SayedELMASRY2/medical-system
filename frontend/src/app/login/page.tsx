@@ -14,10 +14,12 @@ import {
   EyeOff,
   AlertCircle,
   Loader2,
+  ArrowLeft,
+  Home,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getScopedKey, parseJwt } from "@/lib/utils";
 
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = "https://travelling-klein-bargains-obituaries.trycloudflare.com/api/v1";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,7 +35,6 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Backend uses OAuth2PasswordRequestForm (form data, not JSON)
       const formData = new URLSearchParams();
       formData.append("username", email);
       formData.append("password", password);
@@ -51,9 +52,23 @@ export default function LoginPage() {
 
       const data = await res.json();
       localStorage.setItem("access_token", data.access_token);
+      document.cookie = `access_token=${data.access_token}; path=/; max-age=86400; SameSite=Lax`;
 
-      // Always redirect to onboarding or dashboard for patients
-      router.push("/onboarding");
+      const decoded = parseJwt(data.access_token);
+      const userRole = decoded?.role || "PATIENT";
+
+      if (userRole === "ADMIN") {
+        router.push("/admin");
+      } else if (userRole === "DOCTOR") {
+        router.push("/doctor");
+      } else {
+        const isCompleted = typeof window !== "undefined" && localStorage.getItem(getScopedKey("onboarding_completed")) === "true";
+        if (!isCompleted) {
+          router.push("/onboarding");
+        } else {
+          router.push("/dashboard");
+        }
+      }
     } catch (err: any) {
       setError(err.message || "Login failed. Please try again.");
     } finally {
@@ -62,20 +77,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative">
+      {/* Back to Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          href="/"
+          className="btn-secondary py-2.5 px-4 text-xs flex items-center gap-2 text-cyan-300 hover:text-white"
+        >
+          <ArrowLeft size={16} />
+          <Home size={15} />
+          <span>Back to Home</span>
+        </Link>
+      </div>
+
       {/* Background accent */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-radial from-brand-500/15 via-transparent to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-radial from-cyan-500/20 via-violet-500/10 to-transparent blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo / Branding */}
         <div className="text-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-500/15 mb-4">
-            <Heart size={32} className="text-brand-400" fill="currentColor" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-cyan-500/20 border border-cyan-500/30 mb-4 shadow-[0_0_25px_rgba(6,182,212,0.3)]">
+            <Heart size={32} className="text-cyan-400" fill="currentColor" />
           </div>
           <h1 className="text-3xl font-bold text-slate-100 mb-1">
             Welcome Back
           </h1>
-          <p className="text-slate-400">
+          <p className="text-slate-400 text-sm">
             Sign in to your <span className="text-gradient-brand font-semibold">Materna</span> account
           </p>
         </div>
@@ -88,7 +115,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Error Alert */}
             {error && (
-              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-alert-red/10 border border-alert-red/20 text-alert-red text-sm animate-fade-in">
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm animate-fade-in">
                 <AlertCircle size={16} className="flex-shrink-0" />
                 <span>{error}</span>
               </div>
@@ -175,23 +202,25 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="divider-gradient my-6" />
 
-          {/* Register Link */}
-          <p className="text-center text-sm text-slate-400">
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/register"
-              className="text-brand-400 hover:text-brand-300 font-medium transition-colors"
-            >
-              Create Account
-            </Link>
-          </p>
+          {/* Register Link & Back Home Link */}
+          <div className="space-y-3 text-center">
+            <p className="text-sm text-slate-400">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
+              >
+                Create Account
+              </Link>
+            </p>
+          </div>
         </GlassCard>
 
         {/* CDSS Badge */}
         <div className="flex justify-center mt-6 animate-fade-in-up opacity-0 fill-mode-forwards animation-delay-300">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-slate-500">
-            <Shield size={12} className="text-brand-400" />
-            Clinical Decision Support System — Not for autonomous diagnosis
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-slate-400 border border-glass-border">
+            <Shield size={12} className="text-cyan-400" />
+            Clinical Decision Support System — Protected Access
           </div>
         </div>
       </div>

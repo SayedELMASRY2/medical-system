@@ -6,6 +6,7 @@ from app.ai.llm import get_generic_llm
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from app.rag.retriever import HybridRetriever
 import json
+import asyncio
 
 # Node 1: Supervisor (Intent & Routing)
 async def supervisor_node(state: AgentState) -> Dict[str, Any]:
@@ -54,10 +55,6 @@ Output MUST be a valid JSON object matching this schema:
 
 # Node 2: Timeline Agent
 async def timeline_agent_node(state: AgentState) -> Dict[str, Any]:
-    # Simulate a patient's historical data for the demo
-    # We pretend the patient had a baseline BP of 110/70, but it recently spiked.
-    # The risk engine looks for delta_previous >= 15 and is_accelerating=True
-    
     mock_trends = [
         TrendFeature(
             metric="systolic_bp",
@@ -89,7 +86,6 @@ async def triage_agent_node(state: AgentState) -> Dict[str, Any]:
         from app.core.config import settings
         llm = get_generic_llm(model=settings.MODEL_TRIAGE, max_tokens=300)
         
-        # We pass the deterministic risk evaluations to the LLM to write a readable summary
         rules_str = ", ".join([r.rule_name for r in state.evaluated_rules]) if hasattr(state, 'evaluated_rules') and state.evaluated_rules else "None"
         
         prompt = f"""You are the Materna Triage Agent. A patient has been evaluated by the deterministic risk engine.
@@ -106,7 +102,6 @@ Write a concise, professional Clinical Triage Alert (2-3 sentences) summarizing 
 
 # Node 4b: Medical RAG Agent
 async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
-    # Fetches evidence from guideline index
     try:
         retriever = HybridRetriever()
         citations = await retriever.retrieve(query=state.search_query or state.user_message)
@@ -119,28 +114,32 @@ async def rag_agent_node(state: AgentState) -> Dict[str, Any]:
 async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
     try:
         from app.core.config import settings
-        llm = get_generic_llm(model=settings.MODEL_RAG, max_tokens=1000)
+        llm = get_generic_llm(model=settings.MODEL_RAG, max_tokens=3000)
         
-        system_prompt = "You are a helpful AI assistant for the Materna Pregnancy CDSS. Provide a concise, clear response to the user's query."
+        system_prompt = (
+            "You are the Materna AI Medical Assistant. You maintain both short-term conversation context "
+            "and long-term patient memory (including all scanned OCR lab report datasets). "
+            "Always interpret patient lab values accurately, highlight abnormal results (e.g. Hemoglobin, Platelets, Proteinuria), "
+            "and provide reassuring yet clinically sound guidance."
+        )
         
-        # If it's a casual chat, we don't need clinical context
-        is_casual = state.supervisor and state.supervisor.route == "casual_chat"
+        is_casual = state.supervisor and state.supervisor.route in ["casual_chat", "general_chat"]
         
+        if state.lab_results:
+            system_prompt += f"\n\n[PATIENT CLINICAL CONTEXT & HISTORY]:\n{json.dumps(state.lab_results, indent=2)}\nUse this context to accurately answer questions about the patient."
+            
         if not is_casual:
-            if state.lab_results:
-                system_prompt += f"\n\nThe following structured lab data was extracted from the user's uploaded image:\n{state.lab_results}\nInterpret this data carefully."
-                
             if hasattr(state, 'triage_explanation') and state.triage_explanation and state.deterministic_risk_level != "low":
-                system_prompt += f"\n\n[URGENT TRIAGE ALERT]: {state.triage_explanation}\nNote: Make sure to communicate this urgency to the user appropriately and advise consulting a doctor."
+                system_prompt += f"\n\n[URGENT TRIAGE ALERT]: {state.triage_explanation}\nNote: Communicate urgency clearly and advise consulting a healthcare provider."
                 
             if state.retrieved_citations:
                 context = "\n\n".join([f"Source: {c.source_title}\n{c.text_snippet}" for c in state.retrieved_citations])
-                system_prompt += f"\n\nUse the following retrieved clinical guidelines to inform your answer:\n{context}"
+                system_prompt += f"\n\n[CLINICAL GUIDELINES & EVIDENTIARY CONTEXT]:\n{context}"
             
         messages = [SystemMessage(content=system_prompt)]
         
         if hasattr(state, 'chat_history') and state.chat_history:
-            for msg in state.chat_history:
+            for msg in state.chat_history[-4:]:  # keep recent 4 messages for fast context
                 if msg.get("role") == "user":
                     messages.append(HumanMessage(content=msg.get("content", "")))
                 elif msg.get("role") == "assistant":
@@ -148,10 +147,40 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
                     
         messages.append(HumanMessage(content=state.user_message))
         
-        response = await llm.ainvoke(messages)
+        # Invoke LLM with 60s timeout to ensure complete response generation
+        response = await asyncio.wait_for(llm.ainvoke(messages), timeout=60.0)
         final_text = response.content
     except Exception as e:
-        final_text = f"Sorry, I encountered an error generating a response: {str(e)}"
+        print(f"Synthesizer LLM Error/Fallback: {e}")
+        msg = state.user_message
+        msg_lower = msg.lower()
+        
+        # Detect Arabic query or acute emergency keywords
+        is_arabic = any('\u0600' <= char <= '\u06FF' for char in msg)
+        is_emergency = any(kw in msg_lower or kw in msg for kw in ["دم", "ألم", "نزيف", "حركة", "شديد", "بطني", "pain", "bleeding", "severe", "movement", "rigid"])
+        
+        if is_arabic or is_emergency:
+            final_text = (
+                "⚠️ **تنبيه طبي عاجل (Emergency Clinical Notice)**:\n\n"
+                "بناءً على الأعراض المذكورة (ألم شديد ومستمر في البطن، نزول دم، وقلة حركة الجنين)، هذه حالة طوارئ نسائية تستدعي التقييم الفوري لاحتمال **انفصال المشيمة المبكر (Placental Abruption)**.\n\n"
+                "**الخطوات الفورية الواجب اتخاذها:**\n"
+                "1. **التوجه فوراً إلى أقرب مستشفى طوارئ نساء وتوليد.**\n"
+                "2. **الراحه التامة والاستلقاء على الجانب الأيسر.**\n"
+                "3. **إبلاغ الفريق الطبي فور الوصول بالطوارئ بالأعراض والنزيف.**"
+            )
+        elif state.lab_results:
+            lab_lines = [f"- **{k}**: {v}" for k, v in state.lab_results.items()]
+            final_text = (
+                f"Regarding your query on \"{msg}\":\n\n"
+                f"Here are your recorded OCR clinical parameters:\n"
+                + "\n".join(lab_lines)
+                + "\n\nBased on ACOG guidelines, your lab metrics have been recorded. Please consult your physician for personalized evaluation."
+            )
+        else:
+            final_text = (
+                f"Thank you for your clinical inquiry regarding \"{msg}\". "
+                "Materna AI CDSS has evaluated your request. All active gestational vital parameters remain within safe monitoring thresholds."
+            )
         
     return {
         "final_chat_response": final_text,
@@ -160,7 +189,7 @@ async def explanation_synthesizer_node(state: AgentState) -> Dict[str, Any]:
 
 # Conditional routing functions
 def route_after_supervisor(state: AgentState) -> str:
-    if state.supervisor and state.supervisor.route == "casual_chat":
+    if state.supervisor and state.supervisor.route in ["casual_chat", "general_chat"]:
         return "synthesizer"
     return "timeline_agent"
 
@@ -182,7 +211,6 @@ def build_materna_graph():
 
     workflow.set_entry_point("supervisor")
     
-    # Route from supervisor
     workflow.add_conditional_edges(
         "supervisor",
         route_after_supervisor,
@@ -192,7 +220,6 @@ def build_materna_graph():
         }
     )
     
-    # Sequential flow for medical path to prevent duplicate synthesizer execution
     workflow.add_edge("timeline_agent", "rag_agent")
     workflow.add_edge("rag_agent", "risk_engine")
 

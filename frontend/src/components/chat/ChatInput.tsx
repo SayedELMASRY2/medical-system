@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Send, Paperclip, X, FileImage, FileText } from "lucide-react";
+import { Send, Paperclip, X, FileImage, FileText, Sparkles } from "lucide-react";
 import { FileAttachment } from "@/types/chat";
 
 const ACCEPTED_TYPES = ".jpg,.jpeg,.png,.pdf";
@@ -22,7 +22,6 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  /* ── File Selection ──────────────────────────────── */
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = e.target.files;
@@ -51,7 +50,6 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
 
       setPendingFiles((prev) => [...prev, ...newAttachments]);
 
-      // Reset input so the same file can be re-selected
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -67,7 +65,6 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
     });
   }, []);
 
-  /* ── Send ─────────────────────────────────────────── */
   const handleSend = useCallback(() => {
     const trimmed = text.trim();
     if (!trimmed && pendingFiles.length === 0) return;
@@ -77,7 +74,6 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
     setText("");
     setPendingFiles([]);
 
-    // Refocus the textarea
     setTimeout(() => textareaRef.current?.focus(), 50);
   }, [text, pendingFiles, disabled, onSend]);
 
@@ -94,100 +90,91 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
   const canSend = (text.trim().length > 0 || pendingFiles.length > 0) && !disabled;
 
   return (
-    <div className="glass rounded-2xl p-3 space-y-3">
-      {/* ── Pending File Previews ─────────────────────── */}
-      {pendingFiles.length > 0 && (
-        <div className="flex flex-wrap gap-2 px-1" role="list" aria-label="Selected files">
-          {pendingFiles.map((att) => (
-            <div
-              key={att.id}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-glass-light border border-glass-border/50 text-xs animate-fade-in"
-              role="listitem"
-            >
-              {att.type.startsWith("image/") ? (
-                <FileImage size={14} className="text-brand-400 flex-shrink-0" aria-hidden="true" />
-              ) : (
-                <FileText size={14} className="text-alert-yellow flex-shrink-0" aria-hidden="true" />
-              )}
-              <span className="text-slate-300 max-w-[120px] truncate">
-                {att.name}
-              </span>
-              <button
-                onClick={() => removeFile(att.id)}
-                className="p-0.5 rounded hover:bg-glass text-slate-500 hover:text-alert-red transition-colors"
-                aria-label={`Remove ${att.name}`}
+    <div className="w-full relative">
+      <div className="bg-slate-800 focus-within:bg-slate-700/80 rounded-3xl p-2 px-3 shadow-lg transition-all duration-300 flex flex-col relative border border-slate-700">
+        
+        {/* Pending File Previews */}
+        {pendingFiles.length > 0 && (
+          <div className="flex flex-wrap gap-2 px-2 pb-2 mt-2">
+            {pendingFiles.map((att) => (
+              <div
+                key={att.id}
+                className="relative group w-14 h-14 rounded-xl border border-slate-600 bg-slate-900 overflow-hidden flex-shrink-0 flex items-center justify-center"
               >
-                <X size={12} />
-              </button>
-            </div>
-          ))}
+                {att.previewUrl ? (
+                  <img src={att.previewUrl} alt="preview" className="w-full h-full object-cover" />
+                ) : (
+                  <FileText size={18} className="text-slate-400" />
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeFile(att.id)}
+                  className="absolute top-0.5 right-0.5 bg-slate-950/80 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-500"
+                >
+                  <X size={10} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-end gap-2">
+          {/* Attachment Button */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="p-2 text-slate-400 hover:text-slate-200 rounded-full hover:bg-slate-600/50 transition-colors shrink-0 mb-0.5"
+            disabled={disabled}
+            aria-label="Attach File"
+          >
+            <Paperclip size={20} />
+          </button>
+          <input
+            type="file"
+            multiple
+            accept={ACCEPTED_TYPES}
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          {/* Text Area */}
+          <textarea
+            ref={textareaRef}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
+            }}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            placeholder="Message Materna AI..."
+            className="flex-1 max-h-[200px] min-h-[24px] bg-transparent resize-none outline-none text-[15px] text-slate-100 placeholder:text-slate-500 py-2"
+            rows={1}
+            style={{ overflowY: text.split("\n").length > 5 ? "auto" : "hidden" }}
+          />
+
+          {/* Send Button */}
+          <button
+            onClick={handleSend}
+            disabled={!canSend}
+            className={cn(
+              "p-2 rounded-full flex-shrink-0 transition-all mb-0.5",
+              canSend
+                ? "bg-white text-slate-900 hover:bg-slate-200 shadow-sm"
+                : "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+            )}
+            aria-label="Send Message"
+          >
+            <Send size={18} className={canSend ? "ml-0.5" : ""} />
+          </button>
         </div>
-      )}
-
-      {/* ── Input Row ─────────────────────────────────── */}
-      <div className="flex items-end gap-2">
-        {/* Attachment button */}
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={disabled}
-          className={cn(
-            "flex-shrink-0 p-2.5 rounded-xl transition-all duration-200",
-            "text-slate-400 hover:text-brand-400 hover:bg-brand-500/10",
-            disabled && "opacity-50 cursor-not-allowed"
-          )}
-          aria-label="Attach file (JPEG, PNG, or PDF)"
-        >
-          <Paperclip size={18} />
-        </button>
-
-        {/* Hidden file input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept={ACCEPTED_TYPES}
-          multiple
-          onChange={handleFileSelect}
-          className="hidden"
-          aria-label="Upload lab test file"
-          id="chat-file-upload"
-        />
-
-        {/* Text input */}
-        <textarea
-          ref={textareaRef}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message…"
-          disabled={disabled}
-          rows={1}
-          className={cn(
-            "flex-1 resize-none bg-transparent text-sm text-slate-100",
-            "placeholder:text-slate-500 outline-none",
-            "max-h-32 min-h-[36px] py-2",
-            disabled && "opacity-50 cursor-not-allowed"
-          )}
-          aria-label="Chat message input"
-          id="chat-message-input"
-        />
-
-        {/* Send button */}
-        <button
-          type="button"
-          onClick={handleSend}
-          disabled={!canSend}
-          className={cn(
-            "flex-shrink-0 p-2.5 rounded-xl transition-all duration-200",
-            canSend
-              ? "bg-brand-500/20 text-brand-400 hover:bg-brand-500/30 hover:shadow-glow-brand"
-              : "text-slate-600 cursor-not-allowed"
-          )}
-          aria-label="Send message"
-          id="chat-send-button"
-        >
-          <Send size={18} />
-        </button>
+      </div>
+      <div className="text-center mt-2">
+        <p className="text-[10px] text-slate-400">
+          Materna AI can make mistakes. Check important info.
+        </p>
       </div>
     </div>
   );

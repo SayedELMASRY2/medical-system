@@ -12,8 +12,8 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    Text,
 )
-from sqlalchemy.dialects.postgresql import JSON, UUID
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base
@@ -33,19 +33,14 @@ class BloodType(str, enum.Enum):
 class PatientProfile(Base):
     """
     Clinical pregnancy profile for a patient.
-
-    Maps to:
-      - AgentState.patient_id  →  PatientProfile.id
-      - AgentState.gestational_age_weeks  →  PatientProfile.gestational_age_weeks
-      - TrendFeature.baseline_value  →  PatientProfile.baseline_weight_kg / baseline_systolic_bp / baseline_diastolic_bp
     """
     __tablename__ = "patient_profiles"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
 
-    # Link to User (patient account) — nullable for pre-registered patients
+    # Link to User (patient account)
     user_id = Column(
-        UUID(as_uuid=True),
+        String(36),
         ForeignKey("users.id"),
         unique=True,
         nullable=True,
@@ -63,25 +58,28 @@ class PatientProfile(Base):
     gravida = Column(Integer, default=1, nullable=False)
     para = Column(Integer, default=0, nullable=False)
 
-    # Medical history
-    chronic_conditions = Column(JSON, default=list, nullable=False)
-    current_medications = Column(JSON, default=list, nullable=False)
+    # Medical history (stored as JSON string for SQLite)
+    chronic_conditions = Column(Text, default="[]", nullable=False)
+    current_medications = Column(Text, default="[]", nullable=False)
 
-    # Baselines (captured at first visit, used by TrendFeature)
+    # Baselines
     baseline_weight_kg = Column(Float, nullable=True)
     baseline_systolic_bp = Column(Integer, nullable=True)
     baseline_diastolic_bp = Column(Integer, nullable=True)
 
     blood_type = Column(Enum(BloodType), nullable=True)
 
-    # Current risk level — matches frontend exact values:
-    # "low", "monitor", "clinical_review", "high"
     risk_status = Column(String(20), default="low", nullable=False)
-
-    # AI-generated clinical summary for the doctor dashboard
     clinical_trend_summary = Column(String, nullable=True)
-
     is_active = Column(Boolean, default=True, nullable=False)
+
+    # Doctor assignment — links this patient to their assigned physician
+    assigned_doctor_id = Column(
+        String(36),
+        ForeignKey("users.id"),
+        nullable=True,
+        index=True,
+    )
 
     created_at = Column(
         DateTime(timezone=True),
@@ -101,10 +99,19 @@ class PatientProfile(Base):
         back_populates="patient_profile",
         foreign_keys=[user_id],
     )
+    assigned_doctor = relationship(
+        "User",
+        foreign_keys=[assigned_doctor_id],
+    )
     daily_checkins = relationship(
         "DailyCheckIn",
         back_populates="patient",
         order_by="DailyCheckIn.checkin_date.desc()",
+    )
+    lab_reports = relationship(
+        "LabReport",
+        back_populates="patient",
+        order_by="LabReport.report_date.desc()",
     )
 
     def __repr__(self):
